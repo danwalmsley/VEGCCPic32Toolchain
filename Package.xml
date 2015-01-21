@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:type="PIC32ToolChainPackage">
+  <Name>PIC32ToolChain</Name>
+  <Version>4.9.1.0</Version>
+  <Description>GCC Toolchain for PIC32 Embedded Processors.</Description>
+  <RepoUri>https://github.com/danwalmsley/VEGCCPic32Toolchain.git</RepoUri>
+  <IncludePaths>
+    <string>mipsel-mcp-elf\include</string>
+  </IncludePaths>
+  <WorkingDirectory>bin</WorkingDirectory>
+</Package>
