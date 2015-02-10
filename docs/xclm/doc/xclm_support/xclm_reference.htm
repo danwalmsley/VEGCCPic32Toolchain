@@ -1,0 +1,180 @@
+<html>
+<head>
+   <title>Command-Line Options Reference</title>
+   <style type="text/css">
+     h2 { font-family:sans-serif;
+          color:#CC0000 }
+     h3 { font-family:sans-serif;
+          color:#CC0000 }
+     p  { font-family:sans-serif;
+          font-size:10pt }
+     p.code  { font-family:monospace;
+               font-size:10pt }
+     li { font-family:sans-serif;
+          font-size:10pt }
+
+   </style>
+</head>
+<body text="#000000" bgcolor="#FFFFFF" link="#3300FF" vlink="#3399FF" alink="#3399FF">
+
+<h2>Command-Line Options Reference</h2>
+
+<p>
+If you wish to control the license manager beyond the installer screens,
+you can use the following commands to perform the actions listed in that section.
+Execute XCLM on the command line as:
+</p>
+
+<p class="code">
+&gt; xclm [options]
+</p>
+
+<h3>-?, -help</h3>
+
+<p>
+This option displays available options.
+<p>
+
+<h3>-status</h3>
+
+<p>
+This option displays information about all the licenses that are visible to the license manager.
+</p>
+
+<h3>-actkey <i>activation-key</i> [ hostid=<i>mac</i> [ hostname=<i>host</i> ] ]</h3>
+
+<p>
+This option pings the server with the
+<span style="font-family:monospace; font-style:italic">activation-key</span>
+specified to license your XC compiler.
+</p>
+
+<p>
+The optional attributes are meant to be used in systems where the computer that will host the license
+cannot access the internet. By default, the activation process will grab host information
+from the current computer and use that to populate fields in the license file.
+By specifying the optional attributes, you are instructing the activation process to not use the
+default information to populate the license file. For node-locked licenses,
+only the optional <span style="font-family:monospace">hostid</span> needs to be specified.
+For networks, the optional <span style="font-family:monospace">hostid</span> and
+<span style="font-family:monospace">hostname</span> must be specified.
+</p>
+
+<p>
+<span style="font-family:monospace; font-style:italic">mac</span> must be a valid MAC address
+of the computer that will host the activated license.
+</p>
+
+<p>
+<span style="font-family:monospace; font-style:italic">host</span> must be the valid username
+of the computer that will host the activated network license.
+</p>
+
+<p>
+In order to find out what the correct values are for <span style="font-family:monospace">hostid</span>
+and <span style="font-family:monospace">hostname</span>, run:
+</p>
+
+<p class="code">
+&gt; xclm -hostinfo
+</p>
+
+<p>
+which will print out the <span style="font-family:monospace; font-style:italic">mac</span>
+and <span style="font-family:monospace; font-style:italic">host</span> values.
+</p>
+
+<h3>-demostat [ <i>product</i> ]</h3>
+
+<p>
+This option displays the demo status for all possible demos (xc8, xc16, xc32).
+It will display whether a demo license is present in the license folder or not.
+If the license does exist, this option will display how many days until the demo expires
+for an active demo license or will display that the license has expired.
+</p>
+
+<p>
+If <span style="font-family:monospace; font-style:italic">product</span> is specified,
+the status will be shown for only that product. The product name must be one of the following:
+</p>
+
+<ul>
+  <li><span style="font-family:monospace">xc8</span></li>
+  <li><span style="font-family:monospace">xc16</span></li>
+  <li><span style="font-family:monospace">xc32</span></li>
+</ul>
+
+<h3>-makedemo <i>product</i></h3>
+
+<p>
+This option will activate a 60 day demo license for the product specified.
+The <span style="font-family:monospace; font-style:italic">product</span> must be one of the following:
+</p>
+
+<ul>
+  <li><span style="font-family:monospace">xc8</span></li>
+  <li><span style="font-family:monospace">xc16</span></li>
+  <li><span style="font-family:monospace">xc32</span></li>
+</ul>
+
+<p>
+Creating a demo license can only be done once for each product per computer.
+Rerunning this command for the same computer and product will download the same license
+that was previously activated.
+</p>
+
+<h3>-netfile <i>port host</i></h3>
+
+<p>
+This option configures a client to point to a network server with a floating license.
+</p>
+
+<p>
+The <span style="font-family:monospace; font-style:italic">port</span> is a server port.
+</p>
+
+<p>
+The <span style="font-family:monospace; font-style:italic">host</span> is the IP address
+on the domain name of the server machine. Host values can be an IP address like
+<span style="font-family:monospace">127.0.0.1</span> or a named address like
+<span style="font-family:monospace">employee1.company.com</span>.
+</p>
+
+<p>
+See your network administrator to acquire valid port and host values.
+</p>
+
+<h3>-hostinfo</h3>
+
+<p>
+This option displays hosting information for the current computer.
+The output can be used for the <span style="font-family:monospace">hostid</span> and
+<span style="font-family:monospace">hostname</span> parameters of the
+<span style="font-family:monospace">-actkey</span> option.
+</p>
+
+<h3>-roamout <i>product</i></h3>
+
+<p>
+Network users can permanently checkout a network license (say if they want to go home).
+The license server should ‘checkout’ and give a license to the client that has executed this option.
+The license server now has one less license of
+<span style="font-family:monospace; font-style:italic">product</span> that it can give out.</br>
+Products supported include the value xc8, xc16, and xc32</br>
+</p>
+
+<p>
+It will stay checked out until the user uses the <span style="font-family:monospace">roamin</span> option.
+</p>
+
+<h3>-roamin <i>product</i></h3>
+
+<p>
+After a call to <span style="font-family:monospace">roamout</span>,
+users call <span style="font-family:monospace">roamin</span> to check back in the license to the network.
+The amount of licenses available for the server to check out now increases by one.</br>
+Products supported include the value xc8, xc16, and xc32</br>
+</p>
+
+</body>
+</html>

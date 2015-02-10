@@ -1,0 +1,59 @@
+<html>
+<head>
+   <title>Configuring a Client to Point to a Network Server</title>
+   <style type="text/css">
+     h2 { font-family:sans-serif;
+          color:#CC0000 }
+     p  { font-family:sans-serif;
+          font-size:10pt }
+     p.code  { font-family:monospace;
+               font-size:10pt }
+   </style>
+</head>
+<body text="#000000" bgcolor="#FFFFFF" link="#3300FF" vlink="#3399FF" alink="#3399FF">
+
+<h2>Configuring a Client to Point to a Network Server</h2>
+
+<p>
+In a system with a network server, licenses will be located on the network server and will be shared with all clients located on the network.</br>
+To connect to the network server, the network client must be configured so that the license manager can find the network server</br>
+There are currently 2 ways to configure the network client 1) through the compiler installer and 2) via the command line.
+</p>
+
+<h3>Configuration through the Installer</h3>
+<p>When running the installer choose the network client option as shown below</br>
+<img src="installer_choose_network_client.jpg" alt="some_text"></p>
+<p>Next enter the properties of the network server. See your network administrator to acquire the correct Server Name and Port Number values.</br>
+<img src="installer_server_configuration.jpg" alt="some_text"></p>
+<h3>Configuration via Command Line</h3>
+<p>
+To configure a network client using the command line, execute:</br>
+<code>&gt; xclm -netfile &lt;port&gt; &lt;host&gt;</code>
+</p>
+
+<p>
+The <span style="font-family:monospace; font-style:italic">port</span> is a server port.</br>
+The <span style="font-family:monospace; font-style:italic">host</span> is the IP address
+on the domain name of the server machine.
+</p>
+
+<p>
+See your network administrator to acquire valid
+<span style="font-family:monospace; font-style:italic">port</span>
+and <span style="font-family:monospace; font-style:italic">host</span> values.
+</p><h3>Testing to see if Configuration Worked</h3>
+<p>To test if the client configuration worked execute the command:</br>
+<code>&gt; xclm -status</p>
+<p>You should now see the products that you purchased, like the example below:</br>
+<pre> 
+&gt; xclm -status                                 
+Node locked licenses available:
+    Product:rlm_roam Version:1.0 Key:
+Network licenses available:
+    Product:swxc32n-cpp Version:1.1 Count:1 Key:0038-0194-0113-5559
+</pre></p>
+<p>The rlm_roam license is an advanced feature that comes enabled with all compilers.</br>
+What we should see is licenses listed under Network licenses other than rlm_roam. If your status is similar to what is shown above then the configuration is complete! No other actions are required.</p>
+<p>The compiler is now set to automatically check out licenses every time it is ran</p>
+</body>
+</html>

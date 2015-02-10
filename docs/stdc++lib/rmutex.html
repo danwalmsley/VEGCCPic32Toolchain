@@ -1,0 +1,146 @@
+<HTML><HEAD><TITLE>&quot;recursive_mutex&quot;</TITLE></HEAD><BODY>
+
+<H1><A NAME="&quot;recursive_mutex&quot;">&quot;Dinkum/threads/recursive_mutex&quot;</A></H1><HR>
+
+<P>Include the header <B><CODE>&quot;Dinkum/threads/recursive_mutex&quot;</CODE></B> to define the
+recursive <A HREF="index_thr.html#mutex">mutex</A>
+classes <CODE>recursive_mutex</CODE>, <CODE>recursive_try_mutex</CODE>,
+and <CODE>recursive_timed_mutex</CODE>.</P>
+
+<PRE>namespace Dinkum {
+    namespace threads {
+    class <B><A HREF="#recursive_mutex">recursive_mutex</A></B>;
+    class <B><A HREF="#recursive_try_mutex">recursive_try_mutex</A></B>;
+    class <B><A HREF="#recursive_timed_mutex">recursive_timed_mutex</A></B>;
+    }  // namespace threads
+} // namespace Dinkum</PRE>
+
+<H2><A NAME="recursive_mutex"><CODE>recursive_mutex</CODE></A></H2>
+
+<PRE>class <B>recursive_mutex</B>
+    {
+public:
+    <B><A HREF="#recursive_mutex::recursive_mutex">recursive_mutex</A></B>();
+    <B><A HREF="#recursive_mutex::~recursive_mutex">~recursive_mutex</A></B>();
+    typedef SL0 <B><A HREF="#scoped_lock">scoped_lock</A></B>;
+
+<I>    // exposition only
+private:
+    // not implemented
+    recursive_mutex(const recursive_mutex&amp;);
+    recursive_mutex&amp; operator= (const recursive_mutex&amp;);</I>
+    };</PRE>
+
+<P>The class describes an object that
+can be used with a <A HREF="mutex.html#lock object">lock object</A>
+to provide a recursive <A HREF="index_thr.html#mutex">mutex</A>
+object. Objects of class <CODE>recursive_mutex</CODE> cannot be copied.</P>
+
+<H3><CODE><A NAME="recursive_mutex::recursive_mutex">recursive_mutex::recursive_mutex</A></CODE></H3>
+
+<PRE><B>recursive_mutex</B>();</PRE>
+
+<P>The constructor constructs a <CODE>mutex</CODE> in the unlocked state.</P>
+
+<H3><CODE><A NAME="recursive_mutex::~recursive_mutex">recursive_mutex::~recursive_mutex</A></CODE></H3>
+
+<PRE><B>~recursive_mutex</B>();</PRE>
+
+<P><I><A HREF="index_thr.html#Precondition">Precondition</A>:</I>
+the object must not be locked.</P>
+
+<P>The destructor releases any resources used by the object.</P>
+
+<H2><A NAME="recursive_timed_mutex"><CODE>recursive_timed_mutex</CODE></A></H2>
+
+<PRE>class <B>recursive_timed_mutex</B>
+    {
+public:
+    <B><A HREF="#recursive_timed_mutex::recursive_timed_mutex">recursive_timed_mutex</A></B>();
+    <B><A HREF="#recursive_timed_mutex::~recursive_timed_mutex">~recursive_timed_mutex</A></B>();
+    typedef SL0 <B><A HREF="#scoped_lock">scoped_lock</A></B>;
+    typedef SL1 <B><A HREF="#scoped_try_lock">scoped_try_lock</A></B>;
+    typedef SL2 <B><A HREF="#scoped_timed_lock">scoped_timed_lock</A></B>;
+
+<I>    // exposition only
+private:
+    // not implemented
+    recursive_timed_mutex(const recursive_timed_mutex&amp;);
+    recursive_timed_mutex&amp; operator= (const recursive_timed_mutex&amp;);</I>
+    };</PRE>
+
+<P>The class describes an object that
+can be used with a <B><A NAME="scoped_lock">scoped_lock</A></B>,
+a <B><A NAME="scoped_try_lock">scoped_try_lock</A></B>,
+or a <B><A NAME="scoped_timed_lock">scoped_timed_lock</A></B>
+to provide a recursive <A HREF="index_thr.html#mutex">mutex</A>
+object that supports <A HREF="index_thr.html#test and return">test and return</A>
+and <A HREF="index_thr.html#timeout">timeout</A>.
+Objects of class <CODE>recursive_timed_mutex</CODE> cannot be copied.</P>
+
+<H3><CODE><A NAME="recursive_timed_mutex::recursive_timed_mutex">recursive_timed_mutex::recursive_timed_mutex</A></CODE></H3>
+
+<PRE><B>recursive_timed_mutex</B>();</PRE>
+
+<P>The constructor constructs a <CODE>recursive_timed_mutex</CODE> in the unlocked state.</P>
+
+<H3><CODE><A NAME="recursive_timed_mutex::~recursive_timed_mutex">recursive_timed_mutex::~recursive_timed_mutex</A></CODE></H3>
+
+<PRE><B>~recursive_timed_mutex</B>();</PRE>
+
+<P><I><A HREF="index_thr.html#Precondition">Precondition</A>:</I>
+the object must not be locked.</P>
+
+<P>The destructor releases any resources used by the object.</P>
+
+<H2><A NAME="recursive_try_mutex"><CODE>recursive_try_mutex</CODE></A></H2>
+
+<PRE>class <B>recursive_try_mutex</B>
+    {
+public:
+    <B><A HREF="#recursive_try_mutex::recursive_try_mutex">recursive_try_mutex</A></B>();
+    <B><A HREF="#recursive_try_mutex::~recursive_try_mutex">~recursive_try_mutex</A></B>();
+    typedef SL0 <B><A HREF="#scoped_lock">scoped_lock</A></B>;
+    typedef SL1 <B><A HREF="#scoped_try_lock">scoped_try_lock</A></B>;
+
+<I>    // exposition only
+private:
+    // not implemented
+    recursive_try_mutex(const recursive_try_mutex&amp;);
+    recursive_try_mutex&amp; operator= (const recursive_try_mutex&amp;);</I>
+    };</PRE>
+
+<P>The class describes an object that
+can be used with a <A HREF="#scoped_lock">scoped_lock</A>
+or a <A HREF="#scoped_try_lock">scoped_try_lock</A>
+to provide a recursive <A HREF="index_thr.html#mutex">mutex</A>
+object that supports <A HREF="index_thr.html#test and return">test and return</A>.
+Objects of class <CODE>recursive_try_mutex</CODE> cannot be copied.</P>
+
+<H3><CODE><A NAME="recursive_try_mutex::recursive_try_mutex">recursive_try_mutex::recursive_try_mutex</A></CODE></H3>
+
+<PRE><B>recursive_try_mutex</B>();</PRE>
+
+<P>The constructor constructs a <CODE>recursive_try_mutex</CODE> in the unlocked state.</P>
+
+<H3><CODE><A NAME="recursive_try_mutex::~recursive_try_mutex">recursive_try_mutex::~recursive_try_mutex</A></CODE></H3>
+
+<PRE><B>~recursive_try_mutex</B>();</PRE>
+
+<P><I><A HREF="index_thr.html#Precondition">Precondition</A>:</I>
+the object must not be locked.</P>
+
+<P>The destructor releases any resources used by the object.</P>
+
+<HR>
+<P>See also the
+<B><A HREF="index.html">Table of Contents</A></B>
+and the <B><A HREF="_index.html">Index</A></B>.</P>
+
+<P><I>
+<A HREF="crit_pjp.html">Copyright</A> &#169; 1992-2010
+by Dinkumware, Ltd.
+Portions derived from work <A HREF="crit_wek.html">copyright</A> &#169; 2001
+by William E. Kempf. All rights reserved.</I></P>
+
+<!--V5.30:126I--></BODY></HTML>

@@ -1,0 +1,54 @@
+<HTML><HEAD><TITLE>&quot;once&quot;</TITLE></HEAD><BODY>
+
+<H1><A NAME="&quot;once&quot;">&quot;Dinkum/threads/once&quot;</A></H1><HR>
+
+<P><B><CODE><A HREF="#call_once">call_once</A>
+&#183; <A HREF="#once_flag">once_flag</A>
+&#183; <A HREF="#once_init">once_init</A>
+</CODE></B></P>
+<HR>
+
+<P>Include the header <B><CODE>&quot;Dinkum/threads/once&quot;</CODE></B> to use
+<A HREF="index_thr.html#Once Functions">once functions</A> in
+C++ code.</P>
+
+<PRE>namespace Dinkum {
+    namespace threads {
+    typedef <I>o-type</I> <B><A HREF="#once_flag">once_flag</A></B>;
+    const once_flag <B><A HREF="#once_init">once_init</A></B> = .....;
+    void <B><A HREF="#call_once">call_once</A></B>(void (*func)(void), once_flag& flag);
+    }  // namespace threads
+} // namespace Dinkum</PRE>
+
+<H2><A NAME="call_once"><CODE>call_once</CODE></A></H2>
+
+<PRE>void <B>call_once</B>(void (*func)(void), once_flag& flag);</PRE>
+
+<P>The function uses <CODE>flag</CODE> to ensure that <CODE>func</CODE> is
+called exactly once.</P>
+
+<H2><A NAME="once_flag"><CODE>once_flag</CODE></A></H2>
+
+<PRE>typedef <I>o-type</I> <B>once_flag</B>;</PRE>
+
+<P>The type describes a data object for use as the first argument to
+<CODE>call_once</CODE>.</P>
+
+<H2><A NAME="once_init"><CODE>once_init</CODE></A></H2>
+
+<PRE>const once_flag <B>once_init</B> = .....;</PRE>
+
+<P>The object provides an initial value for objects of type <CODE>once_flag</CODE>.</P>
+
+<HR>
+<P>See also the
+<B><A HREF="index.html">Table of Contents</A></B>
+and the <B><A HREF="_index.html">Index</A></B>.</P>
+
+<P><I>
+<A HREF="crit_pjp.html">Copyright</A> &#169; 1992-2010
+by Dinkumware, Ltd.
+Portions derived from work <A HREF="crit_wek.html">copyright</A> &#169; 2001
+by William E. Kempf. All rights reserved.</I></P>
+
+<!--V5.30:126I--></BODY></HTML>

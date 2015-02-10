@@ -1,0 +1,190 @@
+<HTML><HEAD><TITLE>&lt;iohw.h&gt;</TITLE></HEAD><BODY>
+
+<H1><A NAME="&lt;iohw.h&gt;"><CODE>&lt;iohw.h&gt;</CODE></A></H1>
+
+<P>[added with
+<A NAME="TR18015">TR18015</A> and
+<A NAME="TR18037">TR18037</A>]</P><HR>
+
+<P><B><CODE><A HREF="#ioindex_t">ioindex_t</A>
+&#183; <A HREF="#ioreg">ioreg</A>
+</CODE></B></P>
+
+<P><B><CODE><A HREF="#ioand">ioand</A>
+&#183; <A HREF="#ioandbuf">ioandbuf</A>
+&#183; <A HREF="#ioandbufl">ioandbufl</A>
+&#183; <A HREF="#ioandl">ioandl</A>
+&#183; <A HREF="#iogroup_acquire">iogroup_acquire</A>
+&#183; <A HREF="#iogroup_map">iogroup_map</A>
+&#183; <A HREF="#iogroup_release">iogroup_release</A>
+&#183; <A HREF="#ioor">ioor</A>
+&#183; <A HREF="#ioorbuf">ioorbuf</A>
+&#183; <A HREF="#ioorbufl">ioorbufl</A>
+&#183; <A HREF="#ioorl">ioorl</A>
+&#183; <A HREF="#iord">iord</A>
+&#183; <A HREF="#iordbuf">iordbuf</A>
+&#183; <A HREF="#iordbufl">iordbufl</A>
+&#183; <A HREF="#iordl">iordl</A>
+&#183; <A HREF="#iowr">iowr</A>
+&#183; <A HREF="#iowrbuf">iowrbuf</A>
+&#183; <A HREF="#iowrbufl">iowrbufl</A>
+&#183; <A HREF="#iowrl">iowrl</A>
+&#183; <A HREF="#ioxor">ioxor</A>
+&#183; <A HREF="#ioxorbuf">ioxorbuf</A>
+&#183; <A HREF="#ioxorbufl">ioxorbufl</A>
+&#183; <A HREF="#ioxorl">ioxorl</A>
+</CODE></B></P>
+<HR>
+
+<P>Include the added header <B><CODE>&lt;iohw.h&gt;</CODE></B>
+so that you can write low-level I/O hardware drivers in C that
+are easier to port to different architectures.</P>
+
+<P>Note that the use of this header does <B>not</B> require
+the additions to the C language mandated by TR18037, which
+include fixed-point arithmetic and named address spaces.</P>
+
+<PRE>    /* TYPES */
+typedef <I>i-type</I> <A NAME="ioindex_t"><B>ioindex_t</B></A>;
+typedef <I>i-type</I> <A NAME="ioreg"><B>ioreg</B></A>;
+
+    /* FUNCTIONS (all masked by macros) */
+unsigned int <A NAME="iord"><B>iord</B></A>(ioreg dev);
+unsigned long <A NAME="iordl"><B>iordl</B></A>(ioreg dev);
+unsigned int <A NAME="iordbuf"><B>iordbuf</B></A>(ioreg dev, ioindex_t idx);
+unsigned long <A NAME="iordbufl"><B>iordbufl</B></A>(ioreg dev, ioindex_t idx);
+
+void <A NAME="iowr"><B>iowr</B></A>(ioreg dev, unsigned int val);
+void <A NAME="iowrl"><B>iowrl</B></A>(ioreg dev, unsigned int val);
+void <A NAME="iowrbuf"><B>iowrbuf</B></A>(ioreg dev, ioindex_t idx, unsigned int val);
+void <A NAME="iowrbufl"><B>iowrbufl</B></A>(ioreg dev, ioindex_t idx, unsigned int val);
+
+void <A NAME="ioor"><B>ioor</B></A>(ioreg dev, unsigned int val);
+void <A NAME="ioorl"><B>ioorl</B></A>(ioreg dev, unsigned int val);
+void <A NAME="ioorbuf"><B>ioorbuf</B></A>(ioreg dev, ioindex_t idx, unsigned int val);
+void <A NAME="ioorbufl"><B>ioorbufl</B></A>(ioreg dev, ioindex_t idx, unsigned int val);
+
+void <A NAME="ioand"><B>ioand</B></A>(ioreg dev, unsigned int val);
+void <A NAME="ioandl"><B>ioandl</B></A>(ioreg dev, unsigned int val);
+void <A NAME="ioandbuf"><B>ioandbuf</B></A>(ioreg dev, ioindex_t idx, unsigned int val);
+void <A NAME="ioandbufl"><B>ioandbufl</B></A>(ioreg dev, ioindex_t idx, unsigned int val);
+
+void <A NAME="ioxor"><B>ioxor</B></A>(ioreg dev, unsigned int val);
+void <A NAME="ioxorl"><B>ioxorl</B></A>(ioreg dev, unsigned int val);
+void <A NAME="ioxorbuf"><B>ioxorbuf</B></A>(ioreg dev, ioindex_t idx, unsigned int val);
+void <A NAME="ioxorbufl"><B>ioxorbufl</B></A>(ioreg dev, ioindex_t idx, unsigned int val);
+
+void <A NAME="iogroup_acquire"><B>iogroup_acquire</B></A>(int group);
+void <A NAME="iogroup_release"><B>iogroup_release</B></A>(int group);
+void <A NAME="iogroup_map"><B>iogroup_map</B></A>(int group, int direct);</PRE>
+
+<P>The header <CODE>&lt;iohw.h&gt;</CODE> defines two types and a number
+of functions, all of which are typically masked as macros. You should view
+this header as a prototype for defining the atomic operations needed to
+express a low-level I/O hardware driver (thus the root name <B>iohw</B>)
+that is intended to be reasonably portable C.
+The facilities in this header are structured around a few basic concepts:</P>
+
+<UL>
+<LI>The type <B><CODE>ioreg</CODE></B> describes the space of all I/O addresses.
+These can be port addresses, for processors with port I/O instructions,
+or memory addresses, for processors with memory-mapped I/O hardware.
+In a simpler implementation,
+the actual argument corresponding to the parameter name
+<CODE>dev</CODE> can also be used to construct the
+name of a function to call.</LI>
+
+<LI>The type <B><CODE>ioindex_t</CODE></B> describes an integer type that can
+be used to index into a
+<B><A NAME="hardware buffer">hardware buffer</A></B>, an array of I/O
+addresses.</LI>
+
+<LI>An argument named <B><CODE>group</CODE></B> describes the space of all
+<B><A NAME="hardware group">hardware groups</A></B>, which might be
+meaningful on an architecture that supports switching among groups
+of similar I/O addresses by changing a base address dynamically.
+In a simpler implementation,
+the actual argument corresponding to the parameter name <CODE>dev</CODE>
+can also be used to construct the name of a function to call.</LI>
+</UL>
+
+<P>The function names are thus suggestive of specific I/O operations,
+though they have no required semantics:</P>
+
+<UL>
+<LI><B><CODE>iord</CODE></B> reads a port and returns as the value of the function.</LI>
+
+<LI><B><CODE>iowr</CODE></B> writes <CODE>val</CODE> to a port.</LI>
+
+<LI><B><CODE>ioor</CODE></B> ORs <CODE>val</CODE> into a port (bitwise inclusive OR).</LI>
+
+<LI><B><CODE>ioand</CODE></B> ANDs <CODE>val</CODE> into a port (bitwise AND).</LI>
+
+<LI><B><CODE>ioxor</CODE></B> XORs <CODE>val</CODE> into a port
+(bitwise exclusive OR).</LI>
+</UL>
+
+<P>Moreover:</P>
+
+<UL>
+<LI>The suffix <B><CODE>buf</CODE></B> performs the operation with the element
+<CODE>idx</CODE> of a buffer.</LI>
+
+<LI>The suffix <B><CODE>l</CODE></B> (lowercase <B><CODE>L</CODE></B>)
+takes the type of the port as <CODE>unsigned long</CODE> instead of
+<CODE>unsigned int</CODE>.</LI>
+</UL>
+
+<P>Similarly, functions whose name begins with <B><CODE>iogroup_</CODE></B>
+operate on hardware groups:</P>
+
+<UL>
+<LI>The suffix <B><CODE>acquire</CODE></B> establishes <CODE>group</CODE> as the
+active hardware group.</LI>
+
+<LI>The suffix <B><CODE>release</CODE></B> disestablished <CODE>group</CODE> as the
+active hardware group.</LI>
+
+<LI>The suffix <B><CODE>map</CODE></B> maps the dynamic <CODE>group</CODE> into
+the actual hardware group <CODE>direct</CODE>.</LI>
+</UL>
+
+<P>In this 
+<A HREF="index.html#implementation">implementation</A>, all functions
+are masked by macros that follow the pattern:</P>
+
+<PRE>
+#define _IOHW_CAT(x, y)    x##_##y   /* expand arguments and paste */
+#define iordbuf(dev, idx)  _IOHW_CAT(dev, brd)(idx)</PRE>
+
+<P>Thus, the first argument (after macro expansion) is pasted onto a
+suitable suffix to produce the name of the actual function to call.
+So you can write code such as:</P>
+
+<PRE>#define KBD         kbd   /* root name of keyboard functions */
+#define KBD_STATUS  0     /* first of two adjacent ports */
+#define KBD_DATA    1     /* second of two adjacent ports */
+#define KBD_DONE    0x80  /* DONE status bit */
+
+extern unsigned int kbd_brd(ioindex_t idx);  /* actual driver */
+
+unsigned int getkbd()
+    {   /* read keyboard when ready */
+    while ((iordbuf(KBD, KBD_STATUS) & KBD_DONE) == 0)
+        ;   /* wait until character is present */
+    return (iordbuf(KBD, KBD_DATA));  /* read character and clear DONE */
+    }</PRE>
+
+<P>All actual driver calls will be to the function
+(or macro) <CODE>kbd_brd</CODE>.</P>
+
+<HR>
+<P>See also the
+<B><A HREF="index.html#Table of Contents">Table of Contents</A></B> and the
+<B><A HREF="_index.html">Index</A></B>.</P>
+
+<P><I>
+<A HREF="crit_pjp.html">Copyright</A> &#169; 1992-2010
+by P.J. Plauger. All rights reserved.</I></P>
+
+<!--V5.30:126I--></BODY></HTML>

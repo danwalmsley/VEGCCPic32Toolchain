@@ -1,0 +1,63 @@
+<html>
+<head>
+   <title>Network Server Debugging</title>
+   <style type="text/css">
+     h2 { font-family:sans-serif;
+          color:#CC0000 }
+     p  { font-family:sans-serif;
+          font-size:10pt }
+     p.code  { font-family:monospace;
+               font-size:10pt }
+   </style>
+</head>
+<body text="#000000" bgcolor="#FFFFFF" link="#3300FF" vlink="#3399FF" alink="#3399FF">
+
+<h2>Network Server Debugging</h2>
+<h3>No licenses found</h3>
+<p>When no licenses are found the license server will start and display the followoing:</p>
+<pre>  $ ./rlm.exe                                                                                                 
+  02/07 11:24 (rlm)                                                                                           
+  02/07 11:24 (rlm) WARNING: No license file for this host (CHN-DK-C14119)                                    
+  02/07 11:24 (rlm)          The hostname in the license file(s)                                              
+  02/07 11:24 (rlm)          may be incorrect                                                                 
+  02/07 11:24 (rlm)                                                                                           
+  02/07 11:24 (rlm) License files:                                                                            
+  02/07 11:24 (rlm)     ..\license                                                                            
+  02/07 11:24 (rlm)                                                                                           
+  02/07 11:24 (rlm) RLM License Server Version 9.4BL2                                                         
+  
+          Copyright (C) 2006-2012, Reprise Software, Inc. All rights reserved.                                
+		  
+  02/07 11:24 (rlm) License server started on CHN-DK-C14119                                                   
+  02/07 11:24 (rlm) Server architecture: x86_w2                                                               
+  02/07 11:24 (rlm) License files:                                                                            
+  02/07 11:24 (rlm)     ..\license                                                                            
+  02/07 11:24 (rlm)                                                                                           
+  02/07 11:24 (rlm) Web server starting on port 5054                                                          
+  02/07 11:24 (rlm) Using TCP/IP port 5053                                                                    
+  02/07 11:24 (rlm) Starting ISV servers:                                                                     
+  02/07 11:24 (rlm) (No ISV servers to start)  </pre>
+  
+<p>The message 'No ISV servers to start' means the server cannot find license files. 2 things could be causing this.</p>
+<p>1. A license folder was not specified when starting the license server. </br>
+For this scenario, refer to the <a href="network_server_setup.htm">'Starting the server' section</a>. It explains how to find the license folder, and the correct option to pass on the command line.</p>
+<p>2. No licenses are in the license folder because an activation key has not been used to create a license. For this scenario, refer to the <a href="network_server_setup.htm">'Creating licenses' section</a>. This will explain how to use your activation key to create licenses.</p>
+
+<h3>Port in use</h3>
+<p>When license server starts but can't lock the port, the server will emit a message similar to this:</p>
+<pre>  $ ./rlm.exe
+  02/07 11:24 (rlm) RLM License Server Version 10.0BL3
+
+        Copyright (C) 2006-2013, Reprise Software, Inc. All rights reserved.
+
+  02/07 11:24 (rlm) License server started on CHN-DK-C14119
+  02/07 11:24 (rlm) Server architecture: x86_w2
+  02/07 11:24 (rlm) License files:
+  02/07 11:24 (rlm)     ..\license
+  02/07 11:24 (rlm)     example.lic
+  02/07 11:24 (rlm)
+  02/07 11:24 (rlm) Web server starting on port 5054
+  02/07 11:24 (rlm) Port 5053 in use, waiting...
+  02/07 11:24 (rlm) Port 5053 in use, waiting... </pre>
+
+<p>This message usually means that another instance of RLM is running. Use the appropriate task manager for your operating system to find and kill any other RLM processes that were previously started.</p>

@@ -1,0 +1,28 @@
+<html>
+<head>
+   <title>How to start the XCLM server</title>
+   <style type="text/css">
+     h2 { font-family:sans-serif;
+          color:#CC0000 }
+     p  { font-family:sans-serif;
+          font-size:10pt }
+     p.code  { font-family:monospace;
+               font-size:10pt }
+   </style>
+</head>
+<body text="#000000" bgcolor="#FFFFFF" link="#3300FF" vlink="#3399FF" alink="#3399FF">
+
+
+<h2>How to start the XCLM server</h2>
+<p>To start the network server, there are 2 necessary components: server binaries and activated licenses</p>
+<h3>Locating the server binaries</h3>
+<p>Server binaries are located under the Microchip product tree in the path Microchip/xc_license_server/v#.##/bin/</p>
+<p>The server binary is named rlm.exe</p>
+<h3>Finding license files</h3>
+<p>License files are located in different paths depending on the operating system</p>
+<p>The license folder can be found by running:</br>
+<code>&gt; xclm -licensepath</code></p>
+<h3>Starting the license server</h3>
+<p>To start the license server execute the command: 
+<code>rlm -c &lt;license folder path&gt;</code>
+</p>

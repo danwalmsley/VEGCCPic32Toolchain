@@ -1,0 +1,36 @@
+<html>
+<head>
+   <title>Creating a License for a Computer without Internet Access</title>
+   <style type="text/css">
+     h2 { font-family:sans-serif;
+          color:#CC0000 }
+     p  { font-family:sans-serif;
+          font-size:10pt }
+     p.code  { font-family:monospace;
+               font-size:10pt }
+   </style>
+</head>
+<body text="#000000" bgcolor="#FFFFFF" link="#3300FF" vlink="#3399FF" alink="#3399FF">
+
+<h2>Creating a License for a Computer without Internet Access</h2>
+<p>1. On the PC which does not have internet connectivity (also referred to as the offline computer), run the following command:</br>
+<code>&gt; xclm -hostinfo</code></br>
+The command will print out information about the offline computer. This information should be used in the next step.</p>
+<p>2. Run the following commands on a PC which has internet connectivity.</br>
+</br>
+To activate a license for a single, node-locked computer (most likely scenario), run the command:</br>
+<code>&gt; xclm -actkey &lt;activation-key&gt; hostid=&lt;mac&gt;</code></br>
+To activate a license for a network server, run the command:</br>
+<code>&gt; xclm -actkey &lt;activation-key&gt; hostid=&lt;mac&gt; hostname=&lt;host&gt;</code></br>
+</br> 
+Example:</br>
+<code>&gt; xclm -actkey 1234-1234-1234-1234 hostid=0123456789ab</code></br>
+</br>
+<code>&lt;activation-key&gt;</code> is the key that was given to you at the time of the compiler purchase.</br>
+<code>&lt;mac&gt;</code> must be the valid Media Access Control (mac) address of the offline computer.</br>
+<code>&lt;host&gt;</code> must be the valid username of the offline computer.</p>
+<p>3. The previous command will create a license file (e.g. microchip1.lic) and display where the license was created.</p>
+<p>4. Copy this .lic file to the license folder on the computer without internet access. The license folder can be found by running:</br>
+<code>&gt; xclm -licensepath</code></p>
+<p>5. Install the XC compiler in FREE mode on the computer which does not have internet connectivity.</p>
+<p>6. The XC compiler will now operate with licensed capabilities.</p>

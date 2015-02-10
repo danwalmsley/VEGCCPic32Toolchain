@@ -1,0 +1,34 @@
+<html>
+<head>
+   <title>Creating a License for a Computer without Internet Access</title>
+   <style type="text/css">
+     h2 { font-family:sans-serif;
+          color:#CC0000 }
+     p  { font-family:sans-serif;
+          font-size:10pt }
+     p.code  { font-family:monospace;
+               font-size:10pt }
+   </style>
+</head>
+<body text="#000000" bgcolor="#FFFFFF" link="#3300FF" vlink="#3399FF" alink="#3399FF">
+
+
+<h2>Activating a License From Behind a Proxy</h2>
+<p>To use a proxy server, there are 2 environment variables which must be set:</br>
+</br>
+<b>HTTP_PROXY</b> - the hostname and port of the proxy server, in the format hostname:port. </br>
+</br>
+If your proxy server uses authentication, you can use the HTTP_PROXY_CREDENTIALS environment variable to pass the credentials to the proxy server:</br>
+<b>HTTP_PROXY_CREDENTIALS</b> - the username and password to authenticate you to the proxy server, in the format user:password.</br>
+</br>
+</br>
+For example, if your proxy server is on port "8080" on host "proxy_host" and </br>
+if your username is "john" and password is "johns_password", the procedure on Windows would look like:</br>
+</br>
+<code> 
+&gt; set HTTP_PROXY=proxy_host:8080</br>
+&gt; set HTTP_PROXY_CREDENTIALS=john:johns_password</br>
+&gt; xclm -actkey XXXX-XXXX-XXXX-XXXX</br>
+</code>
+</br>
+Note that xclm activation supports only the BASIC authentication type.</br></p>

@@ -1,0 +1,80 @@
+<html>
+<head>
+   <title>How to start the XCLM server</title>
+   <style type="text/css">
+     h2 { font-family:sans-serif;
+          color:#CC0000 }
+     p  { font-family:sans-serif;
+          font-size:10pt }
+     p.code  { font-family:monospace;
+               font-size:10pt }
+   </style>
+</head>
+<body text="#000000" bgcolor="#FFFFFF" link="#3300FF" vlink="#3399FF" alink="#3399FF">
+
+
+<h2>How to start the XCLM server</h2>
+<p>To start the network server, there are 2 necessary components: server binaries and network licenses</p>
+<h3>Creating licenses</h3>
+<p><b>Note: If all necessary licenses were created during installation, skip this step and go straight to 'Starting the server'</b></p>
+<p>Point a command prompt or terminal to the binary folder located under the Microchip product tree in the path Microchip/xc_license_server/v#.##/bin/</p>
+<p>To create a license, execute the command:</br>
+<code>&gt; xclm -actkey &lt;activation-key&gt;</code></p>
+<p>This option pings the server with the
+<span style="font-family:monospace; font-style:italic">activation-key</span>
+specified to license your XC compiler. For full documentation on this option visit the <a href=xclm_reference.htm>command line reference.</a>
+</p>
+</br>
+<h3>Starting the server</h3>
+<p>Server binaries are located under the Microchip product tree in the path Microchip/xc_license_server/v#.##/bin/</p>
+<p>The server binary is named rlm.exe</p>
+
+<h4>Finding the license folder</h4>
+<p>License files are located in different folders depending on the operating system</p>
+<p>The license folder can be found by running:</br>
+<code>&gt; xclm -licensepath</code></p>
+
+<h4>Starting the license server</h4>
+<p>To start the license server execute the command: 
+<code>rlm -c &lt;license folder path&gt;</code></p>
+
+<p>If started correctly, you should see output like this:</p>
+
+<pre>  &gt; rlm.exe -c C:\ProgramData\Microchip\xclm\license
+
+  02/07 10:40 (rlm) RLM License Server Version 9.4BL2                         
+
+  Copyright (C) 2006-2012, Reprise Software, Inc. All rights reserved.
+
+  02/07 10:40 (rlm) License server started on CHN-DK-C14119                   
+  02/07 10:40 (rlm) Server architecture: x86_w2                               
+  02/07 10:40 (rlm) License files:                                                   
+  02/07 10:40 (rlm)     C:\ProgramData\Microchip\xclm\license\microchip1.lic         
+  02/07 10:40 (rlm)                                                                  
+  02/07 10:40 (rlm) Web server starting on port 5054                                 
+  02/07 10:40 (rlm) Using TCP/IP port 5053                                           
+  02/07 10:40 (rlm) Starting ISV servers:                                            
+  02/07 10:40 (rlm)     ... microchip on port 49339                                  
+  02/07 10:40 (rlm) New thread created to watch ISV microchip                        
+  02/07 10:40 (microchip) RLM License Server Version 9.4BL2 for ISV "microchip"      
+  02/07 10:40 (microchip) Server architecture: x86_w2                     
+  
+      Copyright (C) 2006-2012, Reprise Software, Inc. All rights reserved.
+
+      RLM contains software developed by the OpenSSL Project              
+      for use in the OpenSSL Toolkit (http://www.openssl.org)                        
+      Copyright (c) 1998-2008 The OpenSSL Project. All rights reserved.              
+      Copyright (c) 1995-1998 Eric Young (eay@cryptsoft.com) All rights reserved.    
+
+  02/07 10:40 (microchip)                                                            
+  02/07 10:40 (microchip) Server started on CHN-DK-C14119 (hostid: 000ffec524ff) for:
+  02/07 10:40 (microchip)         swxc32n-cpp                                        
+  02/07 10:40 (microchip)                                                            
+  02/07 10:40 (microchip) License files:                                             
+  02/07 10:40 (microchip)     C:\ProgramData\Microchip\xclm\license\microchip1.lic   
+  02/07 10:40 (microchip)             
+</pre>
+
+<h4>Debugging the server</h4>
+<p>If the output of your license server does not look like the one above, please visit the 
+<a href=network_server_debug.htm>network server debugging reference.</a>

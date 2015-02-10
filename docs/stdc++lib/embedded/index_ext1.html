@@ -1,0 +1,185 @@
+<HTML><HEAD><TITLE>C Library Extension 1</TITLE></HEAD><BODY>
+
+<H1><A NAME="C Library Extension 1">C Library Extension 1</A></H1>
+
+<P>[added with TR24731]</P><HR>
+
+<P>ISO/IEC <A NAME="TR24731">TR24731</A> is a non-normative Technical Report
+titled <B>Extensions to the C Library, Part 1: Bounds-checking interfaces</B>.
+It adds a number of functions that check arguments for unexpected
+null pointers, short buffers, and other common errors.
+The functions are based on additions made by Microsoft to
+Visual C++ 2005 (V8). The additions
+all occur within existing headers.</P>
+
+<HR>
+
+<P><B><CODE><A HREF="#__STDC_LIB_EXT1__">__STDC_LIB_EXT1__</A>
+&#183; <A HREF="#__STDC_WANT_LIB_EXT1__">__STDC_WANT_LIB_EXT1__</A>
+</CODE></B></P>
+
+<P><B><CODE>errno.h: <A HREF="errno.html#errno_t">errno_t</A>
+</CODE></B></P>
+
+<P><B><CODE>stddef.h: <A HREF="stddef.html#rsize_t">rsize_t</A>
+</CODE></B></P>
+
+<P><B><CODE>stdio.h: <A HREF="stdio.html#L_tmpnam_s">L_tmpnam_s</A>
+&#183; <A HREF="stdio.html#TMP_MAX_S">TMP_MAX_S</A>
+&#183; <A HREF="stdio.html#errno_t">errno_t</A>
+&#183; <A HREF="stdio.html#gets_s">gets_s</A>
+&#183; <A HREF="stdio.html#fopen_s">fopen_s</A>
+&#183; <A HREF="stdio.html#fprintf_s">fprintf_s</A>
+&#183; <A HREF="stdio.html#freopen_s">freopen_s</A>
+&#183; <A HREF="stdio.html#fscanf_s">fscanf_s</A>
+&#183; <A HREF="stdio.html#printf_s">printf_s</A>
+&#183; <A HREF="stdio.html#rsize_t">rsize_t</A>
+&#183; <A HREF="stdio.html#scanf_s">scanf_s</A>
+&#183; <A HREF="stdio.html#snprintf_s">snprintf_s</A>
+&#183; <A HREF="stdio.html#sprintf_s">sprintf_s</A>
+&#183; <A HREF="stdio.html#sscanf_s">sscanf_s</A>
+&#183; <A HREF="stdio.html#tmpfile_s">tmpfile_s</A>
+&#183; <A HREF="stdio.html#tmpnam_s">tmpnam_s</A>
+&#183; <A HREF="stdio.html#vfprintf_s">vfprintf_s</A>
+&#183; <A HREF="stdio.html#vfscanf_s">vfscanf_s</A>
+&#183; <A HREF="stdio.html#vprintf_s">vprintf_s</A>
+&#183; <A HREF="stdio.html#vscanf_s">vscanf_s</A>
+&#183; <A HREF="stdio.html#vsnprintf_s">vsnprintf_s</A>
+&#183; <A HREF="stdio.html#vsprintf_s">vsprintf_s</A>
+&#183; <A HREF="stdio.html#vsscanf_s">vsscanf_s</A>
+</CODE></B></P>
+
+<P><B><CODE>stdlib.h: <A HREF="stdlib.html#abort_handler_s">abort_handler_s</A>
+&#183; <A HREF="stdlib.html#bsearch_s">bsearch_s</A>
+&#183; <A HREF="stdlib.html#constraint_handler_t">constraint_handler_t</A>
+&#183; <A HREF="stdlib.html#errno_t">errno_t</A>
+&#183; <A HREF="stdlib.html#getenv_s">getenv_s</A>
+&#183; <A HREF="stdlib.html#ignore_handler_s">ignore_handler_s</A>
+&#183; <A HREF="stdlib.html#mbstowcs_s">mbstowcs_s</A>
+&#183; <A HREF="stdlib.html#qsort_s">qsort_s</A>
+&#183; <A HREF="stdlib.html#rsize_t">rsize_t</A>
+&#183; <A HREF="stdlib.html#set_constraint_handler_s">set_constraint_handler_s</A>
+&#183; <A HREF="stdlib.html#wcstombs_s">wcstombs_s</A>
+&#183; <A HREF="stdlib.html#wctomb_s">wctomb_s</A>
+</CODE></B></P>
+
+<P><B><CODE>string.h: <A HREF="string.html#errno_t">errno_t</A>
+&#183; <A HREF="string.html#memcpy_s">memcpy_s</A>
+&#183; <A HREF="string.html#memmove_s">memmove_s</A>
+&#183; <A HREF="string.html#rsize_t">rsize_t</A>
+&#183; <A HREF="string.html#strcat_s">strcat_s</A>
+&#183; <A HREF="string.html#strcpy_s">strcpy_s</A>
+&#183; <A HREF="string.html#strerror_s">strerror_s</A>
+&#183; <A HREF="string.html#strerrorlen_s">strerrorlen_s</A>
+&#183; <A HREF="string.html#strncat_s">strncat_s</A>
+&#183; <A HREF="string.html#strncpy_s">strncpy_s</A>
+&#183; <A HREF="string.html#strnlen_s">strnlen_s</A>
+&#183; <A HREF="string.html#strtok_s">strtok_s</A>
+</CODE></B></P>
+
+<P><B><CODE>time.h: <A HREF="time.html#asctime_s">asctime_s</A>
+&#183; <A HREF="time.html#ctime_s">ctime_s</A>
+&#183; <A HREF="time.html#errno_t">errno_t</A>
+&#183; <A HREF="time.html#gmtime_s">gmtime_s</A>
+&#183; <A HREF="time.html#localtime_s">localtime_s</A>
+&#183; <A HREF="time.html#rsize_t">rsize_t</A>
+</CODE></B></P>
+<HR>
+
+<H2><A NAME="Overview">Overview</A></H2>
+
+<P>The macro
+<CODE><A NAME="__STDC_LIB_EXT1__">__STDC_LIB_EXT1__</A></CODE> is defined as
+<CODE>200509L</CODE> to indicate the presence of C Library Extension 1.
+If you define the macro
+<CODE><A NAME="__STDC_WANT_LIB_EXT1__">__STDC_WANT_LIB_EXT1__</A></CODE>
+as zero before you include any of the headers
+that contain C Library Extension 1 additions, then none of these additions
+will be visible to the program. Otherwise, in this
+<A HREF="index.html#implementation">implementation</A>,
+the library defines this macro as <CODE>1</CODE> and includes all the
+additions.</P>
+
+<P>C Library Extension 1 introduces the concept of a
+<B><A NAME="runtime constraint violation">runtime constraint violation</A></B>,
+which is a condition detected and reported at runtime.
+Examples include calling a function with an unexpected null
+pointer argument or with a buffer length argument that is
+too small or too large. The description of each library function
+describes any runtime constraints added with TR24731 that it
+enforces. (Note that some existing library functions have such
+added runtime constraints.)</P>
+
+<P>A library function reports a runtime constraint violation by calling a
+<B><A NAME="constraint handler">constraint handler</A></B>, of type
+<CODE><A HREF="stdlib.html#constraint_handler_t">constraint_handler_t</A></CODE>, with three arguments:</P>
+
+<UL>
+<LI><CODE>const char *mesg</CODE> -- a null-terminated error message</LI>
+
+<LI><CODE>void *p</CODE> -- a pointer, either null or to an
+implementation-defined object</LI>
+
+<LI><CODE>errno_t errcode</CODE> -- an error code suitable for assigning
+to <CODE><A HREF="errno.html#errno">errno</A></CODE>
+</UL>
+
+<P>In this implementation, the library always calls
+the constraint handler with <CODE>p</CODE> a null pointer.
+If the constraint handler returns, the library returns to the function
+that reported the runtime constraint violation.
+The default constraint handler writes <CODE>mesg</CODE>
+to the standard error stream and returns.</P>
+
+<P>You can alter the constraint handler that gets called by calling
+<CODE><A HREF="stdlib.html#set_constraint_handler_s">set_constraint_handler_s</A></CODE>.
+For convenience, the library supplies two functions that you can use as
+constraint handlers:</P>
+
+<UL>
+<LI><CODE><A HREF="stdlib.html#abort_handler_s">abort_handler_s</A></CODE>,
+which writes <CODE>mesg</CODE> to the standard error stream and aborts</LI>
+ 
+<LI><CODE><A HREF="stdlib.html#ignore_handler_s">ignore_handler_s</A></CODE>,
+which simply returns</LI>
+</UL>
+
+<P>You can also supply your own constraint handler.</P>
+
+<P>Two useful synonyms for other types are:</P>
+
+<UL>
+<LI><CODE>typedef int <A HREF="errno.html#errno_t">errno_t</A></CODE>,
+for representing error codes</LI>
+
+<LI><CODE>typedef size_t <A HREF="stddef.html#rsize_t">rsize_t</A></CODE>,
+for representing object sizes that should never be
+greater than the value of the macro
+<CODE><B><A NAME="RSIZE_MAX">RSIZE_MAX</A></B></CODE></LI>
+</UL>
+
+<P>An implementation typically defines <CODE>RSIZE_MAX</CODE>
+as the size in bytes of the largest object that you can declare
+or allocate dynamically. Note that:</P>
+
+<UL>
+<LI>if <CODE>RSIZE_MAX &lt;= (size_t)(-1) / 2</CODE> and
+<CODE>sizeof (int) &lt;= sizeof (size_t)</CODE> then a negative
+<CODE>int</CODE> value converted to <CODE>rsize_t</CODE> will cause
+a runtime constraint violation instead of being treated as a ridiculously
+large unsigned value</LI>
+
+<LI>if <CODE>RSIZE_MAX == SIZE_MAX</CODE> no runtime constraint
+violation can occur for any value of type <CODE>rsize_t</CODE></LI>
+</UL>
+
+<HR>
+<P>See also the
+<B><A HREF="index.html">Table of Contents</A></B>
+and the <B><A HREF="_index.html">Index</A></B>.</P>
+
+<P><I>
+<A HREF="crit_pjp.html">Copyright</A> &#169; 1992-2010
+by P.J. Plauger. All rights reserved.</I></P>
+
+<!--V5.30:126I--></BODY></HTML>

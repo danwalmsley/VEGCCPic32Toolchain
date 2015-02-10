@@ -1,0 +1,667 @@
+<HTML><HEAD><TITLE>Dinkum Allocators Library</TITLE></HEAD><BODY>
+
+<H1><A NAME="Dinkum Allocators Library">Dinkum Allocators Library</A></H1><HR>
+
+<P>A C++ program can specialize a number of templates from the
+<B>Dinkum Allocators Library</B>, a portable library for managing memory
+for node-based containers.</P>
+
+<HR>
+
+<H2><A NAME="Allocators Table of Contents">Allocators Table of Contents</A></H2>
+
+<P><B><A HREF="allocators.html"><CODE>&quot;Dinkum/allocators&quot;</CODE></A>
+</B></P>
+
+<P><B>
+<A HREF="#Overview">Overview</A>
+&#183; <A HREF="#Using the Allocator Templates">Using the Allocator Templates</A>
+&#183; <A HREF="#Writing Custom Allocators">Writing Custom Allocators</A>
+&#183; <A HREF="#Allocator Interface">Allocator Interface</A>
+&#183; <A HREF="#Block Allocators">Block Allocators</A>
+&#183; <A HREF="#Max Classes">Max Classes</A>
+&#183; <A HREF="#Support Classes">Support Classes</A>
+</B></P>
+
+<HR>
+
+<H2><A NAME="Overview">Overview</A></H2>
+
+<P>The <B>Dinkum Allocators Library</B> provides six
+<A HREF="#allocator">allocator</A> templates that can be used to select
+memory-management strategies for <A HREF="#node-based containers">node-based containers</A>.
+It also provides several different
+<B><A HREF="#synchronization filter">synchronization filters</A></B>, for use with
+these templates, to tailor the memory-management strategy to a variety
+of different multithreading schemes (including none).
+Matching a memory management strategy to the known memory usage patterns,
+and synchronization requirements, of a particular application can often increase
+the speed or reduce the overall memory requirements of an application.
+All code for this library is in the header
+<CODE><A HREF="allocators.html">&quot;allocators&quot;</A></CODE>.</P>
+
+<P>The allocator templates are implemented with reusable components that can
+be customized or replaced to provide additional memory-management strategies.</P>
+
+<P>The <B><A NAME="node-based containers">node-based containers</A></B>
+in the Standard C++ library -- <CODE>std::list</CODE>,
+<CODE>std::set</CODE>, <CODE>std::multiset</CODE>, <CODE>std::map</CODE>
+and <CODE>std::multimap</CODE> -- store their elements in individual nodes.
+All the nodes for a particular container type are the same size, so the flexibility
+of a general-purpose memory manager is not needed. Because the size of each memory block
+is known at compile time, the memory manager can be much simpler and faster.</P>
+
+<P>The allocator templates in the Dinkum Allocators Library are designed to
+be used with node-based containers. When used with other forms of containers
+(such as the Standard C++ library containers <CODE>std::vector</CODE>
+<CODE>std::deque</CODE>, and <CODE>std::basic_string</CODE>) they will work
+correctly, but are not likely to provide any performance improvement over
+the default allocator.</P>
+
+<H2><A NAME="Using the Allocator Templates">Using the Allocator Templates</A></H2>
+
+<P>An <B><A NAME="allocator">allocator</A></B> is a template class that
+describes an object that manages storage allocation and freeing for
+objects and arrays of objects of a designated type. Allocator objects are
+used by several container template classes in the Standard C++ library.</P>
+
+<P>The allocators in the <B>Dinkum Allocators Library</B> are all templates of the
+form</P>
+
+<PRE><CODE>template&lt;class T&gt;
+    class allocator;</CODE></PRE>
+
+<P>where the template argument <CODE>T</CODE> is the type managed by the allocator
+instance. The Standard C++ library provides a default allocator, template
+class <CODE>allocator</CODE>, which is defined in <CODE>&lt;memory&gt;</CODE>.
+The Dinkum Allocator Library provides the following allocators:</P>
+
+<UL>
+<LI><A HREF="allocators.html#allocator_newdel">allocator_newdel</A> -- uses
+<CODE>operator delete</CODE> to deallocate a memory block and
+<CODE>operator new</CODE> to allocate a memory block</LI>
+
+<LI><A HREF="allocators.html#allocator_unbounded">allocator_unbounded</A> --
+stores deallocated memory blocks in a free list with unbounded length
+and uses <CODE>operator new</CODE> to allocate a memory block when the
+free list is empty</LI>
+
+<LI><A HREF="allocators.html#allocator_fixed_size">allocator_fixed_size</A> --
+stores deallocated memory blocks in a free list with a fixed maximum length,
+uses <CODE>operator delete</CODE> to deallocate a memory block when the free list is full,
+and uses <CODE>operator new</CODE> to allocate a
+memory block when the free list is empty</LI>
+
+<LI><A HREF="allocators.html#allocator_variable_size">allocator_variable_size</A> --
+stores deallocated memory blocks in a free list with a maximum length that is roughly
+proportional to the number of memory blocks that have been allocated and not deallocated,
+uses <CODE>operator delete</CODE> to deallocate a memory block when the free list is full,
+and uses <CODE>operator new</CODE> to allocate a memory block when the
+free list is empty</LI>
+
+<LI><A HREF="allocators.html#allocator_suballoc">allocator_suballoc</A> --
+stores deallocated memory blocks in a free list with unbounded length
+and suballocates memory blocks from a larger chunk allocated with
+<CODE>operator new</CODE> when the free list is empty</LI>
+
+<LI><A HREF="allocators.html#allocator_chunklist">allocator_chunklist</A> --
+uses <CODE>operator new</CODE> to allocate chunks of raw memory, suballocating from a
+chunk to allocate storage for a memory block when needed; stores deallocated
+memory blocks in a separate free list for each chunk, and uses
+<CODE>operator delete</CODE> to deallocate a chunk when none of its memory
+blocks is in use</LI>
+</UL>
+
+<P>Use an appropriate instantiation of an allocator as the second type argument when
+creating a container, as in:</P>
+
+<PRE><CODE>#include &lt;list&gt;
+#include &quot;Dinkum/allocators&quot;
+
+std::list&lt;int, Dinkum::allocators::allocator_chunklist&lt;int&gt; &gt; list0;</CODE></PRE>
+
+<P><CODE>list0</CODE> allocates nodes with <A HREF="allocators.html#allocator_chunklist">allocator_chunklist</A>
+and the <A HREF="#default synchronization filter">default synchronization filter</A>.</P>
+
+<P>Use the macro <A HREF="allocators.html#ALLOCATOR_DECL">ALLOCATOR_DECL</A> to create
+allocator templates with synchronization filters other than the default:</P>
+
+<PRE><CODE>#include &lt;list&gt;
+#include &quot;Dinkum/allocators&quot;
+
+ALLOCATOR_DECL(CACHE_CHUNKLIST, Dinkum::allocators::sync_per_thread, alloc);
+
+std::list&lt;int, alloc&lt;int&gt; &gt; list1;</CODE></PRE>
+
+<P><CODE>list1</CODE> allocates nodes with <CODE>allocator_chunklist</CODE>
+and the <A HREF="allocators.html#sync_per_thread">sync_per_thread</A> synchronization filter.</P>
+
+<H2><A NAME="Writing Custom Allocators">Writing Custom Allocators</A></H2>
+
+<P>The component-based design of the library makes customization of allocators
+straightforward. Allocator components can be replaced when an application imposes
+requirements that the allocators in the library do not support.</P>
+
+<P>A class that meets the requirements for a <A HREF="#filter">filter</A>
+can be used to define an allocator's <A HREF="#synchronization policy">synchronization policy</A>:</P>
+
+<PRE><CODE>#include &lt;list&gt;
+#include &quot;Dinkum/allocators&quot;
+
+class <B>my_sync</B>
+    {
+public:
+    void *allocate(std::size_t);
+    void deallocate(void *, std::size_t);
+    bool equals(const my_sync&);
+    };
+
+ALLOCATOR_DECL(CACHE_NEWDEL, my_sync, allocator_my_sync);
+
+std::list&lt;int, allocator_my_sync&lt;int&gt; &gt; list2;</CODE></PRE>
+
+<P>A class that meets the requirements for a <A HREF="#cache">cache</A> can be used
+to create an allocator template that meets application-specific size and speed requirements:</P>
+
+<PRE><CODE>#include &lt;list&gt;
+#include &quot;Dinkum/allocators&quot;
+
+class <B>my_cache</B>
+    {
+public:
+    void *allocate(std::size_t);
+    void deallocate(void *, std::size_t);
+    bool equals(const my_cache&);
+    };
+
+ALLOCATOR_DECL(my_cache, SYNC_DEFAULT, allocator_my_cache);
+
+std::list&lt;int, <B>allocator_my_cache</B>&lt;int&gt; &gt; list3;</CODE></PRE>
+
+<P>A class that meets the requirements for a <A HREF="#max class">max class</A> can be combined
+with the <A HREF="allocators.html#cache_freelist">cache_freelist</A> template, using the
+<A HREF="allocators.html#CACHE_FREELIST_MACRO">CACHE_FREELIST</A> macro, to create an allocator
+template based on a free list whose size is determined in an application-specific manner:</P>
+
+<PRE><CODE>#include &lt;list&gt;
+#include &quot;Dinkum/allocators&quot;
+
+class <B>my_max_class</B>
+    {
+public:
+    bool full() const;
+    void saved();
+    void released();
+    void allocated(std::size_t = 1);
+    void deallocated(std::size_t = 1);
+    };
+
+ALLOCATOR_DECL(CACHE_FREELIST(my_max_class), SYNC_DEFAULT, allocator_my_max);
+
+std::list&lt;int, <B>allocator_my_max</B>&lt;int&gt; &gt; list4;</CODE></PRE>
+
+<H2><A NAME="Allocator Interface">Allocator Interface</A></H2>
+
+<P>Each allocator template provides the following members, either directly or
+through inheritance:</P>
+
+<PRE><CODE>template&lt;class T,
+    class Sync = sync_default&gt;
+    class allocator
+    {
+public:
+    typedef <I>ui-type</I> <B><A HREF="#allocator::size_type">size_type</A></B>;
+    typedef <I>i-type</I> <B><A HREF="#allocator::difference_type">difference_type</A></B>;
+    typedef <I>p-type</I> <B><A HREF="#allocator::pointer">pointer</A></B>;
+    typedef <I>p-type</I> <B><A HREF="#allocator::const_pointer">const_pointer</A></B>;
+    typedef <I>r-type</I> <B><A HREF="#allocator::reference">reference</A></B>;
+    typedef <I>r-type</I> <B><A HREF="#allocator::const_reference">const_reference</A></B>;
+    typedef T <B><A HREF="#allocator::value_type">value_type</A></B>;
+    pointer <B><A HREF="#allocator::address">address</A></B>(reference x) const;
+    const_pointer <B><A HREF="#allocator::address">address</A></B>(const_reference x) const;
+    template&lt;class U&gt;
+        struct <B><A HREF="#allocator::rebind">rebind</A></B>;
+    <B><A HREF="#allocator::allocator">allocator</A></B>();
+    template&lt;class U&gt;
+        <B><A HREF="#allocator::allocator">allocator</A></B>(const allocator&lt;U, Sync&gt;&amp; x);
+    template&lt;class U&gt;
+        allocator&amp; <B><A HREF="#allocator::operator=">operator=</A></B>(const allocator&lt;U, Sync&gt;&amp; x);
+    template&lt;class U&gt;
+        pointer <B><A HREF="#allocator::allocate">allocate</A></B>(size_type n, const U *hint = 0);
+    void <B><A HREF="#allocator::deallocate">deallocate</A></B>(pointer p, size_type n);
+    void <B><A HREF="#allocator::construct">construct</A></B>(pointer p, const T& val);
+    void <B><A HREF="#allocator::destroy">destroy</A></B>(pointer p);
+    size_type <B><A HREF="#allocator::max_size">max_size</A></B>() const;
+
+    char *<B><A HREF="#allocator::_Charalloc">_Charalloc</A></B>(size_type n);
+    void <B><A HREF="#allocator::_Chardealloc">_Chardealloc</A></B>(void *p, size_type n);
+    };</CODE></PRE>
+
+<P>Each allocator template also supports the following operators:</P>
+
+<PRE><CODE>template&lt;class T,
+    class Sync&gt;
+    bool <B><A HREF="#operator==">operator==</A></B>(allocator&lt;T, Sync&gt; lhs,
+        allocator&lt;T, Sync&gt; rhs);</CODE></PRE>
+
+<PRE><CODE>template&lt;class T,
+    class Sync&gt;
+    bool <B><A HREF="#operator!=">operator!=</A></B>(allocator&lt;T, Sync&gt; lhs,
+        allocator&lt;T, Sync&gt; rhs);</CODE></PRE>
+
+<H3><A NAME="allocator::address"><CODE>allocator::address</CODE></A></H3>
+
+<PRE>pointer <B>address</B>(reference x) const;
+const_pointer <B>address</B>(const_reference x) const;</PRE>
+
+<P>The member functions return the address of <CODE>x</CODE>, in the form
+that pointers must take for allocated elements.</P>
+
+<H3><A NAME="allocator::allocate"><CODE>allocator::allocate</CODE></A></H3>
+
+<PRE>template&lt;class U&gt;
+    pointer <B>allocate</B>(size_type n, const U *hint = 0);</PRE>
+
+<P>The member function allocates storage for an array of <CODE>n</CODE> elements of
+type <CODE>T</CODE>. It returns a pointer to the allocated object. The
+<CODE>hint</CODE> argument helps some allocators in improving locality of
+reference -- a valid choice is the address of an object earlier allocated
+by the same allocator object, and not yet deallocated. To supply no hint,
+use a null pointer argument instead.</P>
+
+<H3><A NAME="allocator::allocator"><CODE>allocator::allocator</CODE></A></H3>
+
+<PRE><B>allocator</B>();
+template&lt;class U&gt;
+    <B>allocator</B>(const allocator&lt;U, Sync&gt;&amp; x);</PRE>
+
+<P>The first constructor constructs an <CODE>allocator</CODE> instance. The second constructor
+constructs an <CODE>allocator</CODE> instance such that for any <CODE>allocator&lt;T&gt;</CODE>
+instance <CODE>a</CODE>, <CODE>allocator&lt;T&gt;(allocator&lt;U&gt;(a)) == a</CODE>.</P>
+
+<H3><A NAME="allocator::const_pointer"><CODE>allocator::const_pointer</CODE></A></H3>
+
+<PRE>typedef <I>p-type</I> <B>const_pointer</B>;</PRE>
+
+<P>The pointer type describes an object <CODE>p</CODE> that can designate,
+via the expression <CODE>*p</CODE>, any const object that an object of
+template class <CODE>allocator</CODE> can allocate.</P>
+
+<H3><A NAME="allocator::const_reference"><CODE>allocator::const_reference</CODE></A></H3>
+
+<PRE>typedef <I>r-type</I> <B>const_reference</B>;</PRE>
+
+<P>The reference type describes an object <CODE>x</CODE> that can designate
+any const object that an object of template class <CODE>allocator</CODE> can allocate.</P>
+
+<H3><A NAME="allocator::construct"><CODE>allocator::construct</CODE></A></H3>
+
+<PRE>void <B>construct</B>(pointer p, const T& val);</PRE>
+
+<P>The member function constructs an object of type <CODE>T</CODE> at
+<CODE>p</CODE> by evaluating the placement <CODE>new</CODE> expression
+<CODE>new ((void *)p) T(val)</CODE>.</P>
+
+<H3><A NAME="allocator::deallocate"><CODE>allocator::deallocate</CODE></A></H3>
+
+<PRE>void <B>deallocate</B>(pointer p, size_type n);</PRE>
+
+<P>The member function frees storage for the array of <CODE>n</CODE>
+objects of type <CODE>T</CODE> beginning at <CODE>p</CODE>. The pointer
+<CODE>p</CODE> must have been earlier returned by a call to <CODE>allocate</CODE>
+for an allocator object that compares equal to <CODE>*this</CODE>, allocating an
+array object of the same size and type. <CODE>deallocate</CODE> never throws an exception.</P>
+
+<H3><A NAME="allocator::destroy"><CODE>allocator::destroy</CODE></A></H3>
+
+<PRE>void <B>destroy</B>(pointer p)</PRE>
+
+<P>The member function destroys the object designated by <CODE>p</CODE>,
+by calling the destructor <CODE>p-&gt;T::~T()</CODE>.</P>
+
+<H3><A NAME="allocator::difference_type"><CODE>allocator::difference_type</CODE></A></H3>
+
+<PRE>typedef <I>i-type</I> <B>difference_type</B>;</PRE>
+
+<P>The signed integer type describes an object that can represent
+the difference between the addresses of any two elements in a sequence
+that an object of template class <CODE>allocator</CODE> can allocate.</P>
+
+<H3><A NAME="allocator::max_size"><CODE>allocator::max_size</CODE></A></H3>
+
+<PRE>size_type <B>max_size</B>() const</PRE>
+
+<P>The member function returns the length of the longest sequence
+of elements of type <CODE>T</CODE> that an object of class <CODE>allocator</CODE>
+might be able to allocate.</P>
+
+<H3><A NAME="allocator::operator="><CODE>allocator::operator=</CODE></A></H3>
+
+<PRE>template&lt;class T&gt;
+    allocator&amp; <B>operator=</B>(const allocator&lt;U&gt;&amp; x);</PRE>
+
+<P>The template operator modifies the contents of the object such that for an
+<CODE>allocator&lt;T&gt;</CODE> instance <CODE>a</CODE> and an
+<CODE>allocator&lt;U&gt;</CODE> instance <CODE>b</CODE>, after the
+assignment <CODE>b = a</CODE>, <CODE>allocator&lt;T&gt;(b) == a</CODE>.
+</P>
+
+<H3><A NAME="allocator::pointer"><CODE>allocator::pointer</CODE></A></H3>
+
+<PRE>typedef <I>p-type</I> <B>const_pointer</B>;</PRE>
+
+<P>The pointer type describes an object <CODE>p</CODE> that can designate,
+via the expression <CODE>*p</CODE>, any object that an object of
+template class <CODE>allocator</CODE> can allocate.</P>
+
+<H3><A NAME="allocator::rebind"><CODE>allocator::rebind</CODE></A></H3>
+
+<PRE>template&lt;class U&gt;
+    struct <B>rebind</B> {
+    typedef allocator&lt;U&gt; <B>other</B>;
+    };</PRE>
+
+<P>The member template class defines the type <CODE>other</CODE>.
+Its sole purpose is to provide the type name <CODE>allocator&lt;U&gt;</CODE>
+given the type name <CODE>allocator&lt;T&gt;</CODE>. It is not present when
+compiled with a compiler that cannot <A HREF="#compile rebind">compile rebind</A>.</P>
+
+<P>For example, given an allocator object <CODE>al</CODE> of type <CODE>A</CODE>,
+you can allocate an object of type <CODE>U</CODE> with the expression:</P>
+
+<PRE>A::rebind&lt;U&gt;::other(al).allocate(1, (U *)0)</PRE>
+
+<P>Or, you can simply name its pointer type by writing the type:</P>
+
+<PRE>A::rebind&lt;U&gt;::other::pointer</PRE>
+
+<P>Some compilers cannot <B><A NAME="compile rebind">compile rebind</A></B>.
+With those compilers the library requires workarounds for some features.
+These workarounds are marked as such, throughout this document, by a link to
+this paragraph.</P>
+
+<H3><A NAME="allocator::reference"><CODE>allocator::reference</CODE></A></H3>
+
+<PRE>typedef <I>r-type</I> <B>reference</B>;</PRE>
+
+<P>The reference type describes an object <CODE>x</CODE> that can designate
+any object that an object of template class <CODE>allocator</CODE> can allocate.</P>
+
+<H3><A NAME="allocator::size_type"><CODE>allocator::size_type</CODE></A></H3>
+
+<PRE>typedef <I>ui-type</I> <B>size_type</B>;</PRE>
+
+<P>The unsigned integer type describes an object that can represent the
+length of any sequence that an object of template class <CODE>allocator</CODE> can allocate.</P>
+
+<H3><A NAME="allocator::value_type"><CODE>allocator::value_type</CODE></A></H3>
+
+<PRE>typedef T <B>value_type</B>;</PRE>
+
+<P>The type is a synonym for the template parameter <CODE>T</CODE>.</P>
+
+<H3><A NAME="allocator::_Charalloc"><CODE>allocator::_Charalloc</CODE></A></H3>
+
+<PRE><CODE>char *<B>_Charalloc</B>(size_type n);</CODE></PRE>
+
+<P>The member function is used by containers when compiled with a compiler
+that cannot <A HREF="#compile rebind">compile rebind</A>. It
+allocates storage for an array of <CODE>n</CODE> elements of
+type <CODE>char</CODE>. It returns a pointer to the allocated object.</P>
+
+<H3><A NAME="allocator::_Chardealloc"><CODE>allocator::_Chardealloc</CODE></A></H3>
+
+<PRE><CODE>void <B>_Charalloc</B>(void *p, size_type n);</CODE></PRE>
+
+<P>The member function is used by containers when compiled with a compiler
+that cannot <A HREF="#compile rebind">compile rebind</A>. It
+frees storage for the array of <CODE>n</CODE>
+elements of type <CODE>char</CODE> beginning at <CODE>p</CODE>. The pointer
+<CODE>p</CODE> must have been earlier returned by a call to <CODE>_Charalloc</CODE>
+for an allocator object that compares equal to <CODE>*this</CODE>, allocating an
+array object of the same size and type. <CODE>_Chardealloc</CODE> never throws an exception.</P>
+
+<H3><A NAME="operator=="><CODE>operator==</CODE></A></H3>
+
+<PRE><CODE>template&lt;class T, class Sync&gt;
+    bool <B>operator==</B>(allocator&lt;T, Sync&gt; lhs,
+        allocator&lt;T, Sync&gt; rhs);</CODE></PRE>
+
+<P>The template operator returns true only if memory blocks allocated by
+<CODE>lhs</CODE> can be deallocated by <CODE>rhs</CODE> and vice versa.</P>
+
+<H3><A NAME="operator!="><CODE>operator!=</CODE></A></H3>
+
+<PRE><CODE>template&lt;class T, class Sync&gt;
+    bool <B>operator!=</B>(allocator&lt;T, Sync&gt; lhs,
+        allocator&lt;T, Sync&gt; rhs);</CODE></PRE>
+
+<P>The template operator returns <CODE>!(lhs == rhs)</CODE>.</P>
+
+<H2><A NAME="Block Allocators">Block Allocators</A></H2>
+
+<P>A <B><A NAME="block allocator">block allocator</A></B> is
+a <A HREF="#cache">cache</A> or a
+<A HREF="#filter">filter</A>.
+It provides the following member functions:</P>
+
+<PRE><CODE>void *<B><A HREF="#block_allocator::allocate">allocate</A></B>(std::size_t);
+void <B><A HREF="#block_allocator::deallocate">deallocate</A></B>(void*, std::size_t);
+bool <B><A HREF="#block_allocator::equals">equals</A></B>(const MyType&amp;);</CODE></PRE>
+
+<H3><A NAME="block_allocator::allocate"><CODE>block_allocator::allocate</CODE></A></H3>
+
+<PRE>void *<B>allocate</B>(std::size_t sz);</PRE>
+
+<P>The member function allocates a memory block whose size is no
+less than <CODE>sz</CODE> bytes, suitably aligned for any type.</P>
+
+<H3><A NAME="block_allocator::deallocate"><CODE>block_allocator::deallocate</CODE></A></H3>
+
+<PRE>void <B>deallocate</B>(void *p, std::size_t sz);</PRE>
+
+<P>The member function frees storage for the memory block beginning
+<CODE>p</CODE>. The pointer <CODE>p</CODE> must have been returned by
+an earlier call to <CODE>allocate</CODE> for a <CODE>block allocator</CODE> that compares
+equal to <CODE>*this</CODE>, with a requested memory block of size <CODE>sz</CODE>.</P>
+
+<H3><A NAME="block_allocator::equals"><CODE>block_allocator::equals</CODE></A></H3>
+
+<PRE>bool <B>equals</B>(const MyType& other);</PRE>
+
+<P>The member function returns true only if memory blocks allocated by
+<CODE>other</CODE> can be deallocated by <CODE>*this</CODE> and
+vice versa.</P>
+
+<P>A <B><A NAME="cache">cache</A></B> is a template class that takes
+one argument of type <CODE>std::size_t</CODE>. It defines a
+<A HREF="#block allocator">block allocator</A> that allocates and
+deallocates memory blocks of a single size. It must obtain memory using
+<CODE>operator new</CODE>, but it need not make a separate
+call to <CODE>operator new</CODE> for each block. It may, for
+example, suballocate from a larger block or cache deallocated
+blocks for subsequent reallocation.</P>
+
+<P>With a compiler that cannot
+<A HREF="#compile rebind">compile rebind</A>
+the value of the <CODE>std::size_t</CODE> argument used when the template was
+instantiated is not necessarily the value of the argument <CODE>sz</CODE> passed to
+a cache's member functions
+<A HREF="#block_allocator::allocate">allocate</A> and
+<A HREF="#block_allocator::deallocate">deallocate</A>.</P>
+
+<P>The library provides the following cache templates:</P>
+
+<UL>
+<LI><A HREF="allocators.html#cache_freelist">cache_freelist</A> -- manages
+deallocated blocks with a single-linked list</LI>
+
+<LI><A HREF="allocators.html#cache_suballoc">cache_suballoc</A> --
+suballocates from a larger chunk when needed and
+manages deallocated blocks with a single-linked list</LI>
+
+<LI><A HREF="allocators.html#cache_chunklist">cache_chunklist</A> --
+suballocates from a larger chunk when needed and manages deallocated blocks
+with a separate single-linked list for each chunk</LI>
+</UL>
+
+<P>A <B><A NAME="filter">filter</A></B> is a
+<A HREF="#block allocator">block allocator</A> that implements
+its member functions using another block allocator which is passed to it as a template
+argument. The most common form of filter is a
+<B><A NAME="synchronization filter">synchronization filter</A></B>,
+which applies a
+<A HREF="#synchronization policy">synchronization policy</A> to control
+access to the member functions of an instance of another block allocator.
+The library provides the following synchronization filters:</P>
+
+<UL>
+<LI><A HREF="allocators.html#sync_none">sync_none</A> -- provides
+access to a single cache instance with no synchronization</LI>
+<LI><A HREF="allocators.html#sync_per_container">sync_per_container</A> -- provides
+a separate cache instance for each container instance</LI>
+<LI><A HREF="allocators.html#sync_per_thread">sync_per_thread</A> -- provides
+a separate cache instance for each thread</LI>
+<LI><A HREF="allocators.html#sync_shared">sync_shared</A> -- provides a
+single cache instance with access controlled by a mutex</LI>
+</UL>
+
+<P>The library also provides the filter <A HREF="allocators.html#rts_alloc">rts_alloc</A>,
+which holds multiple block allocator instances and determines which instance to
+use for allocation or deallocation at runtime instead of at compile time. It
+is used with compilers that cannot
+<A HREF="#compile rebind">compile rebind</A>.</P>
+
+<P>A <B><A NAME="synchronization policy">synchronization policy</A></B> determines how
+an allocator instance handles simultaneous allocation and deallocation requests from
+multiple threads. The simplest policy is to pass all requests directly through to the underlying
+<A HREF="#cache">cache</A> object, leaving synchronization management to the user. A
+more complex policy could be to use a mutex to serialize access to the underlying
+cache object.</P>
+
+<P>If a compiler supports compiling both single-threaded and multi-threaded applications,
+the library's <B><A NAME="default synchronization filter">default synchronization filter</A></B>
+for single-threaded applications is <A HREF="allocators.html#sync_none">sync_none</A>;
+for all other cases it is <A HREF="allocators.html#sync_shared">sync_shared</A>.</P>
+
+<H2><A NAME="Max Classes">Max Classes</A></H2>
+
+<P>The <A HREF="#cache">cache</A> template
+<A HREF="allocators.html#cache_freelist">cache_freelist</A> takes a
+<B><A NAME="max class">max class</A></B> argument which determines the
+maximum number of elements to be stored in the free list. A max
+class must provide the following member functions:</P>
+
+<PRE><CODE>class max_class {
+public:
+    bool <B><A HREF="#max_class::full">full</A></B>() const;
+    void <B><A HREF="#max_class::saved">saved</A></B>();
+    void <B><A HREF="#max_class::released">released</A></B>();
+    void <B><A HREF="#max_class::allocated">allocated</A></B>(size_t = 1);
+    void <B><A HREF="#max_class::deallocated">deallocated</A></B>(size_t = 1);
+    };</CODE></PRE>
+
+<P>The member function <CODE>full</CODE> returns true when no more memory blocks
+should be put on the free list. The member functions <CODE>saved</CODE> and
+<CODE>released</CODE> can be used to keep track of the number of memory blocks
+on the free list. The member functions <CODE>allocated</CODE> and
+<CODE>deallocated</CODE> can be used to keep track of the number of memory
+blocks in use by the application.</P>
+
+<H3><A NAME="max_class::allocated"><CODE>max_class::allocated</CODE></A></H3>
+
+<PRE>void <B>allocated</B>(size_t n = 1);</PRE>
+
+<P>The member function is called after each successful call by
+<A HREF="allocators.html#cache_freelist::allocate">cache_freelist::allocate</A>
+to <CODE>operator new</CODE>. The argument <CODE>n</CODE> is the number of memory
+blocks in the chunk allocated by <CODE>operator new</CODE>.</P>
+
+<H3><A NAME="max_class::deallocated"><CODE>max_class::deallocated</CODE></A></H3>
+
+<PRE>void <B>deallocated</B>(size_t n = 1);</PRE>
+
+<P>The member function is called after each call by
+<A HREF="allocators.html#cache_freelist::deallocate">cache_freelist::deallocate</A>
+to <CODE>operator delete</CODE>. The argument <CODE>n</CODE> is the number of memory
+blocks in the chunk deallocated by <CODE>operator delete</CODE>.</P>
+
+<H3><A NAME="max_class::full"><CODE>max_class::full</CODE></A></H3>
+
+<PRE>bool <B>full</B>() const;</PRE>
+
+<P>The member function is called by
+<A HREF="allocators.html#cache_freelist::deallocate">cache_freelist::deallocate</A>.
+If the call returns true <CODE>deallocate</CODE> puts the memory block on the free
+list; if it returns false <CODE>deallocate</CODE> calls <CODE>operator delete</CODE>
+to deallocate the block.</P>
+
+<H3><A NAME="max_class::released"><CODE>max_class::released</CODE></A></H3>
+
+<PRE>void <B>released</B>();</PRE>
+
+<P>The member function is called by
+<A HREF="allocators.html#cache_freelist::allocate">cache_freelist::allocate</A>
+whenever it removes a memory block from the free list.</P>
+
+<H3><A NAME="max_class::saved"><CODE>max_class::saved</CODE></A></H3>
+
+<PRE>void <B>saved</B>();</PRE>
+
+<P>The member function is called by
+<A HREF="allocators.html#cache_freelist::deallocate">cache_freelist::deallocate</A>
+whenever it puts a memory block on the free list.</P>
+
+<P>The library provides the following max classes:</P>
+
+<UL>
+<LI><A HREF="allocators.html#max_none">max_none</A> -- a
+<A HREF="allocators.html#cache_freelist">cache_freelist</A> with max class <CODE>max_none</CODE>
+never puts memory blocks on the free list.</LI>
+
+<LI><A HREF="allocators.html#max_unbounded">max_unbounded</A> -- a
+<CODE>cache_freelist</CODE> with max class <CODE>max_unbounded</CODE>
+always puts deallocated memory blocks on the free list.</LI>
+
+<LI><A HREF="allocators.html#max_fixed_size">max_fixed_size&lt;std::size_t&gt;</A> -- a
+<CODE>cache_freelist</CODE> with max class <CODE>max_fixed_size&lt;max&gt;</CODE>
+puts no more than <CODE>max</CODE> memory blocks on the free list.</LI>
+
+<LI><A HREF="allocators.html#max_variable_size">max_variable_size</A> -- a
+<CODE>cache_freelist</CODE> with max class <CODE>max_variable_size</CODE>
+puts memory blocks on the free list when the number of blocks on the free list is
+less than roughly one sixteenth of the number of blocks in use.</LI>
+
+</UL>
+
+<H2><A NAME="Support Classes">Support Classes</A></H2>
+
+<P>The library provides two support classes that can be used when implementing
+custom allocators. They are:</P>
+
+<UL>
+<LI><A HREF="allocators.html#allocator_base">allocator_base</A> -- provides the
+boilerplate needed to create an
+<A HREF="#allocator">allocator</A> from a
+<A HREF="#cache">cache</A>
+or a <A HREF="#filter">filter</A></LI>
+<LI><A HREF="allocators.html#freelist">freelist</A> -- provides a single-linked
+list for storing memory blocks that are available for allocation</LI>
+<LI><A HREF="allocators.html#rts_alloc">rts_alloc</A> -- a
+<A HREF="#filter">filter</A> which
+holds multiple block allocator instances and determines which instance to
+use for allocation or deallocation at runtime instead of at compile time,
+for use with compilers that cannot
+<A HREF="#compile rebind">compile rebind</A></LI>
+</UL>
+
+<HR>
+<P>See also the
+<B><A HREF="index.html">Table of Contents</A></B>
+and the <B><A HREF="_index.html">Index</A></B>.</P>
+
+<P><I>
+<A HREF="crit_pjp.html">Copyright</A> &#169; 1992-2010
+by Dinkumware, Ltd. All rights reserved.</I></P>
+
+<!--V5.30:126I--></BODY></HTML>

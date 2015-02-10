@@ -1,0 +1,172 @@
+<HTML><HEAD><TITLE>&quot;condition&quot;</TITLE></HEAD><BODY>
+
+<H1><A NAME="&quot;condition&quot;"><CODE>&quot;Dinkum/threads/condition&quot;</CODE></A></H1><HR>
+
+<P>Include the header <B><CODE>&quot;Dinkum/threads/condition&quot;</CODE></B>
+to define the
+<A HREF="index_thr.html#condition variable">condition variable</A>
+class <CODE>condition</CODE>.</P>
+
+<PRE>namespace Dinkum {
+    namespace threads {
+    class <B><A HREF="#condition">condition</A></B>;
+    }  // namespace threads
+}  // namespace Dinkum</PRE>
+
+<H2><A NAME="condition"><CODE>condition</CODE></A></H2>
+
+<HR>
+
+<P><B><CODE><A HREF="#condition::condition">condition</A>
+&#183; <A HREF="#condition::~condition">~condition</A>
+&#183; <A HREF="#condition::notify_one">notify_one</A>
+&#183; <A HREF="#condition::notify_all">notify_all</A>
+&#183; <A HREF="#condition::wait">wait</A>
+&#183; <A HREF="#condition::timed_wait">timed_wait</A>
+</CODE></B></P>
+<HR>
+
+<PRE>class <B>condition</B>
+    {
+public:
+    <B><A HREF="#condition::condition">condition</A></B>();
+    <B><A HREF="#condition::~condition">~condition</A></B>();
+
+    template &lt;class Lock&gt;
+        void <B><A HREF="#condition::wait">wait</A></B>(Lock& lock);
+    template &lt;class Lock, class Pred&gt;
+        void <B><A HREF="#condition::wait">wait</A></B>(Lock& lock, Pred pred);
+
+    template &lt;class Lock&gt;
+        bool <B><A HREF="#condition::timed_wait">timed_wait</A></B>(Lock& lock, const xtime& xt);
+    template &lt;class Lock, class Pred&gt;
+        bool <B><A HREF="#condition::timed_wait">timed_wait</A></B>(Lock& lock, const xtime& xt, Pred pred);
+
+    void <B><A HREF="#condition::notify_one">notify_one</A></B>();
+    void <B><A HREF="#condition::notify_all">notify_all</A></B>();
+
+<I>    // exposition only
+private:
+
+    // not implemented
+    condition(const condition&amp;);
+    condition&amp; operator=(const condition&amp;);</I>
+    };</PRE>
+
+<P>The class describes an object that manages a
+<A HREF="index_thr.html#condition variable">condition variable</A>.
+Use <A HREF="#condition::wait">wait</A> or
+<A HREF="#condition::timed_wait">timed_wait</A>
+to wait for a condition to become true. Use
+<A HREF="#condition::notify_one">notify_one</A>
+to notify one waiting thread that the condition has become true and
+<A HREF="#condition::notify_all">notify_all</A>
+to notify all waiting threads that the condition has become true.
+Objects of class <CODE>condition</CODE> cannot be copied.</P>
+
+<H3><CODE><A NAME="condition::condition">condition::condition</A></CODE></H3>
+
+<PRE><B>condition</B>();</PRE>
+
+<P>The constructor constructs a <CODE>condition</CODE> object;
+a thread that calls <CODE>wait</CODE> on a newly
+constructed <CODE>condition</CODE> object will block.</P>
+
+<H3><CODE><A NAME="condition::~condition">condition::~condition</A></CODE></H3>
+
+<PRE><B>~condition</B>();</PRE>
+
+<P><I><A HREF="index_thr.html#Precondition">Precondition</A>:</I>
+no threads are blocked waiting for the condition object.</P>
+
+<P>The destructor releases any resources used by the
+<A HREF="index_thr.html#condition variable">condition variable</A> <CODE>cond</CODE>.</P>
+
+<H3><CODE><A NAME="condition::notify_one">condition::notify_one</A></CODE></H3>
+
+<PRE>void <B>notify_one</B>();</PRE>
+
+<P>The member function unblocks one of the threads that is blocked on the
+<CODE>condition</CODE> object at the time of the call. If no threads are blocked
+on the object at the time of the call the function does nothing.</P>
+
+<H3><CODE><A NAME="condition::notify_all">condition::notify_all</A></CODE></H3>
+
+<PRE>void <B>notify_all</B>();</PRE>
+
+<P>The member function unblocks all of the threads that are blocked on the
+<CODE>condition</CODE> object at the time of the call. If no threads are blocked
+on the object at the time of the call the function does nothing.</P>
+
+<H3><CODE><A NAME="condition::timed_wait">condition::timed_wait</A></CODE></H3>
+
+<PRE>template &lt;class Lock&gt;
+    bool <B>timed_wait</B>(Lock& lock, const xtime& xt);
+template &lt;class Lock, class Pred&gt;
+    bool <B>timed_wait</B>(Lock& lock, const xtime& xt, Pred pred);</PRE>
+
+<P><I>Throws:</I> an object of class
+<CODE><A HREF="exceptions.html#lock_error">lock_error</A></CODE> if
+the <A HREF="mutex.html#lock object">lock object</A> <CODE>lock</CODE>
+is not locked.</P>
+
+<P>The first member function atomically unlocks <CODE>lock</CODE> and blocks
+until the <CODE>condition</CODE> object is signaled by a call to
+<A HREF="#condition::notify_one">notify_one</A> or to
+<A HREF="#condition::notify_all">notify_all</A>, or until after the time specified
+by the <A HREF="xtime.html#xtime">xtime</A> object <CODE>xt</CODE>.
+When the calling thread becomes unblocked it locks the lock object <CODE>lock</CODE>
+before it returns. The function returns <CODE>false</CODE> if it returned because the time
+<CODE>xt</CODE> had passed, otherwise it returns <CODE>true</CODE>.</P>
+
+<P>The second member function atomically unlocks <CODE>lock</CODE> and blocks
+until the <CODE>condition</CODE> object is signaled by a call to
+<CODE>notify_one</CODE> or to <CODE>notify_all</CODE> and the predicate
+<CODE>pred()</CODE> returns true
+(that is, the function incorporates the loop that is needed to avoid
+<A HREF="index_thr.html#spurious wakeups">spurious wakeups</A>),
+or until after the time specified
+by the <A HREF="xtime.html#xtime">xtime</A> object <CODE>xt</CODE>.
+When the calling thread becomes unblocked it locks the lock object <CODE>lock</CODE>
+before it returns. The function returns <CODE>false</CODE> if it returned because the time
+<CODE>xt</CODE> had passed, otherwise it returns <CODE>true</CODE>.</P>
+
+<H3><CODE><A NAME="condition::wait">condition::wait</A></CODE></H3>
+
+<PRE>template &lt;class Lock&gt;
+    void <B>wait</B>(Lock& lock);
+template &lt;class Lock, class Pred&gt;
+    void <B>wait</B>(Lock& lock, Pred pred);</PRE>
+
+<P><I>Throws:</I> an object of class
+<CODE><A HREF="exceptions.html#lock_error">lock_error</A></CODE> if
+the <A HREF="mutex.html#lock object">lock object</A> <CODE>lock</CODE>
+is not locked.</P>
+
+<P>The first member function atomically unlocks <CODE>lock</CODE> and blocks
+until the <CODE>condition</CODE> object is signaled by a call to
+<A HREF="#condition::notify_one">notify_one</A> or to
+<A HREF="#condition::notify_all">notify_all</A>. When the calling thread becomes
+unblocked it locks the lock object <CODE>lock</CODE> before it returns.</P>
+
+<P>The second member function atomically unlocks <CODE>lock</CODE> and blocks
+until the <CODE>condition</CODE> object is signaled by a call to
+<CODE>notify_one</CODE> or to <CODE>notify_all</CODE> and the predicate
+<CODE>pred()</CODE> returns true
+(that is, the function incorporates the loop that is needed to avoid
+<A HREF="index_thr.html#spurious wakeups">spurious wakeups</A>).
+When the calling thread becomes
+unblocked it locks the lock object <CODE>lock</CODE> before it returns.</P>
+
+<HR>
+<P>See also the
+<B><A HREF="index.html">Table of Contents</A></B>
+and the <B><A HREF="_index.html">Index</A></B>.</P>
+
+<P><I>
+<A HREF="crit_pjp.html">Copyright</A> &#169; 1992-2010
+by Dinkumware, Ltd.
+Portions derived from work <A HREF="crit_wek.html">copyright</A> &#169; 2001
+by William E. Kempf. All rights reserved.</I></P>
+
+<!--V5.30:126I--></BODY></HTML>

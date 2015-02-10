@@ -1,0 +1,407 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Config-Bit Settings for PIC32MM0032GPL028</title>
+<head>
+<body bgcolor="#FFFFE0" style="font-family: sans-serif">
+<p>[ <a href="../XC32MasterIndex.htm">Documentation Index</a> | <a href="../PIC32ConfigSet.html">Device index</a> ]</p>
+<h1>Configuration-Bit Settings for PIC32MM0032GPL028</h1><p>(Data Sheet # <a href="http://www.microchip.com/wwwproducts/Devices.aspx?Product=PIC32MM0032GPL028&amp;ds=1" target="Datasheet">DS-00000000</a>)</p>
+<p>Usage:<br><strong><tt>#pragma config</strong> <em>SETTING</em> = <em>VALUE</em></tt><br>
+</p>
+<p><b><font color="#003366">Alternate Comparator1 Pins Location Enable bit (<tt>ALTCMP</tt>)</font></b>
+<table frame=box rules=cols cellpadding=3 summary="Configuration Setting">
+<tr><td><tt>ALTCMP = ON</tt></td><td><font size="2">
+Alternate Comparator1 pins are used
+</font></td></tr>
+<tr><td><tt>ALTCMP = OFF</tt></td><td><font size="2">
+Primary Comparator1 pins are used
+</font></td></tr>
+</table></p>
+
+<p><b><font color="#003366">Secondary Oscillator High Power Enable bit (<tt>SOSCHP</tt>)</font></b>
+<table frame=box rules=cols cellpadding=3 summary="Configuration Setting">
+<tr><td><tt>SOSCHP = ON</tt></td><td><font size="2">
+SOSC oprerates in high power mode
+</font></td></tr>
+<tr><td><tt>SOSCHP = OFF</tt></td><td><font size="2">
+SOSC oprerates in normal power mode.
+</font></td></tr>
+</table></p>
+
+<p><b><font color="#003366">Alternate I2C1 Pins Location Enable bit (<tt>ALTI2C</tt>)</font></b>
+<table frame=box rules=cols cellpadding=3 summary="Configuration Setting">
+<tr><td><tt>ALTI2C = ON</tt></td><td><font size="2">
+Alternate I2C1 pins are used
+</font></td></tr>
+<tr><td><tt>ALTI2C = OFF</tt></td><td><font size="2">
+Primary I2C1 pins are used
+</font></td></tr>
+</table></p>
+
+<p><b><font color="#003366">User ID bits (<tt>USERID</tt>)</font></b>
+<table frame=box rules=cols cellpadding=3 summary="Configuration Setting">
+</table></p>
+
+<p><b><font color="#003366">JTAG Enable bit (<tt>JTAGEN</tt>)</font></b>
+<table frame=box rules=cols cellpadding=3 summary="Configuration Setting">
+<tr><td><tt>JTAGEN = ON</tt></td><td><font size="2">
+JTAG is enabled
+</font></td></tr>
+<tr><td><tt>JTAGEN = OFF</tt></td><td><font size="2">
+JTAG is disabled
+</font></td></tr>
+</table></p>
+
+<p><b><font color="#003366">ICE/ICD Communication Channel Selection bits (<tt>ICS</tt>)</font></b>
+<table frame=box rules=cols cellpadding=3 summary="Configuration Setting">
+<tr><td><tt>ICS = PGx1</tt></td><td><font size="2">
+Communicate on PGEC1/PGED1
+</font></td></tr>
+<tr><td><tt>ICS = PGx2</tt></td><td><font size="2">
+Communicate on PGEC2/PGED2
+</font></td></tr>
+<tr><td><tt>ICS = PGx3</tt></td><td><font size="2">
+Communicate on PGEC3/PGED3
+</font></td></tr>
+<tr><td><tt>ICS = NONE</tt></td><td><font size="2">
+Not connected
+</font></td></tr>
+</table></p>
+
+<p><b><font color="#003366">Brown-out Reset Enable bits (<tt>BOREN</tt>)</font></b>
+<table frame=box rules=cols cellpadding=3 summary="Configuration Setting">
+<tr><td><tt>BOREN = BOR3</tt></td><td><font size="2">
+Brown-out Reset enabled in hardware; SBOREN bit disabled
+</font></td></tr>
+<tr><td><tt>BOREN = BOR2</tt></td><td><font size="2">
+Brown-out Reset enabled only while device active and disabled in Sleep; SBOREN bit disabled
+</font></td></tr>
+<tr><td><tt>BOREN = BOR1</tt></td><td><font size="2">
+Brown-out Reset controlled with the SBOREN bit setting
+</font></td></tr>
+<tr><td><tt>BOREN = BOR0</tt></td><td><font size="2">
+Brown-out Reset disabled in hardware; SBOREN bit disabled
+</font></td></tr>
+</table></p>
+
+<p><b><font color="#003366">Retention Voltage Regulator Enable bit (<tt>RETVR</tt>)</font></b>
+<table frame=box rules=cols cellpadding=3 summary="Configuration Setting">
+<tr><td><tt>RETVR = ON</tt></td><td><font size="2">
+Retention regulator is enabled and controlled by RETEN bit during sleep
+</font></td></tr>
+<tr><td><tt>RETVR = OFF</tt></td><td><font size="2">
+Retention regulator is disabled
+</font></td></tr>
+</table></p>
+
+<p><b><font color="#003366">Downside Voltage Protection Enable bit (<tt>DNVPEN</tt>)</font></b>
+<table frame=box rules=cols cellpadding=3 summary="Configuration Setting">
+<tr><td><tt>DNVPEN = ON</tt></td><td><font size="2">
+Downside protection is enabled
+</font></td></tr>
+<tr><td><tt>DNVPEN = OFF</tt></td><td><font size="2">
+Downside protection is disabled
+</font></td></tr>
+</table></p>
+
+<p><b><font color="#003366">Sleep Mode Watchdog Timer Postscale Selection bits (<tt>SWDTPS</tt>)</font></b>
+<table frame=box rules=cols cellpadding=3 summary="Configuration Setting">
+<tr><td><tt>SWDTPS = PS1</tt></td><td><font size="2">
+1:1
+</font></td></tr>
+<tr><td><tt>SWDTPS = PS2</tt></td><td><font size="2">
+1:2
+</font></td></tr>
+<tr><td><tt>SWDTPS = PS4</tt></td><td><font size="2">
+1:4
+</font></td></tr>
+<tr><td><tt>SWDTPS = PS8</tt></td><td><font size="2">
+1:8
+</font></td></tr>
+<tr><td><tt>SWDTPS = PS16</tt></td><td><font size="2">
+1:16
+</font></td></tr>
+<tr><td><tt>SWDTPS = PS32</tt></td><td><font size="2">
+1:32
+</font></td></tr>
+<tr><td><tt>SWDTPS = PS64</tt></td><td><font size="2">
+1:64
+</font></td></tr>
+<tr><td><tt>SWDTPS = PS128</tt></td><td><font size="2">
+1:128
+</font></td></tr>
+<tr><td><tt>SWDTPS = PS256</tt></td><td><font size="2">
+1:256
+</font></td></tr>
+<tr><td><tt>SWDTPS = PS512</tt></td><td><font size="2">
+1:512
+</font></td></tr>
+<tr><td><tt>SWDTPS = PS1024</tt></td><td><font size="2">
+1:1024
+</font></td></tr>
+<tr><td><tt>SWDTPS = PS2048</tt></td><td><font size="2">
+1:2048
+</font></td></tr>
+<tr><td><tt>SWDTPS = PS4096</tt></td><td><font size="2">
+1:4096
+</font></td></tr>
+<tr><td><tt>SWDTPS = PS8192</tt></td><td><font size="2">
+1:8192
+</font></td></tr>
+<tr><td><tt>SWDTPS = PS16384</tt></td><td><font size="2">
+1:16384
+</font></td></tr>
+<tr><td><tt>SWDTPS = PS32768</tt></td><td><font size="2">
+1:32768
+</font></td></tr>
+<tr><td><tt>SWDTPS = PS65536</tt></td><td><font size="2">
+1:65536
+</font></td></tr>
+<tr><td><tt>SWDTPS = PS131072</tt></td><td><font size="2">
+1:131072
+</font></td></tr>
+<tr><td><tt>SWDTPS = PS262144</tt></td><td><font size="2">
+1:262144
+</font></td></tr>
+<tr><td><tt>SWDTPS = PS524288</tt></td><td><font size="2">
+1:524288
+</font></td></tr>
+<tr><td><tt>SWDTPS = PS1048576</tt></td><td><font size="2">
+1:1048576
+</font></td></tr>
+</table></p>
+
+<p><b><font color="#003366">Watchdog Timer Window Size bits (<tt>WDTWIN</tt>)</font></b>
+<table frame=box rules=cols cellpadding=3 summary="Configuration Setting">
+<tr><td><tt>WDTWIN = PS75_0</tt></td><td><font size="2">
+Watchdog timer window size is 75%
+</font></td></tr>
+<tr><td><tt>WDTWIN = PS50_0</tt></td><td><font size="2">
+Watchdog timer window size is 50%
+</font></td></tr>
+<tr><td><tt>WDTWIN = PS37_5</tt></td><td><font size="2">
+Watchdog timer window size is 37.5%
+</font></td></tr>
+<tr><td><tt>WDTWIN = PS25_0</tt></td><td><font size="2">
+Watchdog timer window size is 25%
+</font></td></tr>
+</table></p>
+
+<p><b><font color="#003366">Windowed Watchdog Timer Enable bit (<tt>WINEN</tt>)</font></b>
+<table frame=box rules=cols cellpadding=3 summary="Configuration Setting">
+<tr><td><tt>WINEN = ON</tt></td><td><font size="2">
+Watchdog timer is in window mode
+</font></td></tr>
+<tr><td><tt>WINEN = OFF</tt></td><td><font size="2">
+Watchdog timer is in non-window mode
+</font></td></tr>
+</table></p>
+
+<p><b><font color="#003366">Run Mode Watchdog Timer Postscale Selection bits (<tt>RWDTPS</tt>)</font></b>
+<table frame=box rules=cols cellpadding=3 summary="Configuration Setting">
+<tr><td><tt>RWDTPS = PS1</tt></td><td><font size="2">
+1:1
+</font></td></tr>
+<tr><td><tt>RWDTPS = PS2</tt></td><td><font size="2">
+1:2
+</font></td></tr>
+<tr><td><tt>RWDTPS = PS4</tt></td><td><font size="2">
+1:4
+</font></td></tr>
+<tr><td><tt>RWDTPS = PS8</tt></td><td><font size="2">
+1:8
+</font></td></tr>
+<tr><td><tt>RWDTPS = PS16</tt></td><td><font size="2">
+1:16
+</font></td></tr>
+<tr><td><tt>RWDTPS = PS32</tt></td><td><font size="2">
+1:32
+</font></td></tr>
+<tr><td><tt>RWDTPS = PS64</tt></td><td><font size="2">
+1:64
+</font></td></tr>
+<tr><td><tt>RWDTPS = PS128</tt></td><td><font size="2">
+1:128
+</font></td></tr>
+<tr><td><tt>RWDTPS = PS256</tt></td><td><font size="2">
+1:256
+</font></td></tr>
+<tr><td><tt>RWDTPS = PS512</tt></td><td><font size="2">
+1:512
+</font></td></tr>
+<tr><td><tt>RWDTPS = PS1024</tt></td><td><font size="2">
+1:1024
+</font></td></tr>
+<tr><td><tt>RWDTPS = PS2048</tt></td><td><font size="2">
+1:2048
+</font></td></tr>
+<tr><td><tt>RWDTPS = PS4096</tt></td><td><font size="2">
+1:4096
+</font></td></tr>
+<tr><td><tt>RWDTPS = PS8192</tt></td><td><font size="2">
+1:8192
+</font></td></tr>
+<tr><td><tt>RWDTPS = PS16384</tt></td><td><font size="2">
+1:16384
+</font></td></tr>
+<tr><td><tt>RWDTPS = PS32768</tt></td><td><font size="2">
+1:32768
+</font></td></tr>
+<tr><td><tt>RWDTPS = PS65536</tt></td><td><font size="2">
+1:65536
+</font></td></tr>
+<tr><td><tt>RWDTPS = PS131072</tt></td><td><font size="2">
+1:131072
+</font></td></tr>
+<tr><td><tt>RWDTPS = PS262144</tt></td><td><font size="2">
+1:262144
+</font></td></tr>
+<tr><td><tt>RWDTPS = PS524288</tt></td><td><font size="2">
+1:524288
+</font></td></tr>
+<tr><td><tt>RWDTPS = PS1048576</tt></td><td><font size="2">
+1:1048576
+</font></td></tr>
+</table></p>
+
+<p><b><font color="#003366">Run Mode Watchdog Timer Clock Source Selection bits (<tt>RCLKSEL</tt>)</font></b>
+<table frame=box rules=cols cellpadding=3 summary="Configuration Setting">
+<tr><td><tt>RCLKSEL = SYSCLK</tt></td><td><font size="2">
+Clock source is system clock
+</font></td></tr>
+<tr><td><tt>RCLKSEL = FRC</tt></td><td><font size="2">
+Clock source is FRC oscillator
+</font></td></tr>
+<tr><td><tt>RCLKSEL = LPRC</tt></td><td><font size="2">
+Clock source is LPRC (same as for sleep mode)
+</font></td></tr>
+</table></p>
+
+<p><b><font color="#003366">Watchdog Timer Enable bit (<tt>FWDTEN</tt>)</font></b>
+<table frame=box rules=cols cellpadding=3 summary="Configuration Setting">
+<tr><td><tt>FWDTEN = ON</tt></td><td><font size="2">
+WDT is enabled
+</font></td></tr>
+<tr><td><tt>FWDTEN = OFF</tt></td><td><font size="2">
+WDT is disabled
+</font></td></tr>
+</table></p>
+
+<p><b><font color="#003366">Oscillator Selection bits (<tt>FNOSC</tt>)</font></b>
+<table frame=box rules=cols cellpadding=3 summary="Configuration Setting">
+<tr><td><tt>FNOSC = FRCDIV</tt></td><td><font size="2">
+Fast RC oscillator (FRC) with divide-by-N
+</font></td></tr>
+<tr><td><tt>FNOSC = PLL</tt></td><td><font size="2">
+Primary or FRC oscillator with PLL
+</font></td></tr>
+<tr><td><tt>FNOSC = PRI</tt></td><td><font size="2">
+Primary oscillator (XT, HS, EC)
+</font></td></tr>
+<tr><td><tt>FNOSC = DCO</tt></td><td><font size="2">
+Digitally controlled oscillator (DCO)
+</font></td></tr>
+<tr><td><tt>FNOSC = SOSC</tt></td><td><font size="2">
+Low power secondary oscillator (SOSC)
+</font></td></tr>
+<tr><td><tt>FNOSC = LPRC</tt></td><td><font size="2">
+Low power RC oscillator (LPRC)
+</font></td></tr>
+</table></p>
+
+<p><b><font color="#003366">System PLL Input Clock Selection bit (<tt>PLLSRC</tt>)</font></b>
+<table frame=box rules=cols cellpadding=3 summary="Configuration Setting">
+<tr><td><tt>PLLSRC = PRI</tt></td><td><font size="2">
+Primary oscillator is selected as PLL reference input on device reset
+</font></td></tr>
+<tr><td><tt>PLLSRC = FRC</tt></td><td><font size="2">
+FRC oscillator is selected as PLL reference input on device reset
+</font></td></tr>
+</table></p>
+
+<p><b><font color="#003366">Secondary Oscillator Low Power Mode Enable bit (<tt>LPOSCEN</tt>)</font></b>
+<table frame=box rules=cols cellpadding=3 summary="Configuration Setting">
+<tr><td><tt>LPOSCEN = ON</tt></td><td><font size="2">
+Secondary oscillator (SOSC) low power mode is enabled
+</font></td></tr>
+<tr><td><tt>LPOSCEN = OFF</tt></td><td><font size="2">
+Secondary oscillator (SOSC) low power mode is disabled
+</font></td></tr>
+</table></p>
+
+<p><b><font color="#003366">Two Speed Startup Enable bit (<tt>IESO</tt>)</font></b>
+<table frame=box rules=cols cellpadding=3 summary="Configuration Setting">
+<tr><td><tt>IESO = ON</tt></td><td><font size="2">
+Two speed startup is enabled
+</font></td></tr>
+<tr><td><tt>IESO = OFF</tt></td><td><font size="2">
+Two speed startup is disabled
+</font></td></tr>
+</table></p>
+
+<p><b><font color="#003366">Primary Oscillator Selection bit (<tt>POSCMOD</tt>)</font></b>
+<table frame=box rules=cols cellpadding=3 summary="Configuration Setting">
+<tr><td><tt>POSCMOD = EC</tt></td><td><font size="2">
+External clock mode is selected
+</font></td></tr>
+<tr><td><tt>POSCMOD = XT</tt></td><td><font size="2">
+XT oscillator mode is selected
+</font></td></tr>
+<tr><td><tt>POSCMOD = HS</tt></td><td><font size="2">
+HS oscillator mode is selected
+</font></td></tr>
+<tr><td><tt>POSCMOD = OFF</tt></td><td><font size="2">
+Primary oscillator is disabled
+</font></td></tr>
+</table></p>
+
+<p><b><font color="#003366">System Clock on CLKO Pin Enable bit (<tt>OSCIOFNC</tt>)</font></b>
+<table frame=box rules=cols cellpadding=3 summary="Configuration Setting">
+<tr><td><tt>OSCIOFNC = ON</tt></td><td><font size="2">
+System clock is connected to CLKO/OSC2 pin
+</font></td></tr>
+<tr><td><tt>OSCIOFNC = OFF</tt></td><td><font size="2">
+OSCO pin operates as a normal I/O
+</font></td></tr>
+</table></p>
+
+<p><b><font color="#003366">Secondary Oscillator External Clock Enable bit (<tt>SOSCSEL</tt>)</font></b>
+<table frame=box rules=cols cellpadding=3 summary="Configuration Setting">
+<tr><td><tt>SOSCSEL = OFF</tt></td><td><font size="2">
+Crystal is used
+</font></td></tr>
+<tr><td><tt>SOSCSEL = ON</tt></td><td><font size="2">
+External clock connected to SOSCI pin is used 
+</font></td></tr>
+</table></p>
+
+<p><b><font color="#003366">Clock Switching and Fail-Safe Clock Monitor Enable bits (<tt>FCKSM</tt>)</font></b>
+<table frame=box rules=cols cellpadding=3 summary="Configuration Setting">
+<tr><td><tt>FCKSM = CSDCMD</tt></td><td><font size="2">
+Clock switching is disabled; Fail-safe clock monitor is disabled
+</font></td></tr>
+<tr><td><tt>FCKSM = CSECMD</tt></td><td><font size="2">
+Clock switching is enabled; Fail-safe clock monitor is disabled
+</font></td></tr>
+<tr><td><tt>FCKSM = CSDCME</tt></td><td><font size="2">
+Clock switching is disabled; Fail-safe clock monitor is enabled
+</font></td></tr>
+<tr><td><tt>FCKSM = CSECME</tt></td><td><font size="2">
+Clock switching is enabled; Fail-safe clock monitor is enabled
+</font></td></tr>
+</table></p>
+
+<p><b><font color="#003366">Code Protection Enable bit (<tt>CP</tt>)</font></b>
+<table frame=box rules=cols cellpadding=3 summary="Configuration Setting">
+<tr><td><tt>CP = ON</tt></td><td><font size="2">
+Code protection is enabled
+</font></td></tr>
+<tr><td><tt>CP = OFF</tt></td><td><font size="2">
+Code protection is disabled
+</font></td></tr>
+</table></p>
+
+<p>[ <a href="../XC32MasterIndex.htm">Documentation Index</a> | <a href="../PIC32ConfigSet.html">Device index</a> ]</p>
+</body>
+</html>
+

@@ -1,0 +1,71 @@
+<HTML><HEAD><TITLE>C++ Interface</TITLE></HEAD><BODY>
+
+<H1><A NAME="C++ Interface">C++ Interface</A></H1><HR>
+
+<P>The C++ interface to the <B>Dinkum Threads Library</B> is very similar to the
+thread support interface defined in the
+<B><A HREF="http://www.boost.org/libs/thread/doc/index.html">boost.threads</A></B>
+library for C++.
+Some details of this <B><A NAME="implementation">implementation</A></B> differ from
+the boost.threads implementation. For example, in this implementation classes and
+functions are enclosed in <CODE>namespace Dinkum/threads</CODE> instead of
+<CODE>namespace boost</CODE>. Implementation differences are marked as such,
+throughout this document, by a link to this paragraph.</P>
+
+<P>The C++ interface consists of several headers:</P>
+
+<UL>
+<LI>
+<CODE><A HREF="condition.html">&quot;Dinkum/threads/condition&quot;</A></CODE>
+-- for defining a class that implements condition variables</LI>
+
+<LI>
+<CODE><A HREF="exceptions.html">&quot;Dinkum/threads/exceptions&quot;</A></CODE>
+-- for defining several classes useful for reporting exceptions</LI>
+
+<LI>
+<CODE><A HREF="mutex.html">&quot;Dinkum/threads/mutex&quot;</A></CODE>
+-- for defining classes that implement mutual exclusion</LI>
+
+<LI>
+<CODE><A HREF="once.html">&quot;Dinkum/threads/once&quot;</A></CODE>
+-- for ensuring that initialization code is executed only once, from the first
+thread that needs the initialization</LI>
+
+<LI>
+<CODE><A HREF="rmutex.html">&quot;Dinkum/threads/recursive_mutex&quot;</A></CODE>
+-- for defining classes that implement mutual exclusion</LI>
+
+<LI>
+<CODE><A HREF="thread.html">&quot;Dinkum/threads/thread&quot;</A></CODE>
+-- for defining classes to manage execution threads and groups of
+execution threads</LI>
+
+<LI>
+<CODE><A HREF="tss.html">&quot;Dinkum/threads/tss&quot;</A></CODE>
+-- for defining a template class that supports thread-specific data</LI>
+
+<LI>
+<CODE><A HREF="xtime.html">&quot;Dinkum/threads/xtime&quot;</A></CODE>
+-- for defining a struct and functions for high-resolution time operations</LI>
+</UL>
+
+<P>Here is an <A HREF="cppsample.txt">example program</A> to illustrate the
+use of the C++ interface.</P>
+
+<P>The C++ interface makes suitable use of templates and classes, but its
+functionality is otherwise quite similar to that described for the
+<A HREF="cthrd_over.html">C interface</A>.</P>
+
+<HR>
+<P>See also the
+<B><A HREF="index.html">Table of Contents</A></B>
+and the <B><A HREF="_index.html">Index</A></B>.</P>
+
+<P><I>
+<A HREF="crit_pjp.html">Copyright</A> &#169; 1992-2010
+by Dinkumware, Ltd.
+Portions derived from work <A HREF="crit_wek.html">copyright</A> &#169; 2001
+by William E. Kempf. All rights reserved.</I></P>
+
+<!--V5.30:126I--></BODY></HTML>

@@ -1,0 +1,226 @@
+<HTML><HEAD><TITLE>&quot;thread&quot;</TITLE></HEAD><BODY>
+
+<H1><A NAME="&quot;thread&quot;">&quot;Dinkum/threads/thread&quot;</A></H1><HR>
+
+<P>Include the header <B><CODE>&quot;Dinkum/threads/thread&quot;</CODE></B> to create, observe and manage
+<A HREF="index_thr.html#thread">thread</A>s and groups of threads.</P>
+
+<PRE>namespace Dinkum {
+    namespace threads {
+    class <B><A HREF="#thread">thread</A></B>;
+    class <B><A HREF="#thread_group">thread_group</A></B>;
+    }  // namespace threads
+} // namespace Dinkum</PRE>
+
+<H2><A NAME="thread"><CODE>thread</CODE></A></H2>
+
+<HR>
+<P><B><CODE><A HREF="#thread::join">join</A>
+&#183; <A HREF="#thread::operator!=">operator!=</A>
+&#183; <A HREF="#thread::operator==">operator==</A>
+&#183; <A HREF="#thread::sleep">sleep</A>
+&#183; <A HREF="#thread::thread">thread</A>
+&#183; <A HREF="#thread::yield">yield</A>
+</CODE></B></P>
+<HR>
+
+<PRE>class <B>thread</B>
+    {
+public:
+    <B><A HREF="#thread::thread">thread</A></B>();
+    template &lt;class Func&gt;
+        explicit <B><A HREF="#thread::thread">thread</A></B>(Func func);
+
+    bool <B><A HREF="#thread::operator==">operator==</A></B> (const thread&amp; other) const;
+    bool <B><A HREF="#thread::operator!=">operator!=</A></B> (const thread&amp; other) const
+        {return !operator==(other); }
+
+    void <B><A HREF="#thread::join">join</A></B>();
+    static void <B><A HREF="#thread::sleep">sleep</A></B>(const xtime&amp; xt);
+    static void <B><A HREF="#thread::yield">yield</A></B>();
+
+private:
+    thread(const thread&amp;); // not implemented
+    thread&amp; operator= (const thread&amp;); // not implemented
+    };</PRE>
+
+<P>The class describes an object for observing the state of a thread
+(<A HREF="#thread::join">join</A>) and managing the state of the current
+thread (<A HREF="#thread::sleep">sleep</A>,
+<A HREF="#thread::yield">yield</A>).
+Objects of class <CODE>thread</CODE> cannot be copied.</P>
+
+<P>A <CODE>thread</CODE> object is <B><A NAME="joinable">joinable</A></B> if
+it was constructed as a joinable object, the application has not made a
+call to <A HREF="#thread::join">thread::join</A> for that object, and the
+application has not made a call to
+<A HREF="#thread_group::join_all">thread_group::join_all</A> for a
+<CODE>thread_group</CODE> object observing that thread object.</P>
+
+<H3><CODE><A NAME="thread::join">thread::join</A></CODE></H3>
+
+<PRE>void <B>join</B>();</PRE>
+
+<P><I><A HREF="index_thr.html#Precondition">Precondition</A>:</I>
+the object must be <A HREF="#joinable">joinable</A>.</P>
+
+<P>The member function marks this <CODE>thread</CODE> object
+as non-joinable then blocks until the thread observed by this
+<CODE>thread</CODE> object terminates.</P>
+
+<H3><CODE><A NAME="thread::operator!=">thread::operator!=</A></CODE></H3>
+
+<PRE>bool <B>operator!=</B> (const thread&amp; other) const
+    {return !operator==(other); }</PRE>
+
+<P><I>Requires:</I> the observed thread has not terminated.</P>
+
+<P>The member function returns <CODE>!operator==(other)</CODE>.</P>
+
+<H3><CODE><A NAME="thread::operator==">thread::operator==</A></CODE></H3>
+
+<PRE>bool <B>operator==</B> (const thread&amp; other) const;</PRE>
+
+<P><I>Requires:</I> the observed thread has not terminated.</P>
+
+<P>The member function returns true only if this <CODE>thread</CODE>
+object and <CODE>other</CODE> observe the same thread.</P>
+
+<H3><CODE><A NAME="thread::sleep">thread::sleep</A></CODE></H3>
+
+<PRE>static void <B>sleep</B>(const xtime&amp; xt);</PRE>
+
+<P>The static member function blocks the calling thread
+at least until the time specified by the <A HREF="xtime.html">xtime</A>
+object <CODE>xt</CODE>.</P>
+
+<H3><CODE><A NAME="thread::thread">thread::thread</A></CODE></H3>
+
+<PRE><B>thread</B>();
+template&lt;class Func&gt;
+    explicit <B>thread</B>(Func func);</PRE>
+
+<P>The first constructor constructs a non-<A HREF="#joinable">joinable</A>
+<CODE>thread</CODE> object that observes the thread
+that constructed the object.</P>
+
+<P>The second constructor constructs a <A HREF="#joinable">joinable</A>
+<CODE>thread</CODE> object that observes a new thread
+executing <CODE>func()</CODE>, where <CODE>func</CODE>
+in this <A HREF="cppthrd_over.html#implementation">implementation</A>
+is the name of a function that takes no arguments and returns void, or
+the name of an object of a class that provides an <CODE>operator()</CODE>
+that takes no arguments and returns void. The constructor does not return
+until the new thread has begun execution.</P>
+
+<H3><CODE><A NAME="thread::yield">thread::yield</A></CODE></H3>
+
+<PRE>static void <B>yield</B>();</PRE>
+
+<P>The member function gives the runtime system an opportunity
+to reschedule.</P>
+
+<H2><A NAME="thread_group"><CODE>thread_group</CODE></A></H2>
+
+<HR>
+<P><B><CODE><A HREF="#thread_group::add_thread">add_thread</A>
+&#183; <A HREF="#thread_group::create_thread">create_thread</A>
+&#183; <A HREF="#thread_group::join_all">join_all</A>
+&#183; <A HREF="#thread_group::remove_thread">remove_thread</A>
+&#183; <A HREF="#thread_group::thread_group">thread_group</A>
+&#183; <A HREF="#thread_group::~thread_group">~thread_group</A>
+</CODE></B></P>
+<HR>
+
+<PRE>class <B>thread_group</B>
+    {
+public:
+    <B><A HREF="#thread_group::thread_group">thread_group</A></B>();
+    <B><A HREF="#thread_group::~thread_group">~thread_group</A></B>();
+
+    template &lt;class Func&gt;
+        thread *<B><A HREF="#thread_group::create_thread">create_thread</A></B>(Func func);
+
+    void <B><A HREF="#thread_group::add_thread">add_thread</A></B>(thread *thrd);
+    void <B><A HREF="#thread_group::remove_thread">remove_thread</A></B>(thread *thrd);
+    void <B><A HREF="#thread_group::join_all">join_all</A></B>();
+
+<I>    // exposition only
+private:
+
+    // not implemented
+    thread_group(const thread_group&amp;);
+    thread_group&amp; operator= (const thread_group&amp;);</I>
+    };</PRE>
+
+<P>The class describes an object for observing the states of multiple objects
+of class <CODE>thread</CODE> (<A HREF="#thread_group::join_all">join_all</A>)
+without having to observe each of the threads individually. Objects of class
+<CODE>thread</CODE> to be observed by a <CODE>thread_group</CODE> object must
+be created with <CODE>new</CODE>; they will be destroyed by the
+<CODE>thread_group</CODE> object's destructor.
+Objects of class <CODE>thread_group</CODE> cannot be copied.</P>
+
+<H3><CODE><A NAME="thread_group::add_thread">thread_group::add_thread</A></CODE></H3>
+
+<PRE>void <B>add_thread</B>(thread *thrd);</PRE>
+
+<P><I><A HREF="index_thr.html#Precondition">Precondition</A>:</I>
+<CODE>*thrd</CODE> must be <A HREF="#joinable">joinable</A>.</P>
+
+<P>The member function adds <CODE>*thrd</CODE> to the group of <CODE>thread</CODE>
+objects observed by the <CODE>thread_group</CODE> object. Calling <CODE>add_thread</CODE>
+with a <CODE>thread</CODE> object that is already in the group does nothing.</P>
+
+<H3><CODE><A NAME="thread_group::create_thread">thread_group::create_thread</A></CODE></H3>
+
+<PRE>template &lt;class Func&gt;
+    thread *<B>create_thread</B>(Func func);</PRE>
+
+<P>The member function calls <CODE>thread *res = new thread(func)</CODE>, and if
+the call succeeds calls <CODE>add_thread(res)</CODE>. It returns <CODE>res</CODE>.</P>
+
+<H3><CODE><A NAME="thread_group::join_all">thread_group::join_all</A></CODE></H3>
+
+<PRE>void <B>join_all</B>();</PRE>
+
+<P>The member function effectively calls
+<CODE>thr.join()</CODE> for each <CODE>thread</CODE> object <CODE>thr</CODE>
+in the group of <CODE>thread</CODE> objects observed by the <CODE>thread_group</CODE>
+object.</P>
+
+<H3><CODE><A NAME="thread_group::remove_thread">thread_group::remove_thread</A></CODE></H3>
+
+<PRE>void <B>remove_thread</B>(thread *thrd);</PRE>
+
+<P>The member function removes <CODE>*thrd</CODE> from the group of <CODE>thread</CODE>
+objects observed by the <CODE>thread_group</CODE> object. In
+this <A HREF="cppthrd_over.html#implementation">implementation</A> if <CODE>*thrd</CODE>
+is not in the group the function does nothing.</P>
+
+<H3><CODE><A NAME="thread_group::thread_group">thread_group::thread_group</A></CODE></H3>
+
+<PRE><B>thread_group</B>();</PRE>
+
+<P>The constructor constructs a <CODE>thread_group</CODE> object with an empty
+group of <CODE>thread</CODE> objects.</P>
+
+<H3><CODE><A NAME="thread_group::~thread_group">thread_group::~thread_group</A></CODE></H3>
+
+<PRE><B>~thread_group</B>();</PRE>
+
+<P>The destructor effectively executes <CODE>delete thrd</CODE> for every <CODE>thread</CODE>
+object <CODE>*thrd</CODE> in the group.</P>
+
+<HR>
+<P>See also the
+<B><A HREF="index.html">Table of Contents</A></B>
+and the <B><A HREF="_index.html">Index</A></B>.</P>
+
+<P><I>
+<A HREF="crit_pjp.html">Copyright</A> &#169; 1992-2010
+by Dinkumware, Ltd.
+Portions derived from work <A HREF="crit_wek.html">copyright</A> &#169; 2001
+by William E. Kempf. All rights reserved.</I></P>
+
+<!--V5.30:126I--></BODY></HTML>

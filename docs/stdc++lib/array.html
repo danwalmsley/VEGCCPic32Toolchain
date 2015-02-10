@@ -1,0 +1,555 @@
+<HTML><HEAD><TITLE>&lt;array&gt;</TITLE></HEAD><BODY>
+
+<H1><A NAME="&lt;array&gt;"><CODE>&lt;array&gt;</CODE></A></H1>
+
+<P>[added with
+<A HREF="index.html#TR1">TR1</A>]</P><HR>
+
+<P><B><CODE><A HREF="#array">array</A>
+&#183; <A HREF="#get">get</A>
+&#183; <A HREF="#operator!=">operator!==</A>
+&#183; <A HREF="#operator==">operator==</A>
+&#183; <A HREF="#operator&lt;">operator&lt;</A>
+&#183; <A HREF="#operator&lt;=">operator&lt;=</A>
+&#183; <A HREF="#operator&gt;">operator&gt;</A>
+&#183; <A HREF="#operator&gt;=">operator&gt;=</A>
+&#183; <A HREF="#swap">swap</A>
+&#183; <A HREF="#tuple_element">tuple_element</A>
+&#183; <A HREF="#tuple_size">tuple_size</A>
+</CODE></B></P>
+<HR>
+
+<P>Include the <A HREF="index.html#TR1">TR1</A>
+header <B><CODE>&lt;array&gt;</CODE></B> to define the container
+template class <CODE>array</CODE> and several supporting templates.</P>
+
+<P>Beginning with <B>C++0X</B>,
+some functions declared in this header
+use <CODE>constexpr</CODE> to signal that they are treated as
+compile-time constants.</P>
+
+<PRE>namespace std {
+    namespace tr1 {
+
+template&lt;class Ty, std::size_t N&gt;
+    class <B><A HREF="#array">array</A></B>;
+
+        // TEMPLATE FUNCTIONS
+template&lt;class Ty, std::size_t N&gt;
+    bool <B><A HREF="#operator==">operator==</A></B>(
+        const array&lt;Ty, N&gt;&amp; left,
+        const array&lt;Ty, N&gt;&amp; right);
+template&lt;class Ty, std::size_t N&gt;
+    bool <B><A HREF="#operator!=">operator!=</A></B>(
+        const array&lt;Ty, N&gt;&amp; left,
+        const array&lt;Ty, N&gt;&amp; right);
+template&lt;class Ty, std::size_t N&gt;
+    bool <B><A HREF="#operator&lt;">operator&lt;</A></B>(
+        const array&lt;Ty, N&gt;&amp; left,
+        const array&lt;Ty, N&gt;&amp; right);
+template&lt;class Ty, std::size_t N&gt;
+    bool <B><A HREF="#operator&lt;=">operator&lt;=</A></B>(
+        const array&lt;Ty, N&gt;&amp; left,
+        const array&lt;Ty, N&gt;&amp; right);
+template&lt;class Ty, std::size_t N&gt;
+    bool <B><A HREF="#operator&gt;">operator&gt;</A></B>(
+        const array&lt;Ty, N&gt;&amp; left,
+        const array&lt;Ty, N&gt;&amp; right);
+template&lt;class Ty, std::size_t N&gt;
+    bool <B><A HREF="#operator&gt;=">operator&gt;=</A></B>(
+        const array&lt;Ty, N&gt;&amp; left,
+        const array&lt;Ty, N&gt;&amp; right);
+template&lt;class Ty, std::size_t N&gt;
+    void <B><A HREF="#swap">swap</A></B>(
+        array&lt;Ty, N&gt;&amp; left,
+        array&lt;Ty, N&gt;&amp; right);
+
+        // tuple-LIKE INTERFACE
+template&lt;int Idx, class T, std::size_t N&gt;
+     <I>RI</I> <B><A HREF="#get">get</A></B>(array&lt;T, N&gt;&amp;);
+template&lt;int Idx, class T, std::size_t N&gt;
+     const <I>RI</I> <B><A HREF="#get">get</A></B>(const array&lt;T, N&gt;&amp;);
+template&lt;int Idx, class T, std::size_t N&gt;
+    class <B><A HREF="#tuple_element">tuple_element</A></B>&lt;Idx, array&lt;T, N&gt; &gt;;
+template&lt;class T, std::size_t N&gt;
+    class <B><A HREF="#tuple_size">tuple_size</A></B>&lt;array&lt;T, N&gt; &gt;;
+    } // namespace tr1
+using tr1::array; using tr1::get; <B>[added with C++0X]</B>
+using tr1::tuple_element; using tr1::tuple_size;
+}  // namespace std</PRE>
+
+<H2><CODE><A NAME="array">array</A></CODE></H2>
+
+<HR>
+<P><B><CODE><A HREF="#array::array">array</A>
+&#183; <A HREF="#array::assign">assign</A>
+&#183; <A HREF="#array::at">at</A>
+&#183; <A HREF="#array::back">back</A>
+&#183; <A HREF="#array::begin">begin</A>
+&#183; <A HREF="#array::cbegin">cbegin</A>
+&#183; <A HREF="#array::cend">cend</A>
+&#183; <A HREF="#array::const_iterator">const_iterator</A>
+&#183; <A HREF="#array::const_pointer">const_pointer</A>
+&#183; <A HREF="#array::const_reference">const_reference</A>
+&#183; <A HREF="#array::const_reverse_iterator">const_reverse_iterator</A>
+&#183; <A HREF="#array::crbegin">crbegin</A>
+&#183; <A HREF="#array::crend">crend</A>
+&#183; <A HREF="#array::data">data</A>
+&#183; <A HREF="#array::difference_type">difference_type</A>
+&#183; <A HREF="#array::empty">empty</A>
+&#183; <A HREF="#array::end">end</A>
+&#183; <A HREF="#array::fill">fill</A>
+&#183; <A HREF="#array::front">front</A>
+&#183; <A HREF="#array::iterator">iterator</A>
+&#183; <A HREF="#array::max_size">max_size</A>
+&#183; <A HREF="#array::operator=">operator=</A>
+&#183; <A HREF="#array::operator[]">operator[]</A>
+&#183; <A HREF="#array::pointer">pointer</A>
+&#183; <A HREF="#array::rbegin">rbegin</A>
+&#183; <A HREF="#array::reference">reference</A>
+&#183; <A HREF="#array::rend">rend</A>
+&#183; <A HREF="#array::reverse_iterator">reverse_iterator</A>
+&#183; <A HREF="#array::size">size</A>
+&#183; <A HREF="#array::size_type">size_type</A>
+&#183; <A HREF="#array::swap">swap</A>
+&#183; <A HREF="#array::value_type">value_type</A>
+</CODE></B></P>
+<HR>
+
+<PRE>template&lt;class Ty, std::size_t N&gt;
+    class <B>array</B> {
+public:
+    // NESTED TYPES
+    typedef std::size_t <B><A HREF="#array::size_type">size_type</A></B>;
+    typedef std::ptrdiff_t <B><A HREF="#array::difference_type">difference_type</A></B>;
+    typedef Ty&amp; <B><A HREF="#array::reference">reference</A></B>;
+    typedef const Ty&amp; <B><A HREF="#array::const_reference">const_reference</A></B>;
+    typedef Ty *<B><A HREF="#array::pointer">pointer</A></B>;
+    typedef const Ty *<B><A HREF="#array::const_pointer">const_pointer</A></B>;
+    typedef T0 <B><A HREF="#array::iterator">iterator</A></B>;
+    typedef T1 <B><A HREF="#array::const_iterator">const_iterator</A></B>;
+    typedef Ty <B><A HREF="#array::value_type">value_type</A></B>;
+    typedef std::reverse_iterator&lt;iterator&gt; <B><A HREF="#array::reverse_iterator">reverse_iterator</A></B>;
+    typedef std::reverse_iterator&lt;const_iterator&gt; <B><A HREF="#array::const_reverse_iterator">const_reverse_iterator</A></B>;
+
+    // CONSTRUCTORS (exposition only)
+    <B><A HREF="#array::array">array</A></B>();
+    <B><A HREF="#array::array">array</A></B>(const array&amp; right);
+
+    // MODIFICATION
+    void <B><A HREF="#array::assign">assign</A></B>(const Ty&amp; val); <B>[replaced with C++0X]</B>
+    void <B><A HREF="#array::fill">fill</A></B>(const Ty&amp; val); <B>[added with C++0X]</B>
+    array&amp; <B><A HREF="#array::operator=">operator=</A></B>(const array&amp; right);    // exposition only
+    void <B><A HREF="#array::swap">swap</A></B>(array&amp; right);
+
+    // ITERATORS
+    iterator <B><A HREF="#array::begin">begin</A></B>();
+    const_iterator <B><A HREF="#array::begin">begin</A></B>() const;
+    iterator <B><A HREF="#array::end">end</A></B>();
+    const_iterator <B><A HREF="#array::end">end</A></B>() const;
+    reverse_iterator <B><A HREF="#array::rbegin">rbegin</A></B>();
+    const_reverse_iterator <B><A HREF="#array::rbegin">rbegin</A></B>() const;
+    reverse_iterator <B><A HREF="#array::rend">rend</A></B>();
+    const_reverse_iterator <B><A HREF="#array::rend">rend</A></B>() const;
+
+    const_iterator <B><A HREF="#array::cbegin">cbegin</A></B>() const; <B>[added with C++0X]</B>
+    const_iterator <B><A HREF="#array::cend">cend</A></B>() const; <B>[added with C++0X]</B>
+    const_reverse_iterator <B><A HREF="#array::crbegin">crbegin</A></B>() const; <B>[added with C++0X]</B>
+    const_reverse_iterator <B><A HREF="#array::crend">crend</A></B>() const; <B>[added with C++0X]</B>
+
+    // SIZE QUERIES
+    constexpr size_type <B><A HREF="#array::size">size</A></B>() const;
+    constexpr size_type <B><A HREF="#array::max_size">max_size</A></B>() const;
+    constexpr bool <B><A HREF="#array::empty">empty</A></B>() const;
+
+    // ELEMENT ACCESS
+    reference <B><A HREF="#array::at">at</A></B>(size_type off);
+    const_reference <B><A HREF="#array::at">at</A></B>(size_type off) const;
+    reference <B><A HREF="#array::operator[]">operator[]</A></B>(size_type off);
+    const_reference <B><A HREF="#array::operator[]">operator[]</A></B>(size_type off) const;
+
+    reference <B><A HREF="#array::front">front</A></B>();
+    const_reference <B><A HREF="#array::front">front</A></B>() const;
+    reference <B><A HREF="#array::back">back</A></B>();
+    const_reference <B><A HREF="#array::back">back</A></B>() const;
+
+    Ty *<B><A HREF="#array::data">data</A></B>();
+    const Ty *<B><A HREF="#array::data">data</A></B>() const;
+    };</PRE>
+
+<P>The template class describes an object that controls a sequence of
+length <CODE>N</CODE> of elements of type <CODE>Ty</CODE>. The sequence
+is stored as an array of <CODE>Ty</CODE>,
+contained in the <CODE>array&lt;Ty, N&gt;</CODE> object.</P>
+
+<P>The type has a default constructor
+<B><A HREF="#array::array">array()</A></B>
+and a default assignment operator
+<B><A HREF="#array::operator=">operator=</A></B>, and
+satisifes the requirements for an <CODE>aggregate</CODE>.
+Thus, objects of type <CODE>array&lt;Ty, N&gt;</CODE>
+can be initialized with an aggregate initializer. For example:</P>
+
+<PRE>    array&lt;int, 4&gt; ai = { 1, 2, 3 };</PRE>
+
+<P>creates the object <CODE>ai</CODE> which holds four integer values,
+initializes the first three elements to the values 1, 2, and 3
+respectively, and initializes the fourth element to 0.</P>
+
+<H3><CODE><A NAME="array::array">array::array</A></CODE></H3>
+
+<PRE><B>array</B>();
+<B>array</B>(const array&amp; right);</PRE>
+
+<P>The first constructor leaves the controlled sequence uninitialized
+(or default initialized). The second constructor
+initializes the controlled sequence with the sequence
+<CODE>[<I>right</I>.<A HREF="array.html#array::begin">begin</A>(),
+<I>right</I>.<A HREF="array.html#array::end">end</A>())</CODE>.</P>
+
+<H3><CODE><A NAME="array::assign">array::assign</A></CODE></H3>
+
+<PRE>void <B>assign</B>(const Ty&amp; val); <B>[replaced with C++0X]</B></PRE>
+
+<P>The member function replaces the sequence controlled by <CODE>*this</CODE>
+with a repetition of <CODE>N</CODE> elements of value <CODE>val</CODE>.</P>
+
+<H3><CODE><A NAME="array::at">array::at</A></CODE></H3>
+
+<PRE>reference <B>at</B>(size_type off);
+const_reference <B>at</B>(size_type off) const;</PRE>
+
+<P>The member functions return a reference to the element of the
+controlled sequence at position <CODE>off</CODE>. If that position
+is invalid, the function throws an object of class <CODE>out_of_range</CODE>.</P>
+
+<H3><CODE><A NAME="array::back">array::back</A></CODE></H3>
+
+<PRE>reference <B>back</B>();
+const_reference <B>back</B>() const;</PRE>
+
+<P>The member functions return a reference to the last element of the
+controlled sequence, which must be non-empty.</P>
+
+<H3><CODE><A NAME="array::begin">array::begin</A></CODE></H3>
+
+<PRE>iterator <B>begin</B>();
+const_iterator <B>begin</B>() const;</PRE>
+
+<P>The member functions return a random-access iterator that points at the
+first element of the sequence (or just beyond the end of an empty sequence).</P>
+
+<H3><CODE><A NAME="array::cbegin">array::cbegin</A></CODE></H3>
+
+<PRE>const_iterator <B>cbegin</B>() const; <B>[added with C++0X]</B></PRE>
+
+<P>The member functions return a random-access iterator that points at the
+first element of the sequence (or just beyond the end of an empty sequence).</P>
+
+<H3><CODE><A NAME="array::cend">array::cend</A></CODE></H3>
+
+<PRE>const_iterator <B>cend</B>() const; <B>[added with C++0X]</B></PRE>
+
+<P>The member functions return a random-access iterator that points just
+beyond the end of the sequence.</P>
+
+<H3><CODE><A NAME="array::const_iterator">array::const_iterator</A></CODE></H3>
+
+<PRE>typedef T1 <B>const_iterator</B>;</PRE>
+
+<P>The type describes an object that can server as a constant random-access
+iterator for the controlled sequence. It is described here as a synonym for
+the implementation-specific type <CODE>T1</CODE>.</P>
+
+<H3><CODE><A NAME="array::const_pointer">array::const_pointer</A></CODE></H3>
+
+<PRE>typedef const Ty *<B>const_pointer</B>;</PRE>
+
+<P>The type describes an object that can serve as a constant pointer to 
+elements of the sequence.</P>
+
+<H3><CODE><A NAME="array::const_reference">array::const_reference</A></CODE></H3>
+
+<PRE>typedef const Ty&amp; <B>const_reference</B>;</PRE>
+
+<P>The type describes an object that can serve as a constant reference to an
+element of the controlled sequence.</P>
+
+<H3><CODE><A NAME="array::const_reverse_iterator">array::const_reverse_iterator</A></CODE></H3>
+
+<PRE>typedef std::reverse_iterator&lt;const_iterator&gt; <B>const_reverse_iterator</B>;</PRE>
+
+<P>The type describes an object that can server as a constant reverse
+iterator for the controlled sequence.</P>
+
+<H3><CODE><A NAME="array::crbegin">array::crbegin</A></CODE></H3>
+
+<PRE>const_reverse_iterator <B>crbegin</B>() const; <B>[added with C++0X]</B></PRE>
+
+<P>The member functions return a reverse iterator that points just beyond
+the end of the controlled sequence. Hence, it designates the beginning
+of the reverse sequence.</P>
+
+<H3><CODE><A NAME="array::crend">array::crend</A></CODE></H3>
+
+<PRE>const_reverse_iterator <B>crend</B>() const; <B>[added with C++0X]</B></PRE>
+
+<P>The member functions return a reverse iterator that points at the first
+element of the sequence (or just beyond the end of an empty sequence)). Hence,
+it designates the end of the reverse sequence.</P>
+
+<H3><CODE><A NAME="array::data">array::data</A></CODE></H3>
+
+<PRE>Ty *<B>data</B>();
+const Ty *<B>data</B>() const;</PRE>
+
+<P>The member functions return the address of the first element in the
+controlled sequence.</P>
+
+<H3><CODE><A NAME="array::difference_type">array::difference_type</A></CODE></H3>
+
+<PRE>typedef std::ptrdiff_t <B>difference_type</B>;</PRE>
+
+<P>The signed integer type describes an object that can represent the difference
+between the addresses of any two elements in the controlled sequence. It is
+a synonym for the type <CODE>std::ptrdiff_t</CODE>.</P>
+
+<H3><CODE><A NAME="array::empty">array::empty</A></CODE></H3>
+
+<PRE>constexpr bool <B>empty</B>() const;</PRE>
+
+<P>The member function returns true only if <CODE>N == 0</CODE>.</P>
+
+<H3><CODE><A NAME="array::end">array::end</A></CODE></H3>
+
+<PRE>iterator <B>end</B>();
+const_iterator <B>end</B>() const;</PRE>
+
+<P>The member functions return a random-access iterator that points just
+beyond the end of the sequence.</P>
+
+<H3><CODE><A NAME="array::fill">array::fill</A></CODE></H3>
+
+<PRE>void <B>fill</B>(const Ty&amp; val); <B>[added with C++0X]</B></PRE>
+
+<P>The member function replaces the sequence controlled by <CODE>*this</CODE>
+with a repetition of <CODE>N</CODE> elements of value <CODE>val</CODE>.</P>
+
+<H3><CODE><A NAME="array::front">array::front</A></CODE></H3>
+
+<PRE>reference <B>front</B>();
+const_reference <B>front</B>() const;</PRE>
+
+<P>The member functions return a reference to the first element of the
+controlled sequence, which must be non-empty.</P>
+
+<H3><CODE><A NAME="array::iterator">array::iterator</A></CODE></H3>
+
+<PRE>typedef T0 <B>iterator</B>;</PRE>
+
+<P>The type describes an object that can server as a random-access
+iterator for the controlled sequence. It is described here as a synonym for
+the implementation-specific type <CODE>T0</CODE>.</P>
+
+<H3><CODE><A NAME="array::max_size">array::max_size</A></CODE></H3>
+
+<PRE>constexpr size_type <B>max_size</B>() const;</PRE>
+
+<P>The member function returns <CODE>N</CODE>.</P>
+
+<H3><CODE><A NAME="array::operator=">array::operator=</A></CODE></H3>
+
+<PRE>array&amp; <B>operator=</B>(const array&amp; right);</PRE>
+
+<P>The operator assigns each element of <CODE>right</CODE> to
+the corresponding element of the controlled sequence.
+It returns <CODE>*this</CODE>.</P>
+
+<H3><CODE><A NAME="array::operator[]">array::operator[]</A></CODE></H3>
+
+<PRE>reference <B>operator[]</B>(size_type off);
+const_reference <B>operator[]</B>(size_type off) const;</PRE>
+
+<P>The member functions return a reference to the element of the
+controlled sequence at position <CODE>off</CODE>. If that position
+is invalid, the behavior is undefined.</P>
+
+<H3><CODE><A NAME="array::pointer">array::pointer</A></CODE></H3>
+
+<PRE>typedef Ty *<B>pointer</B>;</PRE>
+
+<P>The type describes an object that can serve as a pointer to 
+elements of the sequence.</P>
+
+<H3><CODE><A NAME="array::rbegin">array::rbegin</A></CODE></H3>
+
+<PRE>reverse_iterator <B>rbegin</B>();
+const_reverse_iterator <B>rbegin</B>() const;</PRE>
+
+<P>The member functions return a reverse iterator that points just beyond
+the end of the controlled sequence. Hence, it designates the beginning
+of the reverse sequence.</P>
+
+<H3><CODE><A NAME="array::reference">array::reference</A></CODE></H3>
+
+<PRE>typedef Ty&amp; <B>reference</B>;</PRE>
+
+<P>The type describes an object that can serve as a reference to an
+element of the controlled sequence.</P>
+
+<H3><CODE><A NAME="array::rend">array::rend</A></CODE></H3>
+
+<PRE>reverse_iterator <B>rend</B>();
+const_reverse_iterator <B>rend</B>() const;</PRE>
+
+<P>The member functions return a reverse iterator that points at the first
+element of the sequence (or just beyond the end of an empty sequence)). Hence,
+it designates the end of the reverse sequence.</P>
+
+<H3><CODE><A NAME="array::reverse_iterator">array::reverse_iterator</A></CODE></H3>
+
+<PRE>typedef std::reverse_iterator&lt;iterator&gt; <B>reverse_iterator</B>;</PRE>
+
+<P>The type describes an object that can server as a reverse
+iterator for the controlled sequence.</P>
+
+<H3><CODE><A NAME="array::size">array::size</A></CODE></H3>
+
+<PRE>constexpr size_type <B>size</B>() const;</PRE>
+
+<P>The member function returns <CODE>N</CODE>.</P>
+
+<H3><CODE><A NAME="array::size_type">array::size_type</A></CODE></H3>
+
+<PRE>typedef std::size_t <B>size_type</B>;</PRE>
+
+<P>The unsigned integer type describes an object that can represent the length
+of any controlled sequence. It is a synonym for the type <CODE>std::size_t</CODE>.</P>
+
+<H3><CODE><A NAME="array::swap">array::swap</A></CODE></H3>
+
+<PRE>void <B>swap</B>(array&amp; right);</PRE>
+
+<P>The member function swaps the controlled sequences between <CODE>*this</CODE>
+and <CODE>right</CODE>. It performs a number of element assignments and
+constructor calls proportional to <CODE>N</CODE>.</P>
+
+<H3><CODE><A NAME="array::value_type">array::value_type</A></CODE></H3>
+
+<PRE>typedef Ty <B>value_type</B>;</PRE>
+
+<P>The type is a synonym for the template parameter <CODE>Ty</CODE>.</P>
+
+<H2><CODE><A NAME="get">get</A></CODE></H2>
+
+<PRE>template&lt;int Idx, class T, std::size_t N&gt;
+    T&amp; <B>get</B>(array&lt;T, N&gt;&amp; arr);
+template&lt;int Idx, class T, std::size_t N&gt;
+    const T&amp; <B>get</B>(const array&lt;T, N&gt;&amp; arr);</PRE>
+
+<P>The template functions return a reference to <CODE>arr[Idx]</CODE>.</P>
+
+<H2><CODE><A NAME="operator!=">operator!=</A></CODE></H2>
+
+<PRE>template&lt;Ty, std::size_t N&gt;
+    bool <B>operator!=</B>(
+        const array&lt;Ty, N&gt;&amp; left,
+        const array&lt;Ty, N&gt;&amp; right);</PRE>
+
+<P>The template function returns <CODE>!(left == right)</CODE>.</P>
+
+<H2><CODE><A NAME="operator==">operator==</A></CODE></H2>
+
+<PRE>template&lt;Ty, std::size_t N&gt;
+    bool <B>operator==</B>(
+        const array&lt;Ty, N&gt;&amp; left,
+        const array&lt;Ty, N&gt;&amp; right);</PRE>
+
+<P>The template function overloads <CODE>operator==</CODE> to compare two objects
+of template class <A HREF="#array">array</A>. The function returns
+<CODE>equal(left.<A HREF="#array::begin">begin</A>(),
+left.<A HREF="#array::end">end</A>(), right.begin())</CODE>.</P>
+
+<H2><CODE><A NAME="operator&lt;">operator&lt;</A></CODE></H2>
+
+<PRE>template&lt;Ty, std::size_t N&gt;
+    bool <B>operator&lt;</B>(
+        const array&lt;Ty, N&gt;&amp; left,
+        const array&lt;Ty, N&gt;&amp; right);</PRE>
+
+<P>The template function overloads <CODE>operator&lt;</CODE> to compare two objects
+of template class <A HREF="#array">array</A>. The function returns
+<CODE>lexicographical_compare(left.<A HREF="#array::begin">begin</A>(),
+left.<A HREF="#array::end">end</A>(), right.begin())</CODE>.</P>
+
+<H2><CODE><A NAME="operator&lt;=">operator&lt;=</A></CODE></H2>
+
+<PRE>template&lt;Ty, std::size_t N&gt;
+    bool <B>operator&lt;=</B>(
+        const array&lt;Ty, N&gt;&amp; left,
+        const array&lt;Ty, N&gt;&amp; right);</PRE>
+
+<P>The template function returns <CODE>!(right &lt; left)</CODE>.</P>
+
+<H2><CODE><A NAME="operator&gt;">operator&gt;</A></CODE></H2>
+
+<PRE>template&lt;Ty, std::size_t N&gt;
+    bool <B>operator&gt;</B>(
+        const array&lt;Ty, N&gt;&amp; left,
+        const array&lt;Ty, N&gt;&amp; right);</PRE>
+
+<P>The template function returns <CODE>right &lt; left</CODE>.</P>
+
+<H2><CODE><A NAME="operator&gt;=">operator&gt;=</A></CODE></H2>
+
+<PRE>template&lt;Ty, std::size_t N&gt;
+    bool <B>operator&gt;=</B>(
+        const array&lt;Ty, N&gt;&amp; left,
+        const array&lt;Ty, N&gt;&amp; right);</PRE>
+
+<P>The template function returns <CODE>!(left &lt; right)</CODE>.</P>
+
+<H2><CODE><A NAME="swap">swap</A></CODE></H2>
+
+<PRE>template&lt;class Ty, std::size_t N&gt;
+    void <B>swap</B>(
+        array&lt;Ty, N&gt;&amp; left,
+        array&lt;Ty, N&gt;&amp; right);</PRE>
+
+<P>The template function executes <CODE>left.<A HREF="#array::swap">swap</A>(right)</CODE>.</P>
+
+<H2><CODE><A NAME="tuple_element">tuple_element</A></CODE></H2>
+
+<PRE>template&lt;int Idx, class T, std::size_t N&gt;
+class <B>tuple_element</B>Idx, &lt;array&lt;T, N&gt; &gt; {
+    typedef T type;
+    };</PRE>
+
+<P>The template is a specialization of the template class
+<A HREF="tuple.html#tuple_element">tuple_element</A>. It
+has a nested typedef <CODE>type</CODE>
+that is a synonym for the type of the <CODE>Idx</CODE> element
+of the <CODE>array</CODE>.</P>
+
+<H2><CODE><A NAME="tuple_size">tuple_size</A></CODE></H2>
+
+<PRE>template&lt;class T, std::size_t N&gt;
+class <B>tuple_size</B>&lt;array&lt;T, N&gt; &gt; {
+    static const unsigned value = N;
+    };</PRE>
+
+<P>The template  is a specialization of the template class
+<A HREF="tuple.html#tuple_size">tuple_size</A>. It
+has a member <CODE>value</CODE> that is an integral
+constant expression whose value is <CODE>N</CODE>, the size of the array.</P>
+
+<HR>
+<P>See also the
+<B><A HREF="index.html#Table of Contents">Table of Contents</A></B> and the
+<B><A HREF="_index.html">Index</A></B>.</P>
+
+<P><I>
+<A HREF="crit_pjp.html">Copyright</A> &#169; 1992-2010
+by Dinkumware, Ltd. All rights reserved.</I></P>
+
+<!--V5.30:126I--></BODY></HTML>

@@ -1,0 +1,237 @@
+<HTML><HEAD><TITLE>Dinkum Threads Library</TITLE></HEAD><BODY>
+
+<H1><A NAME="Dinkum Threads Library">Dinkum Threads Library</A></H1><HR>
+
+<P>A C or C++ program can call on a number of functions from the
+<B>Dinkum Threads Library</B>, a portable library for managing
+multiple threads of control.</P>
+
+<HR>
+
+<H2><A NAME="Threads Table of Contents">Threads Table of Contents</A></H2>
+
+<P><B><CODE><A HREF="threads.html">&quot;Dinkum/threads/threads.h&quot;</A>
+&#183; <A HREF="xtimec.html">&quot;Dinkum/threads/xtimec.h&quot;</A>
+</CODE></B></P>
+
+<P><B><CODE><A HREF="condition.html">&quot;Dinkum/threads/condition&quot;</A>
+&#183; <A HREF="exceptions.html">&quot;Dinkum/threads/exceptions&quot;</A>
+&#183; <A HREF="mutex.html">&quot;Dinkum/threads/mutex&quot;</A>
+&#183; <A HREF="once.html">&quot;Dinkum/threads/once&quot;</A>
+&#183; <A HREF="rmutex.html">&quot;Dinkum/threads/recursive_mutex&quot;</A>
+&#183; <A HREF="thread.html">&quot;Dinkum/threads/thread&quot;</A>
+&#183; <A HREF="tss.html">&quot;Dinkum/threads/tss&quot;</A>
+&#183; <A HREF="xtime.html">&quot;Dinkum/threads/xtime&quot;</A>
+</CODE></B></P>
+
+<P><B><A HREF="cthrd_over.html">C Interface</A>
+&#183; <A HREF="cppthrd_over.html">C++ Interface</A>
+</B></P>
+
+<P><B>
+<A HREF="#Overview">Overview</A>
+&#183; <A HREF="#Memory Visibility">Memory Visibility</A>
+&#183; <A HREF="#Condition Variables">Condition Variables</A>
+&#183; <A HREF="#Mutexes">Mutexes</A>
+&#183; <A HREF="#Once Functions">Once Functions</A>
+&#183; <A HREF="#Thread-specific Storage">Thread-specific Storage</A>
+&#183; <A HREF="#Checked and Unchecked Libraries">Checked and Unchecked Libraries</A>
+</B></P>
+
+<HR>
+
+<H2><A NAME="Overview">Overview</A></H2>
+
+<P>A <B><A NAME="thread">thread</A></B> is a separate flow of execution within an application.
+On a multi-processor system threads can execute simultaneously on different processors.
+On a single-processor system and on a multi-processor system with fewer available
+processors than active threads two or more threads must share a processor.
+The details of switching a processor from one thread to another are handled
+by the operating system.</P>
+
+<P>The Dinkum Threads Library lets you create and control multiple threads,
+and synchronize the sharing of data between these threads. It consists of
+compatible and complementary interfaces for programming in either C or C++.
+The <A HREF="cthrd_over.html">C Interface</A> is very similar to the
+thread support interface defined in the
+the <A HREF="http://www.unix-systems.org/version3/ieee_std.html">Posix</A> Standard
+(also known as <B><A NAME="pthreads">pthreads</A></B>), while the
+<A HREF="cppthrd_over.html">C++ Interface</A> is very similar to the
+<B><A HREF="http://www.boost.org/libs/thread/doc/index.html">boost.threads</A></B>
+library for C++.</P>
+
+<P>When a C or C++ program begins execution it runs in a single thread, executing
+the <CODE>main</CODE> function. The program can create additional threads as needed.
+Each thread has its own copy of all <CODE>auto</CODE> variables, so <CODE>auto</CODE>
+values in one thread are independent of <CODE>auto</CODE> values in the other threads.
+Data with static storage duration is accessible to all threads, so those values are shared.
+However, changes to values in shared data often are not immediately visible in other threads.
+A multi-threaded application uses condition variables, mutexes, and once functions
+to coordinate the use of shared data by its threads, in order to ensure
+that shared data is not made inconsistent by simultaneous changes from more than one thread,
+that changes to shared data are visible to a thread when needed, and that a thread that
+needs data that is being created by another thread can be notified when that data becomes
+available.</P>
+
+<H2><A NAME="Memory Visibility">Memory Visibility</A></H2>
+
+<P>Changes made by one thread to values in shared data often are not immediately
+<B><A NAME="visible">visible</A></B> in other threads.
+
+For example, on a system with two separate processors and two threads running on the
+two processors, if the two processors simply
+share main memory an attempt by one processor to write data while the other processor
+reads the same data could result in the second processor reading a data value that
+has only been partially changed by the other processor. In order to avoid this inconsistency
+one processor has to lock the other one out until it finishes. This locking is usually done through
+the hardware and is known as a <I>bus lock</I>. Bus locks are unavoidable, but they slow
+the processors down. To minimize the effect of this slowdown, multi-processor systems
+have separate cache memory for each processor. This cache memory holds a copy of some
+of the data in main memory. When a processor writes data it writes to the cache.
+Sometime later the changes made to the cache are written to main memory. Thus, the
+processors could each have a different value for a data item in their caches, and
+those values could be different from the value in main memory.</P>
+
+<P>There are three times at which changes made to memory by one thread are guaranteed
+to be visible in another thread:</P>
+
+<UL>
+<LI>when a thread is created, changes to memory made by the creating thread
+prior to creating the new thread are visible to the new thread</LI>
+
+<LI>when a thread locks a mutex, changes made by other threads prior to unlocking
+the same mutex are visible to the locking thread</LI>
+
+<LI>when a thread joins another thread, changes made by the joined thread prior to
+exiting are visible to the joining thread</LI>
+</UL>
+
+<P>In practice this means that:</P>
+
+<UL>
+<LI>constant data that is initialized before a thread starts can be accessed in
+the thread without further precautions</LI>
+<LI>modifiable data should be accessed only from code controlled by
+a mutex, both in threads that modify the data and in threads that use the
+data</LI>
+</UL>
+
+<P>Note, however, that locking a mutex to prevent modification of shared data while
+it is being read also prevents other threads from locking the mutex in order to read the data.
+Such critical sections should be kept as short as possible to avoid blocking other
+threads any longer than necessary.</P>
+
+<H2><A NAME="Condition Variables">Condition Variables</A></H2>
+
+<P>A <B><A NAME="condition variable">condition variable</A></B> is used
+by a thread to wait until another thread notifies it that a condition has become
+true. Code that waits for a condition variable must also use a
+<A HREF="#mutex">mutex</A>; before calling any of the functions that
+wait for the condition variable
+the calling thread must lock the mutex, and when the called
+function returns the mutex will be locked. During the time that a
+thread is blocked waiting for the condition to become true the mutex
+is not locked.</P>
+
+<P><B><A NAME="spurious wakeups">Spurious wakeups</A></B> occur
+when threads waiting for condition variables become unblocked
+without appropriate notifications. Code that waits for a condition to
+become true should explicitly check that condition when returning from
+a wait function to recognize such spurious wakeups.
+This is usually done with a loop:</P>
+
+<PRE>while (condition is false)
+    wait for condition variable;</PRE>
+
+<P>The condition variable functions use a mutex internally; when a thread returns
+from a wait function any changes made to memory by threads that called a wait
+function or a notify function before the return will be
+<A HREF="#visible">visible</A> to the caller.</P>
+
+<H2><A NAME="Mutexes">Mutexes</A></H2>
+
+<P>A <B><A NAME="mutex">mutex</A></B> is used to insure that only one
+thread executes a region of code, known as a critical section, at any one time.
+On entry into the critical section the code locks the mutex; if no other thread
+holds the mutex the lock operation succeeds and the calling thread holds the mutex.
+On exit from the critical section the code unlocks the mutex. If another thread
+holds the mutex when a thread tries to lock it the thread that tried to lock the mutex
+blocks until the mutex is unlocked. When more than one thread is blocked waiting for
+the mutex an unlock releases one of the blocked threads.</P>
+
+<P>A mutex can be <B><A NAME="recursive">recursive</A></B>
+or <B><A NAME="non-recursive">non-recursive</A></B>. When a thread that already holds
+a recursive mutex attempts to lock it again the thread does not block. The
+thread must unlock the mutex as many times as it locked it before any other
+thread will be permitted to lock the mutex. When a thread that already holds
+a non-recursive mutex attempts to lock it again the thread will block. Since
+the thread cannot then unlock the mutex, the result is a deadlock. Non-recursive
+mutexes are usually smaller and faster than recursive mutexes, so a properly written
+program that uses non-recursive mutexes can be faster than one that uses
+recursive mutexes.</P>
+
+<P>A mutex supports <B><A NAME="test and return">test and return</A></B>
+if it provides a lock call that does not block if the mutex is already locked. Such a lock
+call returns a value that indicates whether the mutex was locked as a result of the call.</P>
+
+<P>A mutex supports <B><A NAME="timeout">timeout</A></B>
+if it provides a lock call that blocks until no later than a specified time
+waiting for the mutex to be unlocked. Such a lock call returns a value that indicates
+whether the mutex was locked as a result of the call.</P>
+
+<H2><A NAME="Once Functions">Once Functions</A></H2>
+
+<P>A <B><A NAME="once function">once function</A></B> is a function that should only be
+called once during a program's execution. Once functions are typically used to initialize
+data that is shared between threads: the first thread that needs the data
+initializes it by calling the once function, and later threads that need the data do not call
+the once function. Each once function should have an associated
+once flag, statically initialized to indicate that the function has not been called.
+Code that needs to insure that the once function has been called calls
+<CODE>call_once</CODE>, passing the flag and the address of the once function.
+The code in <CODE>call_once</CODE> atomically checks the flag, and if the flag
+indicates that the function has not been called, calls the once function and
+sets the flag to indicate that the function has been called.</P>
+
+<P>The function <CODE>call_once</CODE> uses a mutex internally; when it returns
+any changes made to memory by the once function will be
+<A HREF="#visible">visible</A> to the caller.</P>
+
+<H2><A NAME="Thread-specific Storage">Thread-specific Storage</A></H2>
+
+<P>Thread-specific storage is global data that can hold a distinct value for each
+thread that uses it. This permits functions executing in a single thread to share
+data without interfering with the data shared by the same functions when executing
+in other threads.</P>
+
+<H2><A NAME="Checked and Unchecked Libraries">Checked and Unchecked Libraries</A></H2>
+
+<P>The library can be built as a
+checked version and as an unchecked version. The checked version uses
+a macro similar to C's <CODE>assert</CODE> macro to test the conditions marked as
+<B><I><A NAME="Precondition">Precondition</A></I></B>s in the functional descriptions. Conditions marked
+<B><I><A NAME="Requires">Requires</A></I></B> may or may not be tested. When a failure
+is detected the macro writes an error message to standard out and calls the function
+<A HREF="threads.html#thrd_abort"><CODE>thrd_abort</CODE></A>. For runtime debugging,
+set a breakpoint on that function.</P>
+
+<P>To use the checked version, define either the macro <CODE>THREAD_CHECK</CODE>
+or the macro <CODE>_DEBUG</CODE> to a non-zero
+numeric value in all code that uses the library, and link to the checked version of the
+library. To use the unchecked version, do not define either of those macros
+in any code that uses the library, and link to the unchecked version of the library.
+See the <B>README</B> file that came with your copy of the library for details on
+how to link to the appropriate version of the library.</P>
+
+<HR>
+<P>See also the
+<B><A HREF="index.html">Table of Contents</A></B>
+and the <B><A HREF="_index.html">Index</A></B>.</P>
+
+<P><I>
+<A HREF="crit_pjp.html">Copyright</A> &#169; 1992-2010
+by Dinkumware, Ltd.
+Portions derived from work <A HREF="crit_wek.html">copyright</A> &#169; 2001
+by William E. Kempf. All rights reserved.</I></P>
+
+<!--V5.30:126I--></BODY></HTML>

@@ -1,0 +1,173 @@
+<HTML><HEAD><TITLE>C Interface</TITLE></HEAD><BODY>
+
+<H1><A NAME="C Interface">C Interface</A></H1><HR>
+
+<P>The C interface to the <B>Dinkum Threads Library</B> is very similar to the
+thread support interface defined in the
+<A HREF="http://www.unix-systems.org/version3/ieee_std.html">Posix</A>
+Standard. It consists of two headers:</P>
+
+<UL>
+<LI>
+<CODE><A HREF="threads.html">&quot;Dinkum/threads/threads.h&quot;</A></CODE>
+-- for defining types and functions that implement thread-related operations</LI>
+
+<LI>
+<CODE><A HREF="xtimec.html">&quot;Dinkum/threads/xtimec.h&quot;</A></CODE>
+-- for defining a struct and functions for high-resolution time operations</LI>
+</UL>
+
+<P>Here is an <A HREF="csample.txt">example program</A> to illustrate the
+use of the C interface.</P>
+
+<HR>
+
+<P><B><A HREF="#Threads">Threads</A>
+&#183; <A HREF="#Condition Variables">Condition Variables</A>
+&#183; <A HREF="#Mutexes">Mutexes</A>
+&#183; <A HREF="#Once Functions">Once Functions</A>
+&#183; <A HREF="#Thread-specific Storage">Thread-specific Storage</A>
+&#183; <A HREF="#Return Values">Return Values</A>
+</B></P>
+
+<HR>
+
+<H2><A NAME="Threads">Threads</A></H2>
+
+<P>Use the functions and types with the prefix <I><CODE>thrd</CODE></I> to manage
+<A HREF="index_thr.html#thread">threads</A>. Each thread has an identifier of type
+<CODE><A HREF="threads.html#thrd_t">thrd_t</A></CODE>, which is passed as an argument
+to the functions that manage specific threads. Each thread begins execution in a
+function of type <CODE><A HREF="threads.html#thrd_start_t">thrd_start_t</A></CODE>.
+To create a new thread call the function
+<CODE><A HREF="threads.html#thrd_create">thrd_create</A></CODE> with the address of the
+thread identifier, the address of the thread function, and an argument to be passed
+to the thread function. The thread ends when it returns from the thread function or when
+it calls <CODE><A HREF="threads.html#thrd_exit">thrd_exit</A></CODE>. For convenience, a thread
+can provide a <B><A NAME="result code">result code</A></B>
+of type <CODE>int</CODE> when it ends, either by returning the
+code from the thread function or by passing the code to <CODE>thrd_exit</CODE>.
+To block a thread until another thread ends call
+<CODE><A HREF="threads.html#thrd_join">thrd_join</A></CODE>, passing the
+identifier of the thread to wait for and, optionally, the address of a variable of
+type <CODE>int</CODE> where the result code will be stored. To properly clean up
+resources allocated by the operating system, an application should call either
+<CODE>thrd_join</CODE> or <CODE><A HREF="threads.html#thrd_detach">thrd_detach</A></CODE>
+once for each thread created by <CODE>thrd_create</CODE>.</P>
+
+<P>Two functions operate on the current thread; they do not take a thread identifier argument.
+Use <CODE><A HREF="threads.html#thrd_sleep">thrd_sleep</A></CODE> to suspend
+execution of the current thread until a particular time. Use
+<CODE><A HREF="threads.html#thrd_yield">thrd_yield</A></CODE> to permit other
+threads to run even if the current thread would ordinarily continue to run.</P>
+
+<P>Two functions operate on thread identifiers. Use
+<CODE><A HREF="threads.html#thrd_equal">thrd_equal</A></CODE> to determine whether
+two thread identifiers refer to the same thread.
+Use <CODE><A HREF="threads.html#thrd_current">thrd_current</A></CODE> to get
+a thread identifier that refers to the current thread.</P>
+
+<H2><A NAME="Condition Variables">Condition Variables</A></H2>
+
+<P>Use the functions and type with the prefix <I><CODE>cnd</CODE></I> to manage
+<A HREF="index_thr.html#condition variable">condition variables</A>.
+Each condition variable has an identifier of type
+<CODE><A HREF="threads.html#cnd_t">cnd_t</A></CODE>, which is passed as an argument
+to the functions that manage condition variables. Use
+<CODE><A HREF="threads.html#cnd_init">cnd_init</A></CODE> to create a condition
+variable and <CODE><A HREF="threads.html#cnd_destroy">cnd_destroy</A></CODE> to
+release any resources associated with a condition variable when it is no longer needed.
+To wait for a condition variable to be signalled call
+<CODE><A HREF="threads.html#cnd_wait">cnd_wait</A></CODE> or
+<CODE><A HREF="threads.html#cnd_timedwait">cnd_timedwait</A></CODE>.
+To unblock threads waiting for a condition variable call
+<CODE><A HREF="threads.html#cnd_signal">cnd_signal</A></CODE> or
+<CODE><A HREF="threads.html#cnd_broadcast">cnd_broadcast</A></CODE>.</P>
+
+<H2><A NAME="Mutexes">Mutexes</A></H2>
+
+<P>Use the functions and type with the prefix <I><CODE>mtx</CODE></I> to manage
+<A HREF="index_thr.html#mutex">mutexes</A>.
+Each mutex has an identifier of type
+<CODE><A HREF="threads.html#mtx_t">mtx_t</A></CODE>, which is passed as an argument
+to the functions that manage mutexes. Use
+<CODE><A HREF="threads.html#mtx_init">mtx_init</A></CODE> to create a mutex
+and <CODE><A HREF="threads.html#mtx_destroy">mtx_destroy</A></CODE> to
+release any resources associated with a mutex when it is no longer needed.
+To lock a mutex call
+<CODE><A HREF="threads.html#mtx_lock">mtx_lock</A></CODE>,
+<CODE><A HREF="threads.html#mtx_timedlock">mtx_timedlock</A></CODE> or
+<CODE><A HREF="threads.html#mtx_trylock">mtx_trylock</A></CODE>. To
+unlock a mutex call
+<CODE><A HREF="threads.html#mtx_unlock">mtx_unlock</A></CODE>.</P>
+
+<H2><A NAME="Once Functions">Once Functions</A></H2>
+
+<P>Use a value of type <CODE><A HREF="threads.html#once_flag">once_flag</A></CODE>,
+initialized to the value <CODE><A HREF="threads.html#ONCE_FLAG_INIT">ONCE_FLAG_INIT</A></CODE>,
+to ensure that a function is called exactly once by passing
+a function pointer and the address of the <CODE>once_flag</CODE> object
+to <CODE><A HREF="threads.html#call_once">call_once</A></CODE>.</P>
+
+<H2><A NAME="Thread-specific Storage">Thread-specific Storage</A></H2>
+
+<P>Use the functions and types with the prefix <I><CODE>tss</CODE></I> to manage
+<A HREF="index_thr.html#Thread-specific Storage">thread-specific storage</A>.
+Each thread-specific storage pointer has an identifier of type
+<CODE><A HREF="threads.html#tss_t">tss_t</A></CODE>, which is passed as an argument
+to the functions that manage thread-specific storage.
+Call <CODE><A HREF="threads.html#tss_create">tss_create</A></CODE>
+to create a thread-specific storage pointer and
+<CODE><A HREF="threads.html#tss_delete">tss_delete</A></CODE> to release any
+resources associated with a thread-specific storage pointer when it is no longer
+needed. To get the value held by the pointer in the current thread call
+<CODE><A HREF="threads.html#tss_get">tss_get</A></CODE>. To change the value
+held by the pointer in the current thread call
+<CODE><A HREF="threads.html#tss_set">tss_set</A></CODE>.</P>
+
+<P>Each thread-specific storage pointer may have an associated
+<B><A NAME="destructor">destructor</A></B>, specified in the call
+to <CODE>tss_create</CODE>. The destructor
+will be called when a thread terminates and the value of the pointer
+associated with that thread is not 0. The value of the pointer for that
+thread is set to 0 before calling the destructor and the old value is
+passed to the destructor. Since a destructor can store non-0 values in
+thread-specific storage pointers, this process will be repeated until no pointers
+for the terminating thread hold non-0 values or until a system-specific
+maximum number of iterations
+<CODE><A HREF="threads.html#TSS_DTOR_ITERATIONS">TSS_DTOR_ITERATIONS</A></CODE>
+has been made.</P>
+
+<H2><A NAME="Return Values">Return Values</A></H2>
+
+<P>Most of the functions
+<B><A NAME="return value">return a value</A></B> of type <CODE>int</CODE> that indicates whether
+the function succeeded. The values are as follows:</P>
+
+<UL>
+<LI><A HREF="threads.html#thrd_success">thrd_success</A>
+-- the function succeeded</LI>
+<LI><A HREF="threads.html#thrd_nomem">thrd_nomem</A>
+-- the function was unable to allocate memory</LI>
+<LI><A HREF="threads.html#thrd_timedout">thrd_timedout</A>
+-- the time specified in a timed wait function was reached without
+acquiring the requested resource</LI>
+<LI><A HREF="threads.html#thrd_busy">thrd_busy</A>
+-- a resource requested by a
+<A HREF="index_thr.html#test and return">test and return</A> function is already in use</LI>
+<LI><A HREF="threads.html#thrd_error">thrd_error</A>
+-- some other error occurred</LI>
+</UL>
+
+<HR>
+<P>See also the
+<B><A HREF="index.html">Table of Contents</A></B>
+and the <B><A HREF="_index.html">Index</A></B>.</P>
+
+<P><I>
+<A HREF="crit_pjp.html">Copyright</A> &#169; 1992-2010
+by Dinkumware, Ltd.
+Portions derived from work <A HREF="crit_wek.html">copyright</A> &#169; 2001
+by William E. Kempf. All rights reserved.</I></P>
+
+<!--V5.30:126I--></BODY></HTML>

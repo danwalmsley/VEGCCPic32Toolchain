@@ -1,0 +1,50 @@
+<HTML><HEAD><TITLE>&quot;exceptions&quot;</TITLE></HEAD><BODY>
+
+<H1><A NAME="&quot;exceptions&quot;">&quot;Dinkum/threads/exceptions&quot;</A></H1><HR>
+
+<P>Include the header <B><CODE>&quot;Dinkum/threads/exceptions&quot;</CODE></B> to define classes
+used for reporting exceptions during thread operations.</P>
+
+<PRE>namespace Dinkum {
+    namespace threads {
+    class <B><A HREF="#lock_error">lock_error</A></B>;
+    class <B><A HREF="#thread_resource_error">thread_resource_error</A></B>;
+    }  // namespace threads
+} // namespace Dinkum</PRE>
+
+<H2><A NAME="lock_error">lock_error</A></H2>
+
+<PRE>class <B>lock_error</B>
+    : public std::runtime_error
+    {
+public:
+    lock_error();
+    };</PRE>
+
+<P>The class describes an exception thrown to indicate that an attempted
+operation involving a lock failed because the lock was not in a required state.</P>
+
+<H2><A NAME="thread_resource_error">thread_resource_error</A></H2>
+
+<PRE>class <B>thread_resource_error</B>
+    : public std::runtime_error
+    {
+public:
+    thread_resource_error();
+    };</PRE>
+
+<P>The class describes an exception thrown to indicate that an attempted
+operation failed because a required resource other than memory was not available.</P>
+
+<HR>
+<P>See also the
+<B><A HREF="index.html">Table of Contents</A></B>
+and the <B><A HREF="_index.html">Index</A></B>.</P>
+
+<P><I>
+<A HREF="crit_pjp.html">Copyright</A> &#169; 1992-2010
+by Dinkumware, Ltd.
+Portions derived from work <A HREF="crit_wek.html">copyright</A> &#169; 2001
+by William E. Kempf. All rights reserved.</I></P>
+
+<!--V5.30:126I--></BODY></HTML>

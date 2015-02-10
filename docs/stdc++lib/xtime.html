@@ -1,0 +1,59 @@
+<HTML><HEAD><TITLE>&quot;xtime&quot;</TITLE></HEAD><BODY>
+
+<H1><A NAME="&quot;xtimec.h&quot;"><CODE>&quot;Dinkum/threads/xtime&quot;</CODE></A></H1><HR>
+
+<P>Include the header <B><CODE>&quot;Dinkum/threads/xtime&quot;</CODE></B> so that
+you can perform high-resolution time operations.</P>
+
+<PRE>namespace Dinkum {
+    namespace threads {
+    enum { <B><A HREF="#TIME_UTC">TIME_UTC</A></B> };
+    class <B><A HREF="#xtime">xtime</A></B>;
+    int <B><A HREF="#xtime_get">xtime_get</A></B>(xtime*, int);
+    }  // namespace threads
+} // namespace Dinkum</PRE>
+
+<HR>
+
+<H2><A NAME="TIME_UTC"><CODE>TIME_UTC</CODE></A></H2>
+
+<PRE>enum { <B>TIME_UTC</B> = <I>&lt;integer constant expression&gt</I> };</PRE>
+
+<P>The compile-time constant is a non-zero value that designates Coordinated Universal
+Time (UTC) as the time base for the values set by <A HREF="#xtime_get">xtime_get</A>.</P>
+
+<H2><A NAME="xtime"><CODE>xtime</CODE></A></H2>
+
+<PRE>typedef struct
+    {
+    time_t sec; <B>/* seconds since 1 Jan. 1970 00:00:00 */</B>
+    long nsec;  <B>/* nanoseconds since time specified by sec */</B>
+    } <B>xtime</B>;</PRE>
+
+<P>The struct <CODE>xtime</CODE> contains members that describe times with
+nanosecond resolution. The comment following each member desribes its meaning.</P>
+
+<H2><A NAME="xtime_get"><CODE>xtime_get</CODE></A></H2>
+
+<PRE>int <B>xtime_get</B>(xtime *xt, int base);</PRE>
+
+<P>The function sets the <CODE>xtime</CODE> object pointed to by
+<CODE>xt</CODE> to hold the current time based on the time base
+<CODE>base</CODE>. If successful it returns the non-zero value <CODE>base</CODE>,
+which must be <A HREF="#TIME_UTC">TIME_UTC</A>;
+otherwise it returns 0. Note that although an <CODE>xtime</CODE> object describes
+times with nanosecond resolution the actual resolution in an <CODE>xtime</CODE>
+object is system dependent.</P>
+
+<HR>
+<P>See also the
+<B><A HREF="index.html">Table of Contents</A></B>
+and the <B><A HREF="_index.html">Index</A></B>.</P>
+
+<P><I>
+<A HREF="crit_pjp.html">Copyright</A> &#169; 1992-2010
+by Dinkumware, Ltd.
+Portions derived from work <A HREF="crit_wek.html">copyright</A> &#169; 2001
+by William E. Kempf. All rights reserved.</I></P>
+
+<!--V5.30:126I--></BODY></HTML>

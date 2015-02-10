@@ -1,0 +1,66 @@
+<html>
+<head>
+   <title>Activating Multiple Licenses</title>
+   <style type="text/css">
+     h2 { font-family:sans-serif;
+          color:#CC0000 }
+     p  { font-family:sans-serif;
+          font-size:10pt }
+     p.code  { font-family:monospace;
+               font-size:10pt }
+   </style>
+</head>
+<body text="#000000" bgcolor="#FFFFFF" link="#3300FF" vlink="#3399FF" alink="#3399FF">
+
+<h2>Activating Multiple Licenses</h2>
+
+<p>
+If you wish to activate several licenses, it is possible to activate all of them
+easily through the command line with the use of a scripting language.
+This is easier than activating licenses one at a time through the installer.
+</p>
+
+<p>
+Depending on the script structure, the activation keys could be stored in a file
+where the script can look for keys, or provided through the command line as
+an argument to the program. Once the program has a list of all activation keys,
+the script should execute <span style="font-family:monospace">xclm{.exe} -actkey</span>
+for every activation key in the list.
+</p>
+
+<p>
+This is an example of a script that will activate multiple keys:
+</p>
+
+<p class="code">
+File: activate_multiple_keys.sh<br/><br/>
+
+#!/bin/sh<br/><br/>
+
+if [ $# -eq 0 ]; then<br/>
+&nbsp;&nbsp;echo “Please input at least one activation key into this program”;<br/>
+&nbsp;&nbsp;exit;<br/>
+fi<br/>
+if [ ! -x xclm ]; then<br/>
+&nbsp;&nbsp;echo “xclm binary not found”;<br/>
+&nbsp;&nbsp;echo “Please install latest compiler to get the xclm binary;<br/>
+&nbsp;&nbsp;exit;<br/>
+fi<br/><br/>
+
+for input_arg in "$@"; do<br/>
+&nbsp;&nbsp;xclm -actkey $input_arg;<br/>
+done
+</p>
+
+<p>
+This script can run natively on Linux and Mac OS systems.
+It can also be run on Windows OS systems by installing Cygwin.
+The program should be executed like this
+</p>
+
+<p class="code">
+./activate_multiple_keys.sh <activation_key1> ... <activation_keyN>
+</p>
+
+</body>
+</html>

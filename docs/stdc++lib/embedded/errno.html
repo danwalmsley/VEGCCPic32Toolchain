@@ -1,0 +1,98 @@
+<HTML><HEAD><TITLE>&lt;errno.h&gt;</TITLE></HEAD><BODY>
+
+<H1><A NAME="&lt;errno.h&gt;"><CODE>&lt;errno.h&gt;</CODE></A></H1><HR>
+
+<P>Include the standard header <B><CODE>&lt;errno.h&gt;</CODE></B>
+to test the value stored in
+<A HREF="#errno"><CODE>errno</CODE></A>
+by certain library functions.</P>
+<HR>
+
+<P><B><CODE><A HREF="#EDOM">EDOM</A>
+&#183; <A HREF="#EILSEQ">EILSEQ</A>
+&#183; <A HREF="#ERANGE">ERANGE</A>
+&#183; <A HREF="#errno">errno</A>
+</CODE></B></P>
+
+<P><B><CODE><A HREF="#errno_t">errno_t</A>
+</CODE></B></P>
+<HR>
+
+<H2><A NAME="Overview">Overview</A></H2>
+
+<P>At program startup, the value stored in
+<A HREF="#errno"><CODE>errno</CODE></A>
+is zero. Library functions store only values greater than zero.
+Any library function can alter the value stored, but
+only those cases where a library function is explicitly
+required to store a value are documented here.</P>
+
+<P>To test whether a library function stores a value in
+<A HREF="#errno"><CODE>errno</CODE></A>,
+the program should store the value zero there immediately before
+it calls the library function.</P>
+
+<PRE>    /* MACROS */
+#define <A HREF="#EDOM"><B>EDOM</B></A> <I>&lt;#if expression&gt;</I>
+#define <A HREF="#EILSEQ"><B>EILSEQ</B></A> <I>&lt;#if expression&gt;</I> <B>[added with Amendment 1]</B>
+#define <A HREF="#ERANGE"><B>ERANGE</B></A> <I>&lt;#if expression&gt;</I>
+#define <A HREF="#errno"><B>errno</B></A> <I>&lt;int modifiable lvalue&gt;</I>
+
+    /* TYPES */
+#if __STDC_WANT_LIB_EXT1__ <B>[added with <A HREF="index_ext1.html#TR24731">TR24731</A>]</B>
+typedef int <A HREF="#errno_t"><B>errno_t</B></A>;
+#endif /* __STDC_WANT_LIB_EXT1__ */</PRE>
+
+
+<P>An implementation can define additional
+macros in this standard header that you can test for equality with
+the value stored. All these additional macros have
+names that begin with <CODE>E</CODE>.</P>
+
+<H2><A NAME="EDOM"><CODE>EDOM</CODE></A></H2>
+
+<PRE>#define <B>EDOM</B> <I>&lt;#if expression&gt;</I></PRE>
+
+<P>The macro yields the value stored in
+<A HREF="#errno"><CODE>errno</CODE></A> on a domain error.</P>
+
+<H2><A NAME="EILSEQ"><CODE>EILSEQ</CODE></A></H2>
+
+<PRE>#define <B>EILSEQ</B> <I>&lt;#if expression&gt;</I> <B>[added with Amendment 1]</B></PRE>
+
+<P>The macro yields the value stored in
+<A HREF="#errno"><CODE>errno</CODE></A> on an invalid
+multibyte sequence.</P>
+
+<H2><A NAME="ERANGE"><CODE>ERANGE</CODE></A></H2>
+
+<PRE>#define <B>ERANGE</B> <I>&lt;#if expression&gt;</I></PRE>
+
+<P>The macro yields the value stored in
+<A HREF="#errno"><CODE>errno</CODE></A> on a range error.</P>
+
+<H2><A NAME="errno"><CODE>errno</CODE></A></H2>
+
+<PRE>#define <B>errno</B> <I>&lt;int modifiable lvalue&gt;</I></PRE>
+
+<P>The macro designates an object that is assigned a value greater
+than zero on certain library errors.</P>
+
+<H2><A NAME="errno_t"><CODE>errno_t</CODE></A></H2>
+
+<PRE>typedef int <B>errno_t</B>; <B>[added with TR24731]</B></PRE>
+
+<P>The type is a synonym for <I>int,</I> used to represent
+a value that can be stored in
+<A HREF="#errno"><CODE>errno</CODE></A>.</P>
+
+<HR>
+<P>See also the
+<B><A HREF="index.html#Table of Contents">Table of Contents</A></B> and the
+<B><A HREF="_index.html">Index</A></B>.</P>
+
+<P><I>
+<A HREF="crit_pjp.html">Copyright</A> &#169; 1992-2010
+by P.J. Plauger and Jim Brodie. All rights reserved.</I></P>
+
+<!--V5.30:126I--></BODY></HTML>

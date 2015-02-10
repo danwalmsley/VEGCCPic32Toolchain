@@ -1,0 +1,110 @@
+<HTML><HEAD><TITLE>&quot;fixed.h&quot;</TITLE></HEAD><BODY>
+
+<H1><A NAME="&quot;fixed.h&quot;"><CODE>&quot;fixed.h&quot;</CODE></A></H1>
+
+<P>[Internal header for use with
+<A NAME="TR18037">TR18037</A>]</P><HR>
+
+<P>Include the internal header <B><CODE>&quot;fixed.h&quot;</CODE></B>
+to define several functions that perform basic arithmetic operations
+on the fixed-point types. The compiler front end from
+<A HREF="http://www.edg.com">Edison Design Group</A> calls these functions,
+when it generates C code directly, to implement the fixed-point
+arithmetic described in TR18037.</P>
+
+<PRE>    /* TYPES */
+typedef unsigned long long <B>fxvalue</B>;
+
+typedef unsigned short <B>fxmask1</B>;  /* op/result */
+typedef unsigned short <B>fxmaskf</B>;  /* op */
+typedef unsigned short <B>fxmaskg</B>;  /* result */
+typedef unsigned short <B>fxmaskc</B>;  /* op, result */
+typedef unsigned short <B>fxmaskr</B>;  /* op1, op2 */
+typedef unsigned long  <B>fxmask2</B>;  /* op1, op2, result */
+
+    /* FUNCTIONS */
+fxvalue <B>_Fixed_negate</B>(fxmask1 mask, fxvalue x);  /* -x */
+fxvalue <B>_Fixed_incr</B>(fxmask1 mask, fxvalue x);    /* x+1 */
+fxvalue <B>_Fixed_decr</B>(fxmask1 mask, fxvalue x);    /* x+1 */
+
+fxvalue <B>_Fixed_add</B>(fxmask2 mask, fxvalue x, fxvalue y);       /* x+y */
+fxvalue <B>_Fixed_subtract</B>(fxmask2 mask, fxvalue x, fxvalue y);  /* x-y */
+fxvalue <B>_Fixed_multiply</B>(fxmask2 mask, fxvalue x, fxvalue y);  /* x*y */
+fxvalue <B>_Fixed_divide</B>(fxmask2 mask, fxvalue x, fxvalue y);    /* x/y */
+
+int <B>_Fixed_eq</B>(fxmaskr mask, fxvalue x, fxvalue y);  /* x==y */
+int <B>_Fixed_ne</B>(fxmaskr mask, fxvalue x, fxvalue y);  /* x!=y */
+int <B>_Fixed_gt</B>(fxmaskr mask, fxvalue x, fxvalue y);  /* x&gt;y */
+int <B>_Fixed_lt</B>(fxmaskr mask, fxvalue x, fxvalue y);  /* x&lt;y */
+int <B>_Fixed_ge</B>(fxmaskr mask, fxvalue x, fxvalue y);  /* x&gt;=y */
+int <B>_Fixed_le</B>(fxmask maskr, fxvalue x, fxvalue y);  /* x&lt;=y */
+
+fxvalue <B>_Fixed_shiftl(</B>fxmask1 mask, fxvalue x, int y);  /* x&lt;&lt;y */
+fxvalue <B>_Fixed_shiftr</B>(fxmask1 mask, fxvalue x, int y);  /* x&gt;&gt;y */
+
+fxvalue <B>_Fixed_conv</B>(fxmaskc mask, fxvalue x);            /* (T)x */
+float <B>_Fixed_to_float</B>(fxmaskf mask, fxvalue x);          /* (float)x */
+double <B>_Fixed_to_double</B>(fxmaskf mask, fxvalue x);        /* (double)x */
+long double <B>_Fixed_to_ldouble</B>(fxmaskf mask, fxvalue x);  /* (long double)x */
+
+fxvalue <B>_Fixed_from_float</B>(fxmaskg mask, float x);          /* (T)x */
+fxvalue <B>_Fixed_from_double</B>(fxmaskg mask, double x);        /* (T)x */
+fxvalue <B>_Fixed_from_ldouble</B>(fxmaskg mask, long double x);  /* (T)x */</PRE>
+
+<P>All functions convey fixed-point values in the least-significant bits
+of the common type <CODE>fxvalue</CODE>. A <CODE>mask</CODE> argument conveys
+type information, in the form of one to three five-bit fields, packed as:</P>
+
+<PRE>mask = field1 | (field2 &lt;&lt; 5) | field3 &lt;&lt; 10);</PRE>
+
+<P>Each field is the union of:</P>
+
+<UL>
+<LI>0x10 for a guaranteed saturating type, or 0x00 otherwise.</LI>
+
+<LI>0x08 for an unsigned type, or 0x00 for a signed type.</LI>
+
+<LI>0x04 for an accumulator type, or 0x00 for a fraction type.</LI>
+
+<LI>0x03 for an integer type, 0x02 for a long fixed-point type,
+0x01 for a default fixed-point type (neither long nor short), or
+0x00 for a short fixed-point type.</LI>
+</UL>
+
+<P>In this implementation, all types are saturating, so the 0x10 bit
+is ignored.</P>
+
+<P>The field arguments are then:</P>
+
+<UL>
+<LI><CODE>fxmask1</CODE> -- <CODE>field1</CODE> is the type of both
+the operand and the result.</LI>
+
+<LI><CODE>fxmaskf</CODE> -- <CODE>field1</CODE> is the type of the operand.</LI>
+
+<LI><CODE>fxmaskg</CODE> -- <CODE>field1</CODE> is the type of the result.</LI>
+
+<LI><CODE>fxmaskc</CODE> -- <CODE>field1</CODE> is the type of the operand,
+and <CODE>field2</CODE> is the type of the result.</LI>
+
+<LI><CODE>fxmaskc</CODE> -- <CODE>field1</CODE> is the type of the first operand,
+and <CODE>field2</CODE> is the type of the second operand.</LI>
+
+<LI><CODE>fxmask2</CODE> -- <CODE>field1</CODE> is the type of the first operand,
+<CODE>field2</CODE> is the type of the second operand, and
+<CODE>field3</CODE> is the type of the result.</LI>
+</UL>
+
+<P>The comment after each of the functions above describes the operation
+it implements.</P>
+
+<HR>
+<P>See also the
+<B><A HREF="index.html#Table of Contents">Table of Contents</A></B> and the
+<B><A HREF="_index.html">Index</A></B>.</P>
+
+<P><I>
+<A HREF="crit_pjp.html">Copyright</A> &#169; 1992-2010
+by P.J. Plauger. All rights reserved.</I></P>
+
+<!--V5.30:126I--></BODY></HTML>

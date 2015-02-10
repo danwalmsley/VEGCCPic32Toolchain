@@ -1,0 +1,85 @@
+<html>
+<head>
+   <title>The XC License Manager (XCLM) in MPLAB X IDE</title>
+   <style type="text/css">
+     h1 { font-family:sans-serif;
+          color:#CC0000 }
+     h2 { font-family:sans-serif;
+          color:#CC0000 }
+     p  { font-family:sans-serif;
+          font-size:10pt }
+     li { font-family:sans-serif;
+          font-size:10pt }
+   </style>
+</head>
+<body text="#000000" bgcolor="#FFFFFF" link="#3300FF" vlink="#3399FF" alink="#3399FF">
+
+<h1>The XC License Manager (XCLM) in MPLAB X IDE</h1>
+<hr>
+
+<p>The Microchip Technology XC License Manager (XCLM) is a cross-platform license manager
+for MPLAB® XC C compilers.</p>
+
+<p>Some XCLM functions are supported in MPLAB X IDE.</p>
+
+<h2>Using the XC License Manager (XCLM) to Roam</h2>
+<p>
+The XC License Manager (XCLM) supports a network license server/client setup.
+You install a network license server and then check out client licenses.
+See the installation documenation - "Installing and Licensing MPLAB<sup>©</sup> XC C Compilers"
+(DS52059) - for details on how to install a network license server and connect clients.
+</p>
+
+<p>
+As a Network client, you can checkout a network license that is active for up to 30 days
+by using Roam Out. Reasons to roam out may be:
+</p>
+
+<ul>
+  <li>You want to hold on to a license for several days.
+  <li>You have a laptop and will not have a consistent connection to a network.
+</ul>
+
+<p>
+The license server will check out and give a license to you.
+The license server now has one less license of product that it can give out.
+The license will stay checked out until you chose to Roam In or 30 days have passed.
+</p>
+
+<p>
+In the MPLAB X IDE, you can easily roam your XC network license in or out.
+</p>
+
+<ol>
+  <li>Select <i><u>Tools>Licenses>Roam Network License</u></i> to open the
+      Network License Management dialog (see image below).</li>
+  <li>Click on the compiler that you wish to roam in or out.</li>
+  <li>Click on either the "Roam in" or "Roam out" green arrows.</br>
+      <b>Note:</b> When you roam in, there is a 60-minute delay before someone else can
+      use your license.</li>
+  <li>Click <b>Close</b> when you are done.</li>
+</ol>
+
+<p>
+You can use roam in and roam out on the command line as well.
+For details, see <a href="files/xclm_reference.htm">Command-Line Options Reference</a>.
+</p>
+
+<img src="files_ide/RoamLicense.gif" />
+
+<h2>Using the XC License Manager (XCLM) to a Active Workstation License</h2>
+
+<p>If you have a free or evalution version of the XCLM, you can activate it
+from MPLAB X IDE by doing the following:</p>
+
+<ol>
+  <li>Select <i><u>Tools>Licenses>Activate Workstation License</u></i> to open the
+      Activate Workstation License dialog (see image below).</li>
+  <li>Type in your license.</li>
+  <li>Click <b>Activate</b> to activate the license.</li>
+</ol>
+
+<img src="files_ide/WorkstationLicense.gif" />
+
+</body>
+</html>

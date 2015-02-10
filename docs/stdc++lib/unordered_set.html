@@ -1,0 +1,1384 @@
+<HTML><HEAD><TITLE>&lt;unordered_set&gt;</TITLE></HEAD><BODY>
+
+<H1><A NAME="&lt;unordered_set&gt;"><CODE>&lt;unordered_set&gt;</CODE></A></H1>
+
+<P>[added with
+<A HREF="index.html#TR1">TR1</A>]</P><HR>
+
+<P>Include the <A HREF="index.html#STL">STL</A>
+standard header <B><CODE>&lt;unordered_set&gt;</CODE></B> to define the
+<A HREF="lib_cont.html#Containers">container</A>
+template classes <CODE>unordered_set</CODE> and
+<CODE>unordered_multiset</CODE>, and their supporting
+templates.</P>
+
+<PRE>namespace std {
+    namespace tr1 {
+        // DECLARATIONS
+template&lt;class Key, class Hash, class Pred, class Alloc&gt;
+    class <B><A HREF="#unordered_set">unordered_set</A></B>;
+template&lt;class Key, class Hash, class Pred, class Alloc&gt;
+    class <B><A HREF="#unordered_multiset">unordered_multiset</A></B>;
+
+        // TEMPLATE FUNCTIONS
+template&lt;class Key, class Hash, class Pred, class Alloc&gt;
+    void <B><A HREF="#swap">swap</A></B>(
+        unordered_set&lt;Key, Hash, Pred, Alloc&gt;&amp; left,
+        unordered_set&lt;Key, Hash, Pred, Alloc&gt;&amp; right);
+template&lt;class Key, class Hash, class Pred, class Alloc&gt;
+    void <B><A HREF="#swap">swap</A></B>(
+        unordered_multiset&lt;Key, Hash, Pred, Alloc&gt;&amp; left,
+        unordered_multiset&lt;Key, Hash, Pred, Alloc&gt;&amp; right);
+    } // namespace tr1
+using tr1::unordered_multiset; using tr1::unordered_set; <B>[added with C++0X]</B>
+}  // namespace std</PRE>
+
+<H2><A NAME="unordered_multiset"><CODE>unordered_multiset</CODE></A></H2>
+
+<HR>
+<P><B><CODE><A HREF="#unordered_multiset::allocator_type">allocator_type</A>
+&#183; <A HREF="#unordered_multiset::begin">begin</A>
+&#183; <A HREF="#unordered_multiset::bucket">bucket</A>
+&#183; <A HREF="#unordered_multiset::bucket_count">bucket_count</A>
+&#183; <A HREF="#unordered_multiset::bucket_size">bucket_size</A>
+&#183; <A HREF="#unordered_multiset::cbegin">cbegin</A>
+&#183; <A HREF="#unordered_multiset::cend">cend</A>
+&#183; <A HREF="#unordered_multiset::clear">clear</A>
+&#183; <A HREF="#unordered_multiset::const_iterator">const_iterator</A>
+&#183; <A HREF="#unordered_multiset::const_local_iterator">const_local_iterator</A>
+&#183; <A HREF="#unordered_multiset::const_pointer">const_pointer</A>
+&#183; <A HREF="#unordered_multiset::const_reference">const_reference</A>
+&#183; <A HREF="#unordered_multiset::count">count</A>
+&#183; <A HREF="#unordered_multiset::difference_type">difference_type</A>
+&#183; <A HREF="#unordered_multiset::emplace">emplace</A>
+&#183; <A HREF="#unordered_multiset::emplace_hint">emplace_hint</A>
+&#183; <A HREF="#unordered_multiset::empty">empty</A>
+&#183; <A HREF="#unordered_multiset::end">end</A>
+&#183; <A HREF="#unordered_multiset::equal_range">equal_range</A>
+&#183; <A HREF="#unordered_multiset::erase">erase</A>
+&#183; <A HREF="#unordered_multiset::find">find</A>
+&#183; <A HREF="#unordered_multiset::get_allocator">get_allocator</A>
+&#183; <A HREF="#unordered_multiset::hasher">hasher</A>
+&#183; <A HREF="#unordered_multiset::hash_function">hash_function</A>
+&#183; <A HREF="#unordered_multiset::insert">insert</A>
+&#183; <A HREF="#unordered_multiset::iterator">iterator</A>
+&#183; <A HREF="#unordered_multiset::key_eq">key_eq</A>
+&#183; <A HREF="#unordered_multiset::key_equal">key_equal</A>
+&#183; <A HREF="#unordered_multiset::key_type">key_type</A>
+&#183; <A HREF="#unordered_multiset::load_factor">load_factor</A>
+&#183; <A HREF="#unordered_multiset::local_iterator">local_iterator</A>
+&#183; <A HREF="#unordered_multiset::max_bucket_count">max_bucket_count</A>
+&#183; <A HREF="#unordered_multiset::max_load_factor">max_load_factor</A>
+&#183; <A HREF="#unordered_multiset::max_size">max_size</A>
+&#183; <A HREF="#unordered_multiset::operator=">operator=</A>
+&#183; <A HREF="#unordered_multiset::pointer">pointer</A>
+&#183; <A HREF="#unordered_multiset::reference">reference</A>
+&#183; <A HREF="#unordered_multiset::rehash">rehash</A>
+&#183; <A HREF="#unordered_multiset::size">size</A>
+&#183; <A HREF="#unordered_multiset::size_type">size_type</A>
+&#183; <A HREF="#unordered_multiset::swap">swap</A>
+&#183; <A HREF="#unordered_multiset::unordered_multiset">unordered_multiset</A>
+&#183; <A HREF="#unordered_multiset::value_type">value_type</A>
+</CODE></B></P>
+<HR>
+
+<PRE>template&lt;class Key,
+    class Hash = std::tr1::hash&lt;Key&gt;,
+    class Pred = std::equal_to&lt;Key&gt;,
+    class Alloc = std::allocator&lt;Key&gt; &gt;
+    class <B>unordered_multiset</B> {
+public:
+    typedef Key <B><A HREF="#unordered_multiset::key_type">key_type</A></B>;
+    typedef Key <B><A HREF="#unordered_multiset::value_type">value_type</A></B>;
+    typedef Hash <B><A HREF="#unordered_multiset::hasher">hasher</A></B>;
+    typedef Pred <B><A HREF="#unordered_multiset::key_equal">key_equal</A></B>;
+    typedef Alloc <B><A HREF="#unordered_multiset::allocator_type">allocator_type</A></B>;
+
+    typedef typename Alloc::pointer <B><A HREF="#unordered_multiset::pointer">pointer</A></B>;
+    typedef typename Alloc::const_pointer <B><A HREF="#unordered_multiset::const_pointer">const_pointer</A></B>;
+    typedef typename Alloc::reference <B><A HREF="#unordered_multiset::reference">reference</A></B>;
+    typedef typename Alloc::const_reference <B><A HREF="#unordered_multiset::const_reference">const_reference</A></B>;
+    typedef typename Alloc::size_type <B><A HREF="#unordered_multiset::size_type">size_type</A></B>;
+    typedef typename Alloc::difference_type <B><A HREF="#unordered_multiset::difference_type">difference_type</A></B>;
+
+    typedef T0 <B><A HREF="#unordered_multiset::iterator">iterator</A></B>;
+    typedef T1 <B><A HREF="#unordered_multiset::const_iterator">const_iterator</A></B>;
+    typedef T2 <B><A HREF="#unordered_multiset::local_iterator">local_iterator</A></B>;
+    typedef T3 <B><A HREF="#unordered_multiset::const_local_iterator">const_local_iterator</A></B>;
+
+    <B><A HREF="#unordered_multiset::unordered_multiset">unordered_multiset</A></B>(
+        const unordered_multiset&amp; right);
+    explicit <B><A HREF="#unordered_multiset::unordered_multiset">unordered_multiset</A></B>(
+        size_type nbuckets = N0,
+        const Hash&amp; hfn = Hash(),
+        const Pred&amp; comp = Pred(),
+        const Alloc&amp; al = Alloc());
+    <B><A HREF="#unordered_multiset::unordered_multiset">unordered_multiset</A></B>(
+        initializer_list&lt;Ty&gt; init,
+        size_type nbuckets = N0,
+        const Hash&amp; hfn = Hash(),
+        const Pred&amp; comp = Pred(),
+        const Alloc&amp; al = Alloc()); <B>[added with C++0X]</B>
+    template&lt;class InIt&gt;
+        <B><A HREF="#unordered_multiset::unordered_multiset">unordered_multiset</A></B>(
+        InIt first, InIt last,
+        size_type nbuckets = N0,
+        const Hash&amp; hfn = Hash(),
+        const Pred&amp; comp = Pred(),
+        const Alloc&amp; al = Alloc());
+    <B><A HREF="#unordered_multiset::unordered_multiset">unordered_multiset</A></B>(unordered_multiset&amp;&amp; right); <B>[added with C++0X]</B>
+
+    unordered_multiset&amp; <B><A HREF="#unordered_multiset::operator=">operator=</A></B>(const unordered_multiset&amp; right);
+    unordered_multiset&amp; <B><A HREF="#unordered_multiset::operator=">operator=</A></B>(initializer_list&lt;Ty&gt; init) <B>[added with C++0X]</B>
+    unordered_multiset&amp; <B><A HREF="#unordered_multiset::operator=">operator=</A></B>(unordered_multiset&amp;&amp; right); <B>[added with C++0X]</B>
+
+    iterator <B><A HREF="#unordered_multiset::begin">begin</A></B>();
+    const_iterator <B><A HREF="#unordered_multiset::begin">begin</A></B>() const;
+    local_iterator <B><A HREF="#unordered_multiset::begin">begin</A></B>(size_type nbucket);
+    const_local_iterator <B><A HREF="#unordered_multiset::begin">begin</A></B>(size_type nbucket) const;
+
+    const_iterator <B><A HREF="#unordered_multiset::cbegin">cbegin</A></B>() const; <B>[added with C++0X]</B>
+    const_iterator <B><A HREF="#unordered_multiset::cend">cend</A></B>() const; <B>[added with C++0X]</B>
+
+    iterator <B><A HREF="#unordered_multiset::end">end</A></B>();
+    const_iterator <B><A HREF="#unordered_multiset::end">end</A></B>() const;
+    local_iterator <B><A HREF="#unordered_multiset::end">end</A></B>(size_type nbucket);
+    const_local_iterator <B><A HREF="#unordered_multiset::end">end</A></B>(size_type nbucket) const;
+
+    size_type <B><A HREF="#unordered_multiset::size">size</A></B>() const;
+    size_type <B><A HREF="#unordered_multiset::max_size">max_size</A></B>() const;
+    bool <B><A HREF="#unordered_multiset::empty">empty</A></B>() const;
+
+    size_type <B><A HREF="#unordered_multiset::bucket_count">bucket_count</A></B>() const;
+    size_type <B><A HREF="#unordered_multiset::max_bucket_count">max_bucket_count</A></B>() const;
+    size_type <B><A HREF="#unordered_multiset::bucket">bucket</A></B>(const Key&amp; keyval) const;
+    size_type <B><A HREF="#unordered_multiset::bucket_size">bucket_size</A></B>(size_type nbucket) const;
+
+    Hash <B><A HREF="#unordered_multiset::hash_function">hash_function</A></B>() const;
+    Pred <B><A HREF="#unordered_multiset::key_eq">key_eq</A></B>() const;
+    Alloc <B><A HREF="#unordered_multiset::get_allocator">get_allocator</A></B>() const;
+
+    float <B><A HREF="#unordered_multiset::load_factor">load_factor</A></B>() const;
+    float <B><A HREF="#unordered_multiset::max_load_factor">max_load_factor</A></B>() const;
+    void <B><A HREF="#unordered_multiset::max_load_factor">max_load_factor</A></B>(float factor);
+    void <B><A HREF="#unordered_multiset::rehash">rehash</A></B>(size_type nbuckets);
+
+    std::pair&lt;iterator, bool&gt; <B><A HREF="#unordered_multiset::insert">insert</A></B>(const value_type&amp; val);
+    iterator <B><A HREF="#unordered_multiset::insert">insert</A></B>(const_iterator where, const value_type&amp; val);
+    template&lt;class InIt&gt;
+        void <B><A HREF="#unordered_multiset::insert">insert</A></B>(InIt first, InIt last);
+    void <B><A HREF="#unordered_multiset::insert">insert</A></B>(initializer_list&lt;Ty&gt; init) <B>[added with C++0X]</B>
+    template&lt;class Valty&gt;
+        pair&lt;iterator, bool&gt; <B><A HREF="#unordered_multiset::insert">insert</A></B>(Valty&amp;&amp; val); <B>[added with C++0X]</B>
+    template&lt;class Valty&gt;
+        iterator <B><A HREF="#unordered_multiset::insert">insert</A></B>(const_iterator where, Valty&amp;&amp; val); <B>[added with C++0X]</B>
+
+    template&lt;class... Valty&gt;
+        pair&lt;iterator, bool&gt; <B><A HREF="#unordered_multiset::emplace">emplace</A></B>(Valty&amp;&amp;... val); <B>[added with C++0X]</B>
+    template&lt;class... Valty&gt;
+        iterator <B><A HREF="#unordered_multiset::emplace_hint">emplace_hint</A></B>(const_iterator where, Valty&amp;&amp;... val); <B>[added with C++0X]</B>
+
+    iterator <B><A HREF="#unordered_multiset::erase">erase</A></B>(const_iterator where);
+    iterator <B><A HREF="#unordered_multiset::erase">erase</A></B>(const_iterator first, const_iterator last);
+    size_type <B><A HREF="#unordered_multiset::erase">erase</A></B>(const Key&amp; keyval);
+    void <B><A HREF="#unordered_multiset::clear">clear</A></B>();
+
+    void <B><A HREF="#unordered_multiset::swap">swap</A></B>(unordered_multiset&amp; right);
+
+    const_iterator <B><A HREF="#unordered_multiset::find">find</A></B>(const Key&amp; keyval) const;
+    size_type <B><A HREF="#unordered_multiset::count">count</A></B>(const Key&amp; keyval) const;
+    std::pair&lt;iterator, iterator&gt;
+        <B><A HREF="#unordered_multiset::equal_range">equal_range</A></B>(const Key&amp; keyval);
+std::pair&lt;const_iterator, const_iterator&gt;
+        <B><A HREF="#unordered_multiset::equal_range">equal_range</A></B>(const Key&amp; keyval) const;
+    };</PRE>
+
+<P>The template class describes an object that controls a
+varying-length sequence of elements of type <CODE>const Key</CODE>.
+The sequence is weakly
+<A HREF="lib_stl.html#sequence ordering">ordered by</A> a <B>hash function</B>,
+which partitions the sequence into an ordered set of subsequences called
+<B>buckets</B>. Within each bucket a <B>comparison function</B> determines
+whether any pair of elements has
+<A HREF="lib_stl.html#equivalent ordering">equivalent ordering</A>.
+Each element serves as both a <B>sort key</B> and a <B>value</B>.
+The sequence is represented in a way that permits lookup, insertion,
+and removal of an arbitrary element with a number of operations that can be
+independent of the number of elements in the sequence (constant time),
+at least when all buckets are of roughly equal length.
+In the worst case, when all of the elements are in one bucket,
+the number of operations is proportional to the number of elements
+in the sequence (linear time). Moreover, inserting an element
+invalidates no iterators, and removing an element
+invalidates only those iterators which point at the removed element.</P>
+
+<P>The object orders the sequence it controls by calling two stored objects,
+a comparison function object of type
+<A HREF="#unordered_multiset::key_equal">key_equal</A>
+and a hash function object of type
+<A HREF="#unordered_multiset::hasher">hasher</A>.
+You access the first stored object by calling the member function
+<CODE><A HREF="#unordered_multiset::key_eq">key_eq</A>()</CODE>;
+and you access the second stored object by calling the member function
+<CODE><A HREF="#unordered_multiset::hash_function">hash_function</A>()</CODE>.
+Specifically, for all values <CODE>X</CODE> and <CODE>Y</CODE> of type <CODE>Key</CODE>,
+the call <CODE>key_eq()(X, Y)</CODE> returns true only if
+the two argument values have equivalent ordering;
+the call <CODE>hash_function()(keyval)</CODE> yields a distribution
+of values of type <CODE>size_t</CODE>.
+Unlike template class <CODE><A HREF="#unordered_set">unordered_set</A></CODE>,
+an object of template class <CODE>unordered_multiset</CODE> does not ensure that
+<CODE>key_eq()(X, Y)</CODE> is always false for any two elements of the controlled sequence.
+(Keys need not be unique.)</P>
+
+<P>The object also stores a <B>maximum load factor</B>, which specifies the
+maximum desired average number of elements per bucket. If inserting an element
+causes <CODE><A HREF="#unordered_multiset::load_factor">load_factor</A>()</CODE>
+to exceed the maximum load factor, the container increases the number of
+buckets and rebuilds the hash table as needed.</P>
+
+<P>The actual order of elements in the controlled sequence depends on the
+hash function, the comparison function, the order of insertion,
+the maximum load factor, and the current number of buckets.
+You cannot in general predict the order of elements
+in the controlled sequence. You can always be assured, however, that any
+subset of elements that have equivalent ordering
+are adjacent in the controlled sequence.</P>
+
+<P>The object allocates and frees storage for the sequence it controls
+through a stored <A HREF="memory.html#allocator object">allocator object</A>
+of type <A HREF="#unordered_multiset::allocator_type">allocator_type</A>.
+Such an allocator object must have
+the same external interface as an object of template class
+<A HREF="memory.html#allocator"><CODE>allocator</CODE></A>.
+Note that the stored allocator object is <I>not</I> copied when the container
+object is assigned.</P>
+
+<P>Inserting and erasing elements, and rehashing, preserves the order of
+elements with equivalent ordering.</P>
+
+<H3><CODE><A NAME="unordered_multiset::allocator_type">unordered_multiset::allocator_type</A></CODE></H3>
+
+<PRE>typedef Alloc <B>allocator_type</B>;</PRE>
+
+<P>The type is a synonym for the template parameter <CODE>Alloc</CODE>.</P>
+
+<H3><CODE><A NAME="unordered_multiset::begin">unordered_multiset::begin</A></CODE></H3>
+
+<PRE>iterator <B>begin</B>();
+    const_iterator <B>begin</B>() const;
+    local_iterator <B>begin</B>(size_type nbucket);
+    const_local_iterator <B>begin</B>(size_type nbucket) const;</PRE>
+
+<P>The first two member functions return a forward iterator that points at
+the first element of the sequence (or just beyond the end of an empty
+sequence). The last two member functions return a forward iterator that points at
+the first element of bucket <CODE>nbucket</CODE> (or just beyond the end of an empty
+bucket).</P>
+
+<H3><CODE><A NAME="unordered_multiset::bucket">unordered_multiset::bucket</A></CODE></H3>
+
+<PRE>size_type <B>bucket</B>(const Key&amp; keyval) const;</PRE>
+
+<P>The member function returns the bucket number currently corresponding
+to the key value <CODE>keyval</CODE>.</P>
+
+<H3><CODE><A NAME="unordered_multiset::bucket_count">unordered_multiset::bucket_count</A></CODE></H3>
+
+<PRE>size_type <B>bucket_count</B>() const;</PRE>
+
+<P>The member function returns the current number of buckets.</P>
+
+<H3><CODE><A NAME="unordered_multiset::bucket_size">unordered_multiset::bucket_size</A></CODE></H3>
+
+<PRE>size_type <B>bucket_size</B>(size_type nbucket) const;</PRE>
+
+<P>The member functions returns the size of bucket number <CODE>nbucket</CODE>.</P>
+
+<H3><CODE><A NAME="unordered_multiset::cbegin">unordered_multiset::cbegin</A></CODE></H3>
+
+<PRE>const_iterator <B>cbegin</B>() const; <B>[added with C++0X]</B></PRE>
+
+<P>The member functions return a bidirectional iterator that points at the
+first element of the sequence (or just beyond the end of an empty sequence).</P>
+
+<H3><CODE><A NAME="unordered_multiset::cend">unordered_multiset::cend</A></CODE></H3>
+
+<PRE>const_reference <B>cend</B>() const; <B>[added with C++0X]</B></PRE>
+
+<P>The member functions return a bidirectional iterator that points just
+beyond the end of the sequence.</P>
+
+<H3><CODE><A NAME="unordered_multiset::clear">unordered_multiset::clear</A></CODE></H3>
+
+<PRE>void <B>clear</B>();</PRE>
+
+<P>The member function calls
+<CODE><A HREF="#unordered_multiset::erase">erase</A>(
+<A HREF="#unordered_multiset::begin">begin</A>(),
+<A HREF="#unordered_multiset::end">end</A>())</CODE>.</P>
+
+<H3><CODE><A NAME="unordered_multiset::const_iterator">unordered_multiset::const_iterator</A></CODE></H3>
+
+<PRE>typedef T1 <B>const_iterator</B>;</PRE>
+
+<P>The type describes an object that can serve as a constant
+forward iterator for the controlled sequence.
+It is described here as a
+synonym for the implementation-defined type <CODE>T1</CODE>.</P>
+
+<H3><CODE><A NAME="unordered_multiset::const_local_iterator">unordered_multiset::const_local_iterator</A></CODE></H3>
+
+<PRE>typedef T3 <B>const_local_iterator</B>;</PRE>
+
+<P>The type describes an object that can serve as a constant
+forward iterator for a bucket.
+It is described here as a
+synonym for the implementation-defined type <CODE>T3</CODE>.</P>
+
+<H3><CODE><A NAME="unordered_multiset::const_pointer">unordered_multiset::const_pointer</A></CODE></H3>
+
+<PRE>typedef typename Alloc::const_pointer <B>const_pointer</B>;</PRE>
+
+<P>The type describes an object that can serve as a constant pointer
+to an element of the controlled sequence.</P>
+
+<H3><CODE><A NAME="unordered_multiset::const_reference">unordered_multiset::const_reference</A></CODE></H3>
+
+<PRE>typedef typename Alloc::const_reference <B>const_reference</B>;</PRE>
+
+<P>The type describes an object that can serve as a constant reference
+to an element of the controlled sequence.</P>
+
+<H3><CODE><A NAME="unordered_multiset::count">unordered_multiset::count</A></CODE></H3>
+
+<PRE>size_type <B>count</B>(const Key&amp; keyval) const;</PRE>
+
+<P>The member function returns the number of elements in the range delimited by
+<CODE><A HREF="#unordered_multiset::equal_range">equal_range</A>(keyval)</CODE>.</P>
+
+<H3><CODE><A NAME="unordered_multiset::difference_type">unordered_multiset::difference_type</A></CODE></H3>
+
+<PRE>typedef typename Alloc::difference_type <B>difference_type</B>;</PRE>
+
+<P>The signed integer type describes an object that can represent the
+difference between the addresses of any two elements in the controlled
+sequence.</P>
+
+<H3><CODE><A NAME="unordered_multiset::emplace">unordered_multiset::emplace</A></CODE></H3>
+
+<PRE>template&lt;class... Valty&gt;
+    pair&lt;iterator, bool&gt; <B>emplace</B>(Valty&amp;&amp;... val); <B>[added with C++0X]</B></PRE>
+
+<P>The member function returns
+<CODE><A HREF="#unordered_multiset::insert">insert</A>(forward&lt;pair&lt;key, mapped_type&gt; &gt;(
+pair&lt;key, mapped_type&gt;(val...))</CODE>.</P>
+
+<H3><CODE><A NAME="unordered_multiset::emplace_hint">unordered_multiset::emplace_hint</A></CODE></H3>
+
+<PRE>template&lt;class... Valty&gt;
+    iterator <B>emplace_hint</B>(const_iterator where, Valty&amp;&amp;... val); <B>[added with C++0X]</B></PRE>
+
+<P>The member function returns
+<CODE>insert(where, forward&lt;pair&lt;key, mapped_type&gt; &gt;(
+pair&lt;key, mapped_type&gt;(val...))</CODE>.</P>
+
+<H3><CODE><A NAME="unordered_multiset::empty">unordered_multiset::empty</A></CODE></H3>
+
+<PRE>bool <B>empty</B>() const;</PRE>
+
+<P>The member function returns true for an empty controlled sequence.</P>
+
+<H3><CODE><A NAME="unordered_multiset::end">unordered_multiset::end</A></CODE></H3>
+
+<PRE>iterator <B>end</B>();
+    const_iterator <B>end</B>() const;
+    local_iterator <B>end</B>(size_type nbucket);
+    const_local_iterator <B>end</B>(size_type nbucket) const;</PRE>
+
+<P>The first two member functions return a forward iterator that points
+just beyond the end of the sequence.
+The last two member functions return a forward iterator that points
+just beyond the end of bucket <CODE>nbucket</CODE>.</P>
+
+<H3><CODE><A NAME="unordered_multiset::equal_range">unordered_multiset::equal_range</A></CODE></H3>
+
+<PRE>std::pair&lt;iterator, iterator&gt;
+    <B>equal_range</B>(const Key&amp; keyval);
+std::pair&lt;const_iterator, const_iterator&gt;
+    <B>equal_range</B>(const Key&amp; keyval) const;</PRE>
+
+<P>The member function returns a pair of iterators <CODE>X</CODE>
+such that <CODE>[X.<A HREF="utility.html#pair::first">first</A>,
+X.<A HREF="utility.html#pair::second">second</A>)</CODE>
+delimits just those elements of the controlled sequence that have
+equivalent ordering with <CODE>keyval</CODE>. If no such elements exist,
+both iterators are <CODE>end()</CODE>.</P>
+
+<H3><CODE><A NAME="unordered_multiset::erase">unordered_multiset::erase</A></CODE></H3>
+
+<PRE>iterator <B>erase</B>(const_iterator where);
+iterator <B>erase</B>(const_iterator first, const_iterator last);
+size_type <B>erase</B>(const Key&amp; keyval);</PRE>
+
+<P>The first member function removes the element of the controlled
+sequence pointed to by <CODE>where</CODE>.
+The second member function removes the elements
+in the range <CODE>[first, last)</CODE>.
+Both return an iterator that designates the first element remaining
+beyond any elements removed, or
+<CODE><A HREF="#unordered_multiset::end">end</A>()</CODE> if no such element exists.</P>
+
+<P>The third member removes the elements in the range delimited by
+<CODE><A HREF="#unordered_multiset::equal_range">equal_range</A>(keyval)</CODE>.
+It returns the number of elements it removes.</P>
+
+<P>The member functions never throw an exception.</P>
+
+<H3><CODE><A NAME="unordered_multiset::find">unordered_multiset::find</A></CODE></H3>
+
+<PRE>const_iterator <B>find</B>(const Key&amp; keyval) const;</PRE>
+
+<P>The member function returns
+<CODE><A HREF="#unordered_multiset::equal_range">equal_range</A>(keyval).first</CODE>.</P>
+
+<H3><CODE><A NAME="unordered_multiset::get_allocator">unordered_multiset::get_allocator</A></CODE></H3>
+
+<PRE>Alloc <B>get_allocator</B>() const;</PRE>
+
+<P>The member function returns the stored
+<A HREF="memory.html#allocator object">allocator object</A>.</P>
+
+<H3><CODE><A NAME="unordered_multiset::hash_function">unordered_multiset::hash_function</A></CODE></H3>
+
+<PRE>Hash <B>hash_function</B>() const;</PRE>
+
+<P>The member function returns the stored hash function object.</P>
+
+<H3><CODE><A NAME="unordered_multiset::hasher">unordered_multiset::hasher</A></CODE></H3>
+
+<PRE>typedef Hash <B>hasher</B>;</PRE>
+
+<P>The type is a synonym for the template parameter <CODE>Hash</CODE>.</P>
+
+<H3><CODE><A NAME="unordered_multiset::insert">unordered_multiset::insert</A></CODE></H3>
+
+<PRE>std::pair&lt;iterator, bool&gt; <B>insert</B>(const value_type&amp; val);
+iterator <B>insert</B>(const_iterator where, const value_type&amp; val);
+template&lt;class InIt&gt;
+    void <B>insert</B>(InIt first, InIt last);
+void <B>insert</B>(initializer_list&lt;Ty&gt; init) <B>[added with C++0X]</B>
+template&lt;class Valty&gt;
+    pair&lt;iterator, bool&gt; <B>insert</B>(Valty&amp;&amp; val); <B>[added with C++0X]</B>
+template&lt;class Valty&gt;
+    iterator <B>insert</B>(const_iterator where, Valty&amp;&amp; val); <B>[added with C++0X]</B></PRE>
+
+<P>The first member function determines whether an element <CODE>X</CODE>
+exists in the sequence whose key has
+<A HREF="lib_stl.html#equivalent ordering">equivalent ordering</A>
+to that of <CODE>val</CODE>. If not, it creates such
+an element <CODE>X</CODE> and initializes it with <CODE>val</CODE>.
+The function then determines the iterator <CODE>where</CODE> that
+designates <CODE>X</CODE>. If an insertion occurred, the function
+returns <CODE>std::<A HREF="utility.html#pair">pair</A>(where, true)</CODE>.
+Otherwise, it returns <CODE>std::pair(where, false)</CODE>.</P>
+
+<P>The second member function returns <CODE>insert(val).first</CODE>,
+using <CODE>where</CODE> as a starting place within the controlled
+sequence to search for the insertion point. (Insertion can
+possibly occur somewhat faster, if the
+insertion point immediately precedes or follows <CODE>where</CODE>.)
+The third member function
+inserts the sequence of element values,
+for each <CODE>where</CODE> in the range <CODE>[first, last)</CODE>,
+by calling <CODE>insert(*where)</CODE>.</P>
+
+<P>The fourth member function inserts the sequence
+specified by an object of class
+<CODE><B><A HREF="lib_cpp.html#initializer_list">initializer_list</A></B>&lt;Ty&gt;</CODE>.</P>
+
+<P>The last two member functions behave the same as the first two
+but with an
+<A HREF="lib_cpp.html#rvalue references">rvalue reference</A>.</P>
+
+<P>If an exception is thrown during the
+insertion of a single element, the container is left unaltered
+and the exception is rethrown.
+If an exception is thrown during the
+insertion of multiple elements, the container is left in a stable
+but unspecified state and the exception is rethrown.</P>
+
+<H3><CODE><A NAME="unordered_multiset::iterator">unordered_multiset::iterator</A></CODE></H3>
+
+<PRE>typedef T0 <B>iterator</B>;</PRE>
+
+<P>The type describes an object that can serve as a forward
+iterator for the controlled sequence.
+It is described here as a
+synonym for the implementation-defined type <CODE>T0</CODE>.</P>
+
+<H3><CODE><A NAME="unordered_multiset::key_eq">unordered_multiset::key_eq</A></CODE></H3>
+
+<PRE>Pred <B>key_eq</B>() const;</PRE>
+
+<P>The member function returns the stored comparison function object.</P>
+
+<H3><CODE><A NAME="unordered_multiset::key_equal">unordered_multiset::key_equal</A></CODE></H3>
+
+<PRE>typedef Pred <B>key_equal</B>;</PRE>
+
+<P>The type is a synonym for the template parameter <CODE>Pred</CODE>.</P>
+
+<H3><CODE><A NAME="unordered_multiset::key_type">unordered_multiset::key_type</A></CODE></H3>
+
+<PRE>typedef Key <B>key_type</B>;</PRE>
+
+<P>The type is a synonym for the template parameter <CODE>Key</CODE>.</P>
+
+<H3><CODE><A NAME="unordered_multiset::load_factor">unordered_multiset::load_factor</A></CODE></H3>
+
+<PRE>float <B>load_factor</B>() const;</PRE>
+
+<P>The member function returns
+<CODE>(float)<A HREF="#unordered_multiset::size">size</A>() /
+(float)<A HREF="#unordered_multiset::bucket_count">bucket_count</A>()</CODE>,
+the average number of elements per bucket.</P>
+
+<H3><CODE><A NAME="unordered_multiset::local_iterator">unordered_multiset::local_iterator</A></CODE></H3>
+
+<PRE>typedef T2 <B>local_iterator</B>;</PRE>
+
+<P>The type describes an object that can serve as a
+forward iterator for a bucket.
+It is described here as a
+synonym for the implementation-defined type <CODE>T2</CODE>.</P>
+
+<H3><CODE><A NAME="unordered_multiset::max_bucket_count">unordered_multiset::max_bucket_count</A></CODE></H3>
+
+<PRE>size_type <B>max_bucket_count</B>() const;</PRE>
+
+<P>The member function returns the maximum number of buckets currently permitted.</P>
+
+<H3><CODE><A NAME="unordered_multiset::max_load_factor">unordered_multiset::max_load_factor</A></CODE></H3>
+
+<PRE>float <B>max_load_factor</B>() const;
+void <B>max_load_factor</B>(float factor);</PRE>
+
+<P>The first member function returns the stored maximum load factor.
+The second member function replaces the stored maximum load factor with <CODE>factor</CODE>.</P>
+
+<H3><CODE><A NAME="unordered_multiset::max_size">unordered_multiset::max_size</A></CODE></H3>
+
+<PRE>size_type <B>max_size</B>() const;</PRE>
+
+<P>The member function returns the length of the longest sequence that
+the object can control.</P>
+
+<H3><CODE><A NAME="unordered_multiset::operator=">unordered_multiset::operator=</A></CODE></H3>
+
+<PRE>unordered_multiset&amp; <B>operator=</B>(const unordered_multiset&amp; right);
+unordered_multiset&amp; <B>operator=</B>(initializer_list&lt;Ty&gt; init) <B>[added with C++0X]</B>
+unordered_multiset&amp; <B>operator=</B>(unordered_multiset&amp;&amp; right); <B>[added with C++0X]</B></PRE>
+
+<P>The first member operator replaces the controlled sequence
+with a copy of the sequence controlled by <CODE>right</CODE>.
+
+<P>The second member operator replaces the controlled sequence
+from an object of class
+<CODE><B><A HREF="lib_cpp.html#initializer_list">initializer_list</A></B>&lt;Ty&gt;</CODE>.</P>
+
+<P>The third member operator is the same as the first, but with an
+<A HREF="lib_cpp.html#rvalue references">rvalue reference</A>.</P>
+
+<H3><CODE><A NAME="unordered_multiset::pointer">unordered_multiset::pointer</A></CODE></H3>
+
+<PRE>typedef typename Alloc::pointer <B>pointer</B>;</PRE>
+
+<P>The type describes an object that can serve as a pointer to an
+element of the controlled sequence.</P>
+
+<H3><CODE><A NAME="unordered_multiset::reference">unordered_multiset::reference</A></CODE></H3>
+
+<PRE>typedef typename Alloc::reference <B>reference</B>;</PRE>
+
+<P>The type describes an object that can serve as a reference to an
+element of the controlled sequence.</P>
+
+<H3><CODE><A NAME="unordered_multiset::rehash">unordered_multiset::rehash</A></CODE></H3>
+
+<PRE>void <B>rehash</B>(size_type nbuckets);</PRE>
+
+<P>The member function alters the number of buckets to be at least <CODE>nbuckets</CODE>
+and rebuilds the hash table as needed.</P>
+
+<H3><CODE><A NAME="unordered_multiset::size">unordered_multiset::size</A></CODE></H3>
+
+<PRE>size_type <B>size</B>() const;</PRE>
+
+<P>The member function returns the length of the controlled sequence.</P>
+
+<H3><CODE><A NAME="unordered_multiset::size_type">unordered_multiset::size_type</A></CODE></H3>
+
+<PRE>typedef T2 <B>size_type</B>;</PRE>
+
+<P>The unsigned integer type describes an object that can represent the
+length of any controlled sequence. It is described here as a
+synonym for the implementation-defined type <CODE>T2</CODE>.</P>
+
+<H3><CODE><A NAME="unordered_multiset::swap">unordered_multiset::swap</A></CODE></H3>
+
+<PRE>void <B>swap</B>(unordered_multiset&amp; right);</PRE>
+
+<P>The member function swaps the controlled sequences between
+<CODE>*this</CODE> and <CODE>right</CODE>. If
+<CODE><A HREF="#unordered_multiset::get_allocator">get_allocator</A>()
+== right.get_allocator()</CODE>, it does so in constant time,
+it throws an exception only as a result of copying the stored
+traits object of type <CODE>Tr</CODE>, and it invalidates no references, pointers,
+or iterators that designate elements in the two controlled sequences.
+Otherwise, it performs a number of element assignments and constructor calls
+proportional to the number of elements in the two controlled sequences.</P>
+
+<H3><CODE><A NAME="unordered_multiset::unordered_multiset">unordered_multiset::unordered_multiset</A></CODE></H3>
+
+<PRE><B>unordered_multiset</B>(
+    const unordered_multiset&amp; right);
+explicit <B>unordered_multiset</B>(
+    size_type nbuckets = N0,
+    const Hash&amp; hfn = Hash(),
+    const Pred&amp; comp = Pred(),
+    const Alloc&amp; al = Alloc());
+<B>unordered_multiset</B>(
+    initializer_list&lt;Ty&gt; init,
+    size_type nbuckets = N0,
+    const Hash&amp; hfn = Hash(),
+    const Pred&amp; comp = Pred(),
+    const Alloc&amp; al = Alloc()); <B>[added with C++0X]</B>
+template&lt;class InIt&gt;
+    <B>unordered_multiset</B>(
+    InIt first, InIt last,
+    size_type nbuckets = N0,
+    const Hash&amp; hfn = Hash(),
+    const Pred&amp; comp = Pred(),
+    const Alloc&amp; al = Alloc());
+<B>unordered_multiset</B>(unordered_multiset&amp;&amp; right); <B>[added with C++0X]</B></PRE>
+
+<P>The first constructor specifies
+a copy of the sequence controlled by <CODE>right</CODE>.
+The second constructor specifies an empty controlled sequence.
+The third constructor inserts the sequence of element values
+<CODE>[first, last)</CODE>.</P>
+
+<P>The fourth constructor specifies the initial controlled sequence
+with an object of class
+<CODE><B><A HREF="lib_cpp.html#initializer_list">initializer_list</A></B>&lt;Ty&gt;</CODE>.</P>
+
+<P>The last constructor is the same as the first, but with an
+<A HREF="lib_cpp.html#rvalue references">rvalue reference</A>.</P>
+
+<P>All constructors also initialize several stored values.
+For the copy constructor, the values are obtained from <CODE>right</CODE>.
+Otherwise:</P>
+
+<UL>
+<LI>the minimum number of buckets is the argument <CODE>nbuckets</CODE>, if present;
+otherwise it is a default value described here as the implementation-defined
+value <CODE>N0</CODE>.</LI>
+
+<LI>the hash function object is the argument <CODE>hfn</CODE>, if present;
+otherwise it is <CODE>Hash()</CODE>.</LI>
+
+<LI>the comparison function object is the argument <CODE>comp</CODE>, if present;
+otherwise it is <CODE>Pred()</CODE>.</LI>
+
+<LI>the allocator object is the argument <CODE>al</CODE>, if present;
+otherwise, it is <CODE>Alloc()</CODE>.</LI>
+</UL>
+
+<H3><CODE><A NAME="unordered_multiset::value_type">unordered_multiset::value_type</A></CODE></H3>
+
+<PRE>typedef Key <B>value_type</B>;</PRE>
+
+<P>The type describes an element of the controlled sequence.</P>
+
+<H2><A NAME="unordered_set"><CODE>unordered_set</CODE></A></H2>
+
+<HR>
+<P><B><CODE><A HREF="#unordered_set::allocator_type">allocator_type</A>
+&#183; <A HREF="#unordered_set::begin">begin</A>
+&#183; <A HREF="#unordered_set::bucket">bucket</A>
+&#183; <A HREF="#unordered_set::bucket_count">bucket_count</A>
+&#183; <A HREF="#unordered_set::bucket_size">bucket_size</A>
+&#183; <A HREF="#unordered_set::cbegin">cbegin</A>
+&#183; <A HREF="#unordered_set::cend">cend</A>
+&#183; <A HREF="#unordered_set::clear">clear</A>
+&#183; <A HREF="#unordered_set::const_iterator">const_iterator</A>
+&#183; <A HREF="#unordered_set::const_local_iterator">const_local_iterator</A>
+&#183; <A HREF="#unordered_set::const_pointer">const_pointer</A>
+&#183; <A HREF="#unordered_set::const_reference">const_reference</A>
+&#183; <A HREF="#unordered_set::count">count</A>
+&#183; <A HREF="#unordered_set::difference_type">difference_type</A>
+&#183; <A HREF="#unordered_set::emplace">emplace</A>
+&#183; <A HREF="#unordered_set::emplace_hint">emplace_hint</A>
+&#183; <A HREF="#unordered_set::empty">empty</A>
+&#183; <A HREF="#unordered_set::end">end</A>
+&#183; <A HREF="#unordered_set::equal_range">equal_range</A>
+&#183; <A HREF="#unordered_set::erase">erase</A>
+&#183; <A HREF="#unordered_set::find">find</A>
+&#183; <A HREF="#unordered_set::get_allocator">get_allocator</A>
+&#183; <A HREF="#unordered_set::hasher">hasher</A>
+&#183; <A HREF="#unordered_set::hash_function">hash_function</A>
+&#183; <A HREF="#unordered_set::insert">insert</A>
+&#183; <A HREF="#unordered_set::iterator">iterator</A>
+&#183; <A HREF="#unordered_set::key_eq">key_eq</A>
+&#183; <A HREF="#unordered_set::key_equal">key_equal</A>
+&#183; <A HREF="#unordered_set::key_type">key_type</A>
+&#183; <A HREF="#unordered_set::load_factor">load_factor</A>
+&#183; <A HREF="#unordered_set::local_iterator">local_iterator</A>
+&#183; <A HREF="#unordered_set::max_bucket_count">max_bucket_count</A>
+&#183; <A HREF="#unordered_set::max_load_factor">max_load_factor</A>
+&#183; <A HREF="#unordered_set::max_size">max_size</A>
+&#183; <A HREF="#unordered_set::operator=">operator=</A>
+&#183; <A HREF="#unordered_set::pointer">pointer</A>
+&#183; <A HREF="#unordered_set::reference">reference</A>
+&#183; <A HREF="#unordered_set::rehash">rehash</A>
+&#183; <A HREF="#unordered_set::size">size</A>
+&#183; <A HREF="#unordered_set::size_type">size_type</A>
+&#183; <A HREF="#unordered_set::swap">swap</A>
+&#183; <A HREF="#unordered_set::unordered_set">unordered_set</A>
+&#183; <A HREF="#unordered_set::value_type">value_type</A>
+</CODE></B></P>
+<HR>
+
+<PRE>template&lt;class Key,
+    class Hash = std::tr1::hash&lt;Key&gt;,
+    class Pred = std::equal_to&lt;Key&gt;,
+    class Alloc = std::allocator&lt;Key&gt; &gt;
+    class <B>unordered_set</B> {
+public:
+    typedef Key <B><A HREF="#unordered_set::key_type">key_type</A></B>;
+    typedef Key <B><A HREF="#unordered_set::value_type">value_type</A></B>;
+    typedef Hash <B><A HREF="#unordered_set::hasher">hasher</A></B>;
+    typedef Pred <B><A HREF="#unordered_set::key_equal">key_equal</A></B>;
+    typedef Alloc <B><A HREF="#unordered_set::allocator_type">allocator_type</A></B>;
+
+    typedef typename Alloc::pointer <B><A HREF="#unordered_set::pointer">pointer</A></B>;
+    typedef typename Alloc::const_pointer <B><A HREF="#unordered_set::const_pointer">const_pointer</A></B>;
+    typedef typename Alloc::reference <B><A HREF="#unordered_set::reference">reference</A></B>;
+    typedef typename Alloc::const_reference <B><A HREF="#unordered_set::const_reference">const_reference</A></B>;
+    typedef typename Alloc::size_type <B><A HREF="#unordered_set::size_type">size_type</A></B>;
+    typedef typename Alloc::difference_type <B><A HREF="#unordered_set::difference_type">difference_type</A></B>;
+
+    typedef T0 <B><A HREF="#unordered_set::iterator">iterator</A></B>;
+    typedef T1 <B><A HREF="#unordered_set::const_iterator">const_iterator</A></B>;
+    typedef T2 <B><A HREF="#unordered_set::local_iterator">local_iterator</A></B>;
+    typedef T3 <B><A HREF="#unordered_set::const_local_iterator">const_local_iterator</A></B>;
+
+    <B><A HREF="#unordered_set::unordered_set">unordered_set</A></B>(
+        const unordered_set&amp; right);
+    explicit <B><A HREF="#unordered_set::unordered_set">unordered_set</A></B>(
+        size_type nbuckets = N0,
+        const Hash&amp; hfn = Hash(),
+        const Pred&amp; comp = Pred(),
+        const Alloc&amp; al = Alloc());
+    <B><A HREF="#unordered_set::unordered_set">unordered_set</A></B>(
+        initializer_list&lt;Ty&gt; init,
+        size_type nbuckets = N0,
+        const Hash&amp; hfn = Hash(),
+        const Pred&amp; comp = Pred(),
+        const Alloc&amp; al = Alloc()); <B>[added with C++0X]</B>
+    template&lt;class InIt&gt;
+        <B><A HREF="#unordered_set::unordered_set">unordered_set</A></B>(
+        InIt first, InIt last,
+        size_type nbuckets = N0,
+        const Hash&amp; hfn = Hash(),
+        const Pred&amp; comp = Pred(),
+        const Alloc&amp; al = Alloc());
+    <B><A HREF="#unordered_set::unordered_set">unordered_set</A></B>(unordered_set&amp;&amp; right); <B>[added with C++0X]</B>
+
+    unordered_set&amp; <B><A HREF="#unordered_set::operator=">operator=</A></B>(const unordered_set&amp; right);
+    unordered_set&amp; <B><A HREF="#unordered_set::operator=">operator=</A></B>(initializer_list&lt;Ty&gt; init) <B>[added with C++0X]</B>
+    unordered_set&amp; <B><A HREF="#unordered_set::operator=">operator=</A></B>(unordered_set&amp;&amp; right); <B>[added with C++0X]</B>
+
+    iterator <B><A HREF="#unordered_set::begin">begin</A></B>();
+    const_iterator <B><A HREF="#unordered_set::begin">begin</A></B>() const;
+    local_iterator <B><A HREF="#unordered_set::begin">begin</A></B>(size_type nbucket);
+    const_local_iterator <B><A HREF="#unordered_set::begin">begin</A></B>(size_type nbucket) const;
+
+    const_iterator <B><A HREF="#unordered_set::cbegin">cbegin</A></B>() const; <B>[added with C++0X]</B>
+    const_iterator <B><A HREF="#unordered_set::cend">cend</A></B>() const; <B>[added with C++0X]</B>
+
+    iterator <B><A HREF="#unordered_set::end">end</A></B>();
+    const_iterator <B><A HREF="#unordered_set::end">end</A></B>() const;
+    local_iterator <B><A HREF="#unordered_set::end">end</A></B>(size_type nbucket);
+    const_local_iterator <B><A HREF="#unordered_set::end">end</A></B>(size_type nbucket) const;
+
+    size_type <B><A HREF="#unordered_set::size">size</A></B>() const;
+    size_type <B><A HREF="#unordered_set::max_size">max_size</A></B>() const;
+    bool <B><A HREF="#unordered_set::empty">empty</A></B>() const;
+
+    size_type <B><A HREF="#unordered_set::bucket_count">bucket_count</A></B>() const;
+    size_type <B><A HREF="#unordered_set::max_bucket_count">max_bucket_count</A></B>() const;
+    size_type <B><A HREF="#unordered_set::bucket">bucket</A></B>(const Key&amp; keyval) const;
+    size_type <B><A HREF="#unordered_set::bucket_size">bucket_size</A></B>(size_type nbucket) const;
+
+    Hash <B><A HREF="#unordered_set::hash_function">hash_function</A></B>() const;
+    Pred <B><A HREF="#unordered_set::key_eq">key_eq</A></B>() const;
+    Alloc <B><A HREF="#unordered_set::get_allocator">get_allocator</A></B>() const;
+
+    float <B><A HREF="#unordered_set::load_factor">load_factor</A></B>() const;
+    float <B><A HREF="#unordered_set::max_load_factor">max_load_factor</A></B>() const;
+    void <B><A HREF="#unordered_set::max_load_factor">max_load_factor</A></B>(float factor);
+    void <B><A HREF="#unordered_set::rehash">rehash</A></B>(size_type nbuckets);
+
+    iterator <B><A HREF="#unordered_set::insert">insert</A></B>(const value_type&amp; val);
+    iterator <B><A HREF="#unordered_set::insert">insert</A></B>(const_iterator where, const value_type&amp; val);
+    template&lt;class InIt&gt;
+        void <B><A HREF="#unordered_set::insert">insert</A></B>(InIt first, InIt last);
+    void <B><A HREF="#unordered_set::insert">insert</A></B>(initializer_list&lt;Ty&gt; init) <B>[added with C++0X]</B>
+    template&lt;class Valty&gt;
+        pair&lt;iterator, bool&gt; <B><A HREF="#unordered_set::insert">insert</A></B>(Valty&amp;&amp; val); <B>[added with C++0X]</B>
+    template&lt;class Valty&gt;
+        iterator <B><A HREF="#unordered_set::insert">insert</A></B>(const_iterator where, Valty&amp;&amp; val); <B>[added with C++0X]</B>
+
+    template&lt;class... Valty&gt;
+        pair&lt;iterator, bool&gt; <B><A HREF="#unordered_set::emplace">emplace</A></B>(Valty&amp;&amp;... val); <B>[added with C++0X]</B>
+    template&lt;class... Valty&gt;
+        iterator <B><A HREF="#unordered_set::emplace_hint">emplace_hint</A></B>(const_iterator where, Valty&amp;&amp;... val); <B>[added with C++0X]</B>
+
+    iterator <B><A HREF="#unordered_set::erase">erase</A></B>(const_iterator where);
+    iterator <B><A HREF="#unordered_set::erase">erase</A></B>(const_iterator first, const_iterator last);
+    size_type <B><A HREF="#unordered_set::erase">erase</A></B>(const Key&amp; keyval);
+    void <B><A HREF="#unordered_set::clear">clear</A></B>();
+
+    void <B><A HREF="#unordered_set::swap">swap</A></B>(unordered_set&amp; right);
+
+    const_iterator <B><A HREF="#unordered_set::find">find</A></B>(const Key&amp; keyval) const;
+    size_type <B><A HREF="#unordered_set::count">count</A></B>(const Key&amp; keyval) const;
+    std::pair&lt;iterator, iterator&gt;
+        <B><A HREF="#unordered_set::equal_range">equal_range</A></B>(const Key&amp; keyval);
+    std::pair&lt;const_iterator, const_iterator&gt;
+        <B><A HREF="#unordered_set::equal_range">equal_range</A></B>(const Key&amp; keyval) const;
+    };</PRE>
+
+<P>The template class describes an object that controls a
+varying-length sequence of elements of type <CODE>const Key</CODE>.
+The sequence is weakly
+<A HREF="lib_stl.html#sequence ordering">ordered by</A> a <B>hash function</B>,
+which partitions the sequence into an ordered set of subsequences called
+<B>buckets</B>. Within each bucket a <B>comparison function</B> determines
+whether any pair of elements has
+<A HREF="lib_stl.html#equivalent ordering">equivalent ordering</A>.
+Each element serves as both a <B>sort key</B> and a <B>value</B>.
+The sequence is represented in a way that permits lookup, insertion,
+and removal of an arbitrary element with a number of operations that can be
+independent of the number of elements in the sequence (constant time),
+at least when all buckets are of roughly equal length.
+In the worst case, when all of the elements are in one bucket,
+the number of operations is proportional to the number of elements
+in the sequence (linear time). Moreover, inserting an element
+invalidates no iterators, and removing an element
+invalidates only those iterators which point at the removed element.</P>
+
+<P>The object orders the sequence it controls by calling two stored objects,
+a comparison function object of type
+<A HREF="#unordered_set::key_equal">key_equal</A>
+and a hash function object of type
+<A HREF="#unordered_set::hasher">hasher</A>.
+You access the first stored object by calling the member function
+<CODE><A HREF="#unordered_set::key_eq">key_eq</A>()</CODE>;
+and you access the second stored object by calling the member function
+<CODE><A HREF="#unordered_set::hash_function">hash_function</A>()</CODE>.
+Specifically, for all values <CODE>X</CODE> and <CODE>Y</CODE> of type <CODE>Key</CODE>,
+the call <CODE>key_eq()(X, Y)</CODE> returns true only if
+the two argument values have equivalent ordering;
+the call <CODE>hash_function()(keyval)</CODE> yields a distribution
+of values of type <CODE>size_t</CODE>.
+Unlike template class <CODE><A HREF="#unordered_multiset">unordered_multiset</A></CODE>,
+an object of template class <CODE>unordered_set</CODE> ensures that
+<CODE>key_eq()(X, Y)</CODE> is always false for any two elements of the controlled sequence.
+(Keys are unique.)</P>
+
+<P>The object also stores a <B>maximum load factor</B>, which specifies the
+maximum desired average number of elements per bucket. If inserting an element
+causes <CODE><A HREF="#unordered_set::load_factor">load_factor</A>()</CODE>
+to exceed the maximum load factor, the container increases the number of
+buckets and rebuilds the hash table as needed.</P>
+
+<P>The actual order of elements in the controlled sequence depends on the
+hash function, the comparison function, the order of insertion,
+the maximum load factor, and the current number of buckets.
+You cannot in general predict the order of elements
+in the controlled sequence. You can always be assured, however, that any
+subset of elements that have equivalent ordering
+are adjacent in the controlled sequence.</P>
+
+<P>The object allocates and frees storage for the sequence it controls
+through a stored <A HREF="memory.html#allocator object">allocator object</A>
+of type <A HREF="#unordered_set::allocator_type">allocator_type</A>.
+Such an allocator object must have
+the same external interface as an object of template class
+<A HREF="memory.html#allocator"><CODE>allocator</CODE></A>.
+Note that the stored allocator object is <I>not</I> copied when the container
+object is assigned.</P>
+
+<H3><CODE><A NAME="unordered_set::allocator_type">unordered_set::allocator_type</A></CODE></H3>
+
+<PRE>typedef Alloc <B>allocator_type</B>;</PRE>
+
+<P>The type is a synonym for the template parameter <CODE>Alloc</CODE>.</P>
+
+<H3><CODE><A NAME="unordered_set::begin">unordered_set::begin</A></CODE></H3>
+
+<PRE>iterator <B>begin</B>();
+    const_iterator <B>begin</B>() const;
+    local_iterator <B>begin</B>(size_type nbucket);
+    const_local_iterator <B>begin</B>(size_type nbucket) const;</PRE>
+
+<P>The first two member functions return a forward iterator that points at
+the first element of the sequence (or just beyond the end of an empty
+sequence). The last two member functions return a forward iterator that points at
+the first element of bucket <CODE>nbucket</CODE> (or just beyond the end of an empty
+bucket).</P>
+
+<H3><CODE><A NAME="unordered_set::bucket">unordered_set::bucket</A></CODE></H3>
+
+<PRE>size_type <B>bucket</B>(const Key&amp; keyval) const;</PRE>
+
+<P>The member function returns the bucket number currently corresponding
+to the key value <CODE>keyval</CODE>.</P>
+
+<H3><CODE><A NAME="unordered_set::bucket_count">unordered_set::bucket_count</A></CODE></H3>
+
+<PRE>size_type <B>bucket_count</B>() const;</PRE>
+
+<P>The member function returns the current number of buckets.</P>
+
+<H3><CODE><A NAME="unordered_set::bucket_size">unordered_set::bucket_size</A></CODE></H3>
+
+<PRE>size_type <B>bucket_size</B>(size_type nbucket) const;</PRE>
+
+<P>The member functions returns the size of bucket number <CODE>nbucket</CODE>.</P>
+
+<H3><CODE><A NAME="unordered_set::cbegin">unordered_set::cbegin</A></CODE></H3>
+
+<PRE>const_iterator <B>cbegin</B>() const; <B>[added with C++0X]</B></PRE>
+
+<P>The member functions return a bidirectional iterator that points at the
+first element of the sequence (or just beyond the end of an empty sequence).</P>
+
+<H3><CODE><A NAME="unordered_set::cend">unordered_set::cend</A></CODE></H3>
+
+<PRE>const_reference <B>cend</B>() const; <B>[added with C++0X]</B></PRE>
+
+<P>The member functions return a bidirectional iterator that points just
+beyond the end of the sequence.</P>
+
+<H3><CODE><A NAME="unordered_set::clear">unordered_set::clear</A></CODE></H3>
+
+<PRE>void <B>clear</B>();</PRE>
+
+<P>The member function calls
+<CODE><A HREF="#unordered_set::erase">erase</A>(
+<A HREF="#unordered_set::begin">begin</A>(),
+<A HREF="#unordered_set::end">end</A>())</CODE>.</P>
+
+<H3><CODE><A NAME="unordered_set::const_iterator">unordered_set::const_iterator</A></CODE></H3>
+
+<PRE>typedef T1 <B>const_iterator</B>;</PRE>
+
+<P>The type describes an object that can serve as a constant
+forward iterator for the controlled sequence.
+It is described here as a
+synonym for the implementation-defined type <CODE>T1</CODE>.</P>
+
+<H3><CODE><A NAME="unordered_set::const_local_iterator">unordered_set::const_local_iterator</A></CODE></H3>
+
+<PRE>typedef T3 <B>const_local_iterator</B>;</PRE>
+
+<P>The type describes an object that can serve as a constant
+forward iterator for a bucket.
+It is described here as a
+synonym for the implementation-defined type <CODE>T3</CODE>.</P>
+
+<H3><CODE><A NAME="unordered_set::const_pointer">unordered_set::const_pointer</A></CODE></H3>
+
+<PRE>typedef typename Alloc::const_pointer <B>const_pointer</B>;</PRE>
+
+<P>The type describes an object that can serve as a constant pointer
+to an element of the controlled sequence.</P>
+
+<H3><CODE><A NAME="unordered_set::const_reference">unordered_set::const_reference</A></CODE></H3>
+
+<PRE>typedef typename Alloc::const_reference <B>const_reference</B>;</PRE>
+
+<P>The type describes an object that can serve as a constant reference
+to an element of the controlled sequence.</P>
+
+<H3><CODE><A NAME="unordered_set::count">unordered_set::count</A></CODE></H3>
+
+<PRE>size_type <B>count</B>(const Key&amp; keyval) const;</PRE>
+
+<P>The member function returns the number of elements in the range delimited by
+<CODE><A HREF="#unordered_set::equal_range">equal_range</A>(keyval)</CODE>.</P>
+
+<H3><CODE><A NAME="unordered_set::difference_type">unordered_set::difference_type</A></CODE></H3>
+
+<PRE>typedef typename Alloc::difference_type <B>difference_type</B>;</PRE>
+
+<P>The signed integer type describes an object that can represent the
+difference between the addresses of any two elements in the controlled
+sequence.</P>
+
+<H3><CODE><A NAME="unordered_set::emplace">unordered_set::emplace</A></CODE></H3>
+
+<PRE>template&lt;class... Valty&gt;
+    pair&lt;iterator, bool&gt; <B>emplace</B>(Valty&amp;&amp;... val); <B>[added with C++0X]</B></PRE>
+
+<P>The member function returns
+<CODE><A HREF="#unordered_set::insert">insert</A>(forward&lt;pair&lt;key, mapped_type&gt; &gt;(
+pair&lt;key, mapped_type&gt;(val...))</CODE>.</P>
+
+<H3><CODE><A NAME="unordered_set::emplace_hint">unordered_set::emplace_hint</A></CODE></H3>
+
+<PRE>template&lt;class... Valty&gt;
+    iterator <B>emplace_hint</B>(const_iterator where, Valty&amp;&amp;... val); <B>[added with C++0X]</B></PRE>
+
+<P>The member function returns
+<CODE>insert(where, forward&lt;pair&lt;key, mapped_type&gt; &gt;(
+pair&lt;key, mapped_type&gt;(val...))</CODE>.</P>
+
+<H3><CODE><A NAME="unordered_set::empty">unordered_set::empty</A></CODE></H3>
+
+<PRE>bool <B>empty</B>() const;</PRE>
+
+<P>The member function returns true for an empty controlled sequence.</P>
+
+<H3><CODE><A NAME="unordered_set::end">unordered_set::end</A></CODE></H3>
+
+<PRE>iterator <B>end</B>();
+    const_iterator <B>end</B>() const;
+    local_iterator <B>end</B>(size_type nbucket);
+    const_local_iterator <B>end</B>(size_type nbucket) const;</PRE>
+
+<P>The first two member functions return a forward iterator that points
+just beyond the end of the sequence.
+The last two member functions return a forward iterator that points
+just beyond the end of bucket <CODE>nbucket</CODE>.</P>
+
+<H3><CODE><A NAME="unordered_set::equal_range">unordered_set::equal_range</A></CODE></H3>
+
+<PRE>std::pair&lt;iterator, iterator&gt;
+    <B>equal_range</B>(const Key&amp; keyval);
+std::pair&lt;const_iterator, const_iterator&gt;
+    <B>equal_range</B>(const Key&amp; keyval) const;</PRE>
+
+<P>The member function returns a pair of iterators <CODE>X</CODE>
+such that <CODE>[X.<A HREF="utility.html#pair::first">first</A>,
+X.<A HREF="utility.html#pair::second">second</A>)</CODE>
+delimits just those elements of the controlled sequence that have
+equivalent ordering with <CODE>keyval</CODE>. If no such elements exist,
+both iterators are <CODE>end()</CODE>.</P>
+
+<H3><CODE><A NAME="unordered_set::erase">unordered_set::erase</A></CODE></H3>
+
+<PRE>iterator <B>erase</B>(const_iterator where);
+iterator <B>erase</B>(const_iterator first, const_iterator last);
+size_type <B>erase</B>(const Key&amp; keyval);</PRE>
+
+<P>The first member function removes the element of the controlled
+sequence pointed to by <CODE>where</CODE>.
+The second member function removes the elements
+in the range <CODE>[first, last)</CODE>.
+Both return an iterator that designates the first element remaining
+beyond any elements removed, or
+<CODE><A HREF="#unordered_set::end">end</A>()</CODE> if no such element exists.</P>
+
+<P>The third member removes the elements in the range delimited by
+<CODE><A HREF="#unordered_set::equal_range">equal_range</A>(keyval)</CODE>.
+It returns the number of elements it removes.</P>
+
+<P>The member functions never throw an exception.</P>
+
+<H3><CODE><A NAME="unordered_set::find">unordered_set::find</A></CODE></H3>
+
+<PRE>const_iterator <B>find</B>(const Key&amp; keyval) const;</PRE>
+
+<P>The member function returns
+<CODE><A HREF="#unordered_set::equal_range">equal_range</A>(keyval).first</CODE>.</P>
+
+<H3><CODE><A NAME="unordered_set::get_allocator">unordered_set::get_allocator</A></CODE></H3>
+
+<PRE>Alloc <B>get_allocator</B>() const;</PRE>
+
+<P>The member function returns the stored
+<A HREF="memory.html#allocator object">allocator object</A>.</P>
+
+<H3><CODE><A NAME="unordered_set::hash_function">unordered_set::hash_function</A></CODE></H3>
+
+<PRE>Hash <B>hash_function</B>() const;</PRE>
+
+<P>The member function returns the stored hash function object.</P>
+
+<H3><CODE><A NAME="unordered_set::hasher">unordered_set::hasher</A></CODE></H3>
+
+<PRE>typedef Hash <B>hasher</B>;</PRE>
+
+<P>The type is a synonym for the template parameter <CODE>Hash</CODE>.</P>
+
+<H3><CODE><A NAME="unordered_set::insert">unordered_set::insert</A></CODE></H3>
+
+<PRE>iterator <B>insert</B>(const value_type&amp; val);
+iterator <B>insert</B>(const_iterator where, const value_type&amp; val);
+template&lt;class InIt&gt;
+    void <B>insert</B>(InIt first, InIt last);
+void <B>insert</B>(initializer_list&lt;Ty&gt; init) <B>[added with C++0X]</B>
+template&lt;class Valty&gt;
+    pair&lt;iterator, bool&gt; <B>insert</B>(Valty&amp;&amp; val); <B>[added with C++0X]</B>
+template&lt;class Valty&gt;
+    iterator <B>insert</B>(const_iterator where, Valty&amp;&amp; val); <B>[added with C++0X]</B></PRE>
+
+<P>The first member function inserts the element <CODE>val</CODE>
+in the controlled sequence, then returns
+the iterator that designates the inserted element.
+The second member function returns <CODE>insert(val)</CODE>,
+using <CODE>where</CODE> as a starting place within the controlled
+sequence to search for the insertion point. (Insertion can
+possibly occur somewhat faster, if the
+insertion point immediately precedes or follows <CODE>where</CODE>.)
+The third member function
+inserts the sequence of element values,
+for each <CODE>where</CODE> in the range <CODE>[first, last)</CODE>,
+by calling <CODE>insert(*where)</CODE>.</P>
+
+<P>The fourth member function inserts the sequence
+specified by an object of class
+<CODE><B><A HREF="lib_cpp.html#initializer_list">initializer_list</A></B>&lt;Ty&gt;</CODE>.</P>
+
+<P>The last two member functions behave the same as the first two
+but with an
+<A HREF="lib_cpp.html#rvalue references">rvalue reference</A>.</P>
+
+<P>If an exception is thrown during the
+insertion of a single element, the container is left unaltered
+and the exception is rethrown.
+If an exception is thrown during the
+insertion of multiple elements, the container is left in a stable
+but unspecified state and the exception is rethrown.</P>
+
+<H3><CODE><A NAME="unordered_set::iterator">unordered_set::iterator</A></CODE></H3>
+
+<PRE>typedef T0 <B>iterator</B>;</PRE>
+
+<P>The type describes an object that can serve as a forward
+iterator for the controlled sequence.
+It is described here as a
+synonym for the implementation-defined type <CODE>T0</CODE>.</P>
+
+<H3><CODE><A NAME="unordered_set::key_eq">unordered_set::key_eq</A></CODE></H3>
+
+<PRE>Pred <B>key_eq</B>() const;</PRE>
+
+<P>The member function returns the stored comparison function object.</P>
+
+<H3><CODE><A NAME="unordered_set::key_equal">unordered_set::key_equal</A></CODE></H3>
+
+<PRE>typedef Pred <B>key_equal</B>;</PRE>
+
+<P>The type is a synonym for the template parameter <CODE>Pred</CODE>.</P>
+
+<H3><CODE><A NAME="unordered_set::key_type">unordered_set::key_type</A></CODE></H3>
+
+<PRE>typedef Key <B>key_type</B>;</PRE>
+
+<P>The type is a synonym for the template parameter <CODE>Key</CODE>.</P>
+
+<H3><CODE><A NAME="unordered_set::load_factor">unordered_set::load_factor</A></CODE></H3>
+
+<PRE>float <B>load_factor</B>() const;</PRE>
+
+<P>The member function returns
+<CODE>(float)<A HREF="#unordered_set::size">size</A>() /
+(float)<A HREF="#unordered_set::bucket_count">bucket_count</A>()</CODE>,
+the average number of elements per bucket.</P>
+
+<H3><CODE><A NAME="unordered_set::local_iterator">unordered_set::local_iterator</A></CODE></H3>
+
+<PRE>typedef T2 <B>local_iterator</B>;</PRE>
+
+<P>The type describes an object that can serve as a
+forward iterator for a bucket.
+It is described here as a
+synonym for the implementation-defined type <CODE>T2</CODE>.</P>
+
+<H3><CODE><A NAME="unordered_set::max_bucket_count">unordered_set::max_bucket_count</A></CODE></H3>
+
+<PRE>size_type <B>max_bucket_count</B>() const;</PRE>
+
+<P>The member function returns the maximum number of buckets currently permitted.</P>
+
+<H3><CODE><A NAME="unordered_set::max_load_factor">unordered_set::max_load_factor</A></CODE></H3>
+
+<PRE>float <B>max_load_factor</B>() const;
+void <B>max_load_factor</B>(float factor);</PRE>
+
+<P>The first member function returns the stored maximum load factor.
+The second member function replaces the stored maximum load factor with <CODE>factor</CODE>.</P>
+
+<H3><CODE><A NAME="unordered_set::max_size">unordered_set::max_size</A></CODE></H3>
+
+<PRE>size_type <B>max_size</B>() const;</PRE>
+
+<P>The member function returns the length of the longest sequence that
+the object can control.</P>
+
+<H3><CODE><A NAME="unordered_set::operator=">unordered_set::operator=</A></CODE></H3>
+
+<PRE>unordered_set&amp; <B>operator=</B>(const unordered_set&amp; right);
+unordered_set&amp; <B>operator=</B>(initializer_list&lt;Ty&gt; init) <B>[added with C++0X]</B>
+unordered_set&amp; <B>operator=</B>(unordered_set&amp;&amp; right); <B>[added with C++0X]</B></PRE>
+
+<P>The first member operator replaces the controlled sequence
+with a copy of the sequence controlled by <CODE>right</CODE>.
+
+<P>The second member operator replaces the controlled sequence
+from an object of class
+<CODE><B><A HREF="lib_cpp.html#initializer_list">initializer_list</A></B>&lt;Ty&gt;</CODE>.</P>
+
+<P>The third member operator is the same as the first, but with an
+<A HREF="lib_cpp.html#rvalue references">rvalue reference</A>.</P>
+
+<H3><CODE><A NAME="unordered_set::pointer">unordered_set::pointer</A></CODE></H3>
+
+<PRE>typedef typename Alloc::pointer <B>pointer</B>;</PRE>
+
+<P>The type describes an object that can serve as a pointer to an
+element of the controlled sequence.</P>
+
+<H3><CODE><A NAME="unordered_set::reference">unordered_set::reference</A></CODE></H3>
+
+<PRE>typedef typename Alloc::reference <B>reference</B>;</PRE>
+
+<P>The type describes an object that can serve as a reference to an
+element of the controlled sequence.</P>
+
+<H3><CODE><A NAME="unordered_set::rehash">unordered_set::rehash</A></CODE></H3>
+
+<PRE>void <B>rehash</B>(size_type nbuckets);</PRE>
+
+<P>The member function alters the number of buckets to be at least <CODE>nbuckets</CODE>
+and rebuilds the hash table as needed.</P>
+
+<H3><CODE><A NAME="unordered_set::size">unordered_set::size</A></CODE></H3>
+
+<PRE>size_type <B>size</B>() const;</PRE>
+
+<P>The member function returns the length of the controlled sequence.</P>
+
+<H3><CODE><A NAME="unordered_set::size_type">unordered_set::size_type</A></CODE></H3>
+
+<PRE>typedef typename Alloc::size_type <B>size_type</B>;</PRE>
+
+<P>The unsigned integer type describes an object that can represent the
+length of any controlled sequence.</P>
+
+<H3><CODE><A NAME="unordered_set::swap">unordered_set::swap</A></CODE></H3>
+
+<PRE>void <B>swap</B>(unordered_set&amp; right);</PRE>
+
+<P>The member function swaps the controlled sequences between
+<CODE>*this</CODE> and <CODE>right</CODE>. If
+<CODE><A HREF="#unordered_set::get_allocator">get_allocator</A>()
+== right.get_allocator()</CODE>, it does so in constant time,
+it throws an exception only as a result of copying the stored
+traits object of type <CODE>Tr</CODE>, and it invalidates no references, pointers,
+or iterators that designate elements in the two controlled sequences.
+Otherwise, it performs a number of element assignments and constructor calls
+proportional to the number of elements in the two controlled sequences.</P>
+
+<H3><CODE><A NAME="unordered_set::unordered_set">unordered_set::unordered_set</A></CODE></H3>
+
+<PRE><B>unordered_set</B>(
+    const unordered_set&amp; right);
+explicit <B>unordered_set</B>(
+    size_type nbuckets = N0,
+    const Hash&amp; hfn = Hash(),
+    const Pred&amp; comp = Pred(),
+    const Alloc&amp; al = Alloc());
+<B>unordered_set</B>(
+    initializer_list&lt;Ty&gt; init,
+    size_type nbuckets = N0,
+    const Hash&amp; hfn = Hash(),
+    const Pred&amp; comp = Pred(),
+    const Alloc&amp; al = Alloc()); <B>[added with C++0X]</B>
+template&lt;class InIt&gt;
+    <B>unordered_set</B>(
+    InIt first, InIt last,
+    size_type nbuckets = N0,
+    const Hash&amp; hfn = Hash(),
+    const Pred&amp; comp = Pred(),
+    const Alloc&amp; al = Alloc());
+<B>unordered_set</B>(unordered_set&amp;&amp; right); <B>[added with C++0X]</B></PRE>
+
+<P>The first constructor specifies
+a copy of the sequence controlled by <CODE>right</CODE>.
+The second constructor specifies an empty controlled sequence.
+The third constructor inserts the sequence of element values
+<CODE>[first, last)</CODE>.</P>
+
+<P>The fourth constructor specifies the initial controlled sequence
+with an object of class
+<CODE><B><A HREF="lib_cpp.html#initializer_list">initializer_list</A></B>&lt;Ty&gt;</CODE>.</P>
+
+<P>The last constructor is the same as the first, but with an
+<A HREF="lib_cpp.html#rvalue references">rvalue reference</A>.</P>
+
+<P>All constructors also initialize several stored values.
+For the copy constructor, the values are obtained from <CODE>right</CODE>.
+Otherwise:</P>
+
+<UL>
+<LI>the minimum number of buckets is the argument <CODE>nbuckets</CODE>, if present;
+otherwise it is a default value described here as the implementation-defined
+value <CODE>N0</CODE>.</LI>
+
+<LI>the hash function object is the argument <CODE>hfn</CODE>, if present;
+otherwise it is <CODE>Hash()</CODE>.</LI>
+
+<LI>the comparison function object is the argument <CODE>comp</CODE>, if present;
+otherwise it is <CODE>Pred()</CODE>.</LI>
+
+<LI>the allocator object is the argument <CODE>al</CODE>, if present;
+otherwise, it is <CODE>Alloc()</CODE>.</LI>
+</UL>
+
+<H3><CODE><A NAME="unordered_set::value_type">unordered_set::value_type</A></CODE></H3>
+
+<PRE>typedef Key <B>value_type</B>;</PRE>
+
+<P>The type describes an element of the controlled sequence.</P>
+
+<H2><A NAME="swap"><CODE>swap</CODE></A></H2>
+
+<PRE>template&lt;class Key, class Hash, class Pred, class Alloc&gt;
+    void <B>swap</B>(
+        unordered_multiset &lt;Key, Hash, Pred, Alloc&gt;&amp; left,
+        unordered_multiset &lt;Key, Hash, Pred, Alloc&gt;&amp; right);
+template&lt;class Key, class Hash, class Pred, class Alloc&gt;
+    void <B>swap</B>(
+        unordered_set &lt;Key, Hash, Pred, Alloc&gt;&amp; left,
+        unordered_set &lt;Key, Hash, Pred, Alloc&gt;&amp; right);</PRE>
+
+<P>The template function executes
+<CODE>left.swap(right)</CODE>.</P>
+
+<HR>
+<P>See also the
+<B><A HREF="index.html#Table of Contents">Table of Contents</A></B> and the
+<B><A HREF="_index.html">Index</A></B>.</P>
+
+<P><I>
+<A HREF="crit_pjp.html">Copyright</A> &#169; 1992-2010
+by P.J. Plauger. All rights reserved.</I></P>
+
+<!--V5.30:126I--></BODY></HTML>
