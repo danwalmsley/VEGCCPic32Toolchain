@@ -4,8 +4,6 @@
   <Version>4.9.1.0</Version>
   <Description>GCC Toolchain for PIC32 Embedded Processors.</Description>
   <RepoUri>https://github.com/danwalmsley/VEGCCPic32Toolchain.git</RepoUri>
-  <IncludePaths>
-    <string>mipsel-mcp-elf\include</string>
-  </IncludePaths>
+  <IncludePaths/>
   <WorkingDirectory>bin</WorkingDirectory>
 </Package>
