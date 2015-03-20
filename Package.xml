@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:type="PIC32ToolChainPackage">
-  <Name>PIC XC32 ToolChain</Name>
+  <Name>PIC32ToolChain</Name>
   <Version>4.9.1.0</Version>
   <Description>XC32 Toolchain for PIC32 Embedded Processors.</Description>
   <RepoUri>https://github.com/danwalmsley/VEGCCPic32Toolchain.git</RepoUri>
