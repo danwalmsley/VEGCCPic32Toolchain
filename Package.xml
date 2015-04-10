@@ -6,6 +6,7 @@
   <RepoUri>https://github.com/danwalmsley/VEGCCPic32Toolchain.git</RepoUri>
   <IncludePaths>
       <string>pic32mx/include</string>
-  </IncludePaths>
+  <string>pic32mx/include/Cpp</string>
+ </IncludePaths>
   <WorkingDirectory>bin</WorkingDirectory>
 </Package>
